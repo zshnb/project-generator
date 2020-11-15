@@ -1,0 +1,97 @@
+package ${packageName};
+
+<#list dependencies! as d>
+import ${d}.*;
+</#list>
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
+@Controller
+@RequestMapping("/${name}")
+public class ${name?capFirst}Controller {
+    <#assign service>${name}Service</#assign>
+    <#assign className>${name?capFirst}</#assign>
+    @Autowired
+    private ${className}ServiceImpl ${service};
+
+    <#if name != "permission">
+    @Autowired
+    private PermissionServiceImpl permissionService;
+    </#if>
+
+    <#if name == "menu">
+    @PostMapping("/list")
+    @ResponseBody
+    public ListResponse<MenuDto> list(HttpSession httpSession) {
+        String role = (String) httpSession.getAttribute("role");
+        return menuService.list(role);
+    }
+    <#else>
+    @PostMapping("/add")
+    @ResponseBody
+    public Response<${className}> add(@RequestBody ${className} request) {
+        ${className} ${name} = ${service}.add(request);
+        return Response.ok(${name});
+    }
+
+    @PutMapping("/update")
+    @ResponseBody
+    public Response<${className}> update(@RequestBody ${className} old) {
+        ${className} ${name} = ${service}.update(old);
+        return Response.ok(${name});
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public Response<String> delete(@PathVariable int id) {
+        ${service}.delete(id);
+        return Response.ok();
+    }
+
+    @PostMapping("/list")
+    @ResponseBody
+    public ListResponse<${className}> list(@RequestBody List${className}Request request) {
+        return ${service}.list(request);
+    }
+
+    @GetMapping("/tablePage")
+    public String tablePage(HttpSession httpSession, Model model) {
+        String role = (String) httpSession.getAttribute("role");
+        List<Permission> permissions = permissionService.list(new QueryWrapper<Permission>()
+            .eq("role", role)
+            .eq("model", "user"));
+        model.addAttribute("permissions", permissions);
+        return "page/${name}/table";
+    }
+
+    @GetMapping("/addPage")
+    public String addPage () {
+        return "page/${name}/add";
+    }
+
+    @GetMapping("/editPage/{id}")
+    public String editPage(@PathVariable int id, Model model) {
+        ${className} ${name} = ${service}.getById(id);
+        model.addAttribute("${name}", ${name});
+        return "page/${name}/edit";
+    }
+    @GetMapping("/detailPage/{id}")
+    public String detailPage(@PathVariable int id, Model model) {
+        ${className} ${name} = ${service}.getById(id);
+        model.addAttribute("${name}", ${name});
+        return "page/${name}/detail";
+    }
+    </#if>
+}
