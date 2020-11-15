@@ -1,8 +1,8 @@
-package com.zshnb.codegenerator.util
+package com.zshnb.projectgenerator.generator.util
 
-import com.zshnb.codegenerator.entity.*
-import com.zshnb.codegenerator.entity.FieldType.*
-import com.zshnb.codegenerator.entity.FieldType.Boolean
+import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.entity.FieldType.*
+import com.zshnb.projectgenerator.generator.entity.FieldType.Boolean
 import org.springframework.stereotype.Component
 
 @Component

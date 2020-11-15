@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.io
+package com.zshnb.projectgenerator.generator.io
 
 import org.apache.commons.io.FileUtils
 import org.springframework.stereotype.Component

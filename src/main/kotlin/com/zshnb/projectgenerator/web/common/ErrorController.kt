@@ -1,6 +1,6 @@
-package com.zshnb.web.common
+package com.zshnb.projectgenerator.web.common
 
-import com.zshnb.web.exception.InvalidArgumentsException
+import com.zshnb.projectgenerator.web.exception.InvalidArgumentsException
 import org.springframework.http.*
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.web.bind.annotation.*

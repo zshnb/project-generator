@@ -1,7 +1,7 @@
-package com.zshnb.web.util
+package com.zshnb.projectgenerator.web.util
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import com.zshnb.web.request.PageRequest
+import com.zshnb.projectgenerator.web.request.PageRequest
 
 class PageUtil {
     companion object {

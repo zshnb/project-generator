@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.config
+package com.zshnb.projectgenerator.generator.config
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer

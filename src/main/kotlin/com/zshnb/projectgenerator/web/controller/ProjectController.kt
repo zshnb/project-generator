@@ -1,9 +1,9 @@
-package com.zshnb.web.controller
+package com.zshnb.projectgenerator.web.controller
 
 import com.google.gson.Gson
-import com.zshnb.codegenerator.entity.Project
-import com.zshnb.codegenerator.generator.LayuiGenerator
-import com.zshnb.codegenerator.generator.RestfulBackendGenerator
+import com.zshnb.projectgenerator.generator.entity.Project
+import com.zshnb.projectgenerator.generator.generator.LayuiGenerator
+import com.zshnb.projectgenerator.generator.generator.RestfulBackendGenerator
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.*
 import org.springframework.web.bind.annotation.PostMapping

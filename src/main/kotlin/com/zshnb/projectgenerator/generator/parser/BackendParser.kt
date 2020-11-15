@@ -1,10 +1,10 @@
-package com.zshnb.codegenerator.parser
+package com.zshnb.projectgenerator.generator.parser
 
 import com.google.gson.Gson
-import com.zshnb.codegenerator.entity.*
-import com.zshnb.codegenerator.extension.*
-import com.zshnb.codegenerator.util.TypeUtil
-import com.zshnb.codegenerator.util.toCamelCase
+import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.extension.*
+import com.zshnb.projectgenerator.generator.util.TypeUtil
+import com.zshnb.projectgenerator.generator.util.toCamelCase
 import org.springframework.stereotype.Component
 
 @Component

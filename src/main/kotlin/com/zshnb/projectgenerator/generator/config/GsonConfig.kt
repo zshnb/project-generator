@@ -1,7 +1,7 @@
-package com.zshnb.codegenerator.config
+package com.zshnb.projectgenerator.generator.config
 
 import com.google.gson.*
-import com.zshnb.codegenerator.entity.*
+import com.zshnb.projectgenerator.generator.entity.*
 import org.springframework.context.annotation.*
 
 @Configuration

@@ -1,9 +1,9 @@
-package com.zshnb.codegenerator.generator
+package com.zshnb.projectgenerator.generator.generator
 
-import com.zshnb.codegenerator.constant.*
-import com.zshnb.codegenerator.entity.*
-import com.zshnb.codegenerator.extension.*
-import com.zshnb.codegenerator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.constant.*
+import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.extension.*
+import com.zshnb.projectgenerator.generator.parser.BackendParser
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.stereotype.Component

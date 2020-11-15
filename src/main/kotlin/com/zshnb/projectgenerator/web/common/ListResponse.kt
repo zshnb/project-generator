@@ -1,4 +1,4 @@
-package com.zshnb.web.common
+package com.zshnb.projectgenerator.web.common
 
 class ListResponse<T>(val list: List<T>,
                       val total: Long) {
