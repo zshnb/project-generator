@@ -1,11 +1,13 @@
 package com.zshnb.projectgenerator.generator.generator
 
+import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.Config
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
+import org.springframework.core.io.support.*
 import org.springframework.stereotype.Component
 import java.io.*
 
@@ -23,12 +25,15 @@ class LayuiGenerator(private val backendParser: BackendParser,
 
         val project = backendParser.parseProject(json)
         createOtherDirs(project.pages.map { it.name })
-        FileUtils.copyDirectory(File("./generator/src/main/resources/templates/layui/css"), File("${PathConstant.layuiTemplateDirPath}/css"))
-        FileUtils.copyDirectory(File("./generator/src/main/resources/templates/layui/images"), File("${PathConstant.layuiTemplateDirPath}/images"))
-        FileUtils.copyDirectory(File("./generator/src/main/resources/templates/layui/js"), File("${PathConstant.layuiTemplateDirPath}/js"))
-        FileUtils.copyDirectory(File("./generator/src/main/resources/templates/layui/lib"), File("${PathConstant.layuiTemplateDirPath}/lib"))
-        FileUtils.copyFile(File("./generator/src/main/resources/templates/layui/index.html"), File("${PathConstant.layuiTemplateDirPath}/index.html"))
-        FileUtils.copyFile(File("./generator/src/main/resources/templates/layui/login.html"), File("${PathConstant.layuiTemplateDirPath}/login.html"))
+        val resourceResolver = PathMatchingResourcePatternResolver()
+        val resources = resourceResolver.getResources("/templates/layui/**")
+        resources.filter { ReUtil.isMatch(".*?\\.[a-zA-Z]*?", it.filename!!) }
+            .forEach {
+                val url = it.url
+                val filePath = url.path.substring(url.path.indexOf("templates"))
+                val destination = File("${PathConstant.layuiResourcesDirPath}/$filePath")
+                FileUtils.copyURLToFile(url, destination)
+            }
 
         val indexControllerWriter = BufferedWriter(FileWriter("${project.config.controllerDir()}/IndexController.java"))
         indexControllerTemplate.process(mapOf("packageName" to project.config.controllerPackagePath(),
@@ -57,7 +62,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
 
     override fun mkdirs(config: Config) {
         super.mkdirs(config)
-        val templateDir = File(PathConstant.layuiTemplateDirPath)
+        val templateDir = File(PathConstant.layuiResourcesDirPath)
         templateDir.mkdirs()
 
         val pageDir = File(PathConstant.layuiPageDirPath)
