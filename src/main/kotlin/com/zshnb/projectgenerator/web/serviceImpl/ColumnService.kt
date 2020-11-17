@@ -1,6 +1,6 @@
-package com.zshnb.web.serviceImpl
+package com.zshnb.projectgenerator.web.serviceImpl
 
-import com.zshnb.codegenerator.entity.ColumnType
+import com.zshnb.projectgenerator.generator.entity.ColumnType
 import org.springframework.stereotype.Service
 
 @Service

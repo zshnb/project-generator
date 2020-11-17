@@ -1,6 +1,6 @@
-package com.zshnb.web.config
+package com.zshnb.projectgenerator.web.config
 
-import com.zshnb.codegenerator.entity.ProjectType
+import com.zshnb.projectgenerator.generator.entity.ProjectType
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
 import java.lang.IllegalArgumentException

@@ -1,9 +1,9 @@
-package com.zshnb.codegenerator.generator
+package com.zshnb.projectgenerator.generator.generator
 
-import com.zshnb.codegenerator.constant.*
-import com.zshnb.codegenerator.entity.*
-import com.zshnb.codegenerator.extension.*
-import com.zshnb.codegenerator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.constant.*
+import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.extension.*
+import com.zshnb.projectgenerator.generator.parser.BackendParser
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.stereotype.Component
@@ -102,7 +102,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         }.flatten().flatten()
 
         val initDataWriter = BufferedWriter(FileWriter("${PathConstant.resourcesDirPath}/initData.sql"))
-        initDataTemplate.process(mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "permission" to Permission("aa", "aa", "aa")), initDataWriter)
+        initDataTemplate.process(mapOf( "roles" to roles, "menus" to menus, "permissions" to permissions), initDataWriter)
     }
 
     private fun getChildMenus(menu: Menu): List<Menu> {
@@ -114,7 +114,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
     }
 
     open fun mkdirs(config: Config) {
-        FileUtils.deleteDirectory(File("./generator/temp"))
+        FileUtils.deleteDirectory(File("${PathConstant.projectDirPath}/temp"))
         val entityDir = File(config.entityDir())
         val serviceDir = File(config.serviceDir())
         val serviceImplDir = File(config.serviceImplDir())

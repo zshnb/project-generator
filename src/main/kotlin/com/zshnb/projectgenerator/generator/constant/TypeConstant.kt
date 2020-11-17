@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.constant
+package com.zshnb.projectgenerator.generator.constant
 
 import java.time.LocalDateTime
 

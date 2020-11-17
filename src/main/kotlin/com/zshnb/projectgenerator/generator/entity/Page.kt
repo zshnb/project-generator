@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.entity
+package com.zshnb.projectgenerator.generator.entity
 
 class Page(val name: String,
            val form: FormComponent,

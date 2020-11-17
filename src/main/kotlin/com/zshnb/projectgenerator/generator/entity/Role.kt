@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.entity
+package com.zshnb.projectgenerator.generator.entity
 
 data class Role(val name: String, val menus: List<Menu>)
 

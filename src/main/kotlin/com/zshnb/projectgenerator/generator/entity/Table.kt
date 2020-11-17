@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.entity
+package com.zshnb.projectgenerator.generator.entity
 
 data class Table(val name: String, var columns: List<Column>) {
 }

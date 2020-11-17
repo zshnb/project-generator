@@ -1,4 +1,4 @@
-package com.zshnb.web.common
+package com.zshnb.projectgenerator.web.common
 
 data class Response<T>(var data: T? = null,
                        var message: String = "") {

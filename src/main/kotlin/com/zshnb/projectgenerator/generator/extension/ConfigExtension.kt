@@ -1,7 +1,7 @@
-package com.zshnb.codegenerator.extension
+package com.zshnb.projectgenerator.generator.extension
 
-import com.zshnb.codegenerator.constant.PathConstant
-import com.zshnb.codegenerator.entity.Config
+import com.zshnb.projectgenerator.generator.constant.PathConstant
+import com.zshnb.projectgenerator.generator.entity.Config
 
 fun Config.entityPackagePath() = "$rootPackageName.$entityPackageName"
 fun Config.servicePackagePath() = "$rootPackageName.$servicePackageName"

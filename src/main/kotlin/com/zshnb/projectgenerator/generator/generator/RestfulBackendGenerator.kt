@@ -1,8 +1,8 @@
-package com.zshnb.codegenerator.generator
+package com.zshnb.projectgenerator.generator.generator
 
-import com.zshnb.codegenerator.constant.BackendFreeMarkerFileConstant
-import com.zshnb.codegenerator.extension.controllerDir
-import com.zshnb.codegenerator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.constant.BackendFreeMarkerFileConstant
+import com.zshnb.projectgenerator.generator.extension.controllerDir
+import com.zshnb.projectgenerator.generator.parser.BackendParser
 import freemarker.template.Configuration
 import org.springframework.stereotype.Component
 import java.io.*

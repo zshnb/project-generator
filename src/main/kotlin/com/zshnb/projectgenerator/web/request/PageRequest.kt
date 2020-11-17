@@ -1,4 +1,4 @@
-package com.zshnb.web.request
+package com.zshnb.projectgenerator.web.request
 
 open class PageRequest {
     val pageNumber: Long = 1L

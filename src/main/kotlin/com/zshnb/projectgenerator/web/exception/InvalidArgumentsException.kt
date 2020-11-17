@@ -1,4 +1,4 @@
-package com.zshnb.web.exception
+package com.zshnb.projectgenerator.web.exception
 
 import java.lang.RuntimeException
 

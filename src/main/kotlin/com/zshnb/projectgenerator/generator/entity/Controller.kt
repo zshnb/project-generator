@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.entity
+package com.zshnb.projectgenerator.generator.entity
 
 class Controller(val packageName: String, val name: String, val dependencies: List<String>) {
 }

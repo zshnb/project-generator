@@ -1,6 +1,6 @@
-package com.zshnb.codegenerator.entity
+package com.zshnb.projectgenerator.generator.entity
 
-import com.zshnb.codegenerator.entity.ProjectType.LAY_UI
+import com.zshnb.projectgenerator.generator.entity.ProjectType.LAY_UI
 
 data class Project(
     val config: Config = Config(),

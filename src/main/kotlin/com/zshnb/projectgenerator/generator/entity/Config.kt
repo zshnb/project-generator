@@ -1,4 +1,4 @@
-package com.zshnb.codegenerator.entity
+package com.zshnb.projectgenerator.generator.entity
 
 data class Config(val artifactId: String = "",
                   val groupId: String = "",
