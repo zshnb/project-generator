@@ -6,6 +6,7 @@ import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.generator.LayuiGenerator
 import com.zshnb.projectgenerator.generator.generator.RestfulBackendGenerator
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
+import org.apache.commons.io.FileUtils
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.*
 import org.springframework.web.bind.annotation.PostMapping
@@ -30,6 +31,7 @@ class ProjectController(
         headers.add("Cache-Control", "no-cache,no-store,must-revalidate")
         headers.add("Pragma", "no-cache")
         headers.add("Expires", "0")
+        FileUtils.deleteQuietly(file)
 
         return ResponseEntity.ok()
             .headers(headers)
