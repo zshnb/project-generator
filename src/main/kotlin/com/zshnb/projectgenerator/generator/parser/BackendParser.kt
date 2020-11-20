@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 class BackendParser(private val gson: Gson,
                     private val typeUtil: TypeUtil) {
     fun parseProject(json: String): Project {
-        val project = gson.fromJson<Project>(json, Project::class.java)
+        val project = gson.fromJson(json, Project::class.java)
         project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
         val userTable = project.tables.find { it.name == "user" }
         if (userTable != null) {
