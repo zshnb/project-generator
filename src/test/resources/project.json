@@ -1,0 +1,84 @@
+{
+  "config": {
+    "groupId": "com.demo",
+    "artifactId": "demo",
+    "version": "1.0",
+    "rootPackageName": "com.demo.demo",
+    "entityPackageName": "entity",
+    "servicePackageName": "service",
+    "serviceImplPackageName": "serviceImpl",
+    "mapperPackageName": "mapper",
+    "controllerPackageName": "controller",
+    "jdbcHost": "localhost",
+    "jdbcUser": "root",
+    "jdbcPassword": "aa",
+    "jdbcDatabase": "aa",
+    "type": 1
+  },
+  "type": 1,
+  "tables": [
+    {
+      "name": "test",
+      "columns": [
+        {
+          "id": "13a0ec70-15b1-44e8-bf41-cf307976de36",
+          "name": "name",
+          "type": "varchar",
+          "primary": false,
+          "length": 255
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "test",
+      "form": {
+        "formItems": [
+          {
+            "id": "bb3fc76c-c249-41b0-8455-ae75835174b2",
+            "name": "name",
+            "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "comment": "名称",
+            "require": true,
+            "options": []
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "id": "6203960b-1def-4fe1-9a07-527931851334",
+            "title": "名称",
+            "name": "name"
+          }
+        ],
+        "permissions": [
+          {
+            "id": "2c0fed02-2a7e-41ac-9bea-76aa6123f49a",
+            "role": "admin",
+            "operations": [
+              "add",
+              "edit",
+              "delete"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "menus": [
+        {
+          "id": 0,
+          "name": "测试菜单",
+          "icon": "",
+          "href": "/test/tablePage",
+          "child": []
+        }
+      ]
+    }
+  ]
+}
