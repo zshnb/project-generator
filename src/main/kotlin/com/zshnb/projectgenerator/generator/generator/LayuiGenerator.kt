@@ -36,9 +36,11 @@ class LayuiGenerator(
         resources.filter { ReUtil.isMatch(".*?\\.[a-zA-Z]*?", it.filename!!) }
             .forEach {
                 val url = it.url
-                val filePath = url.path.substring(url.path.indexOf("templates"))
-                val destination = File("${pathConstant.resourcesDirPath()}/$filePath")
-                FileUtils.copyURLToFile(url, destination)
+                val filePath = url.path.substring(url.path.indexOf("layui") + 5)
+                if (!filePath.contains("page")) {
+                    val destination = File("${pathConstant.resourcesDirPath()}/templates/$filePath")
+                    FileUtils.copyURLToFile(url, destination)
+                }
             }
 
         val indexControllerWriter =
