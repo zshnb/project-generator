@@ -2,6 +2,7 @@ package com.zshnb.projectgenerator.generator.parser
 
 import com.google.gson.Gson
 import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.entity.ColumnType.INT
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.util.TypeUtil
 import com.zshnb.projectgenerator.generator.util.toCamelCase
@@ -22,11 +23,15 @@ class BackendParser(private val gson: Gson,
             )).toList()
         } else {
             project.tables = project.tables + Table("user", listOf(
-                Column("id", ColumnType.INT, length = 11, primary = true),
                 Column("username", ColumnType.VARCHAR, length = 255),
                 Column("password", ColumnType.VARCHAR, length = 255),
                 Column("role", ColumnType.VARCHAR, length = 255)
             ))
+        }
+        project.tables.forEach { table ->
+            table.columns = (table.columns.toSet() + setOf(
+                Column("id", INT, "", 11, true)
+            )).toList()
         }
         val entities = parseEntities(project.tables, project.config)
         val services = parseServices(entities, project.config)
