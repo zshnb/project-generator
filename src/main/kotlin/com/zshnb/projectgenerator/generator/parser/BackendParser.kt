@@ -29,9 +29,9 @@ class BackendParser(private val gson: Gson,
             ))
         }
         project.tables.forEach { table ->
-            table.columns = table.columns + listOf(
+            table.columns = (table.columns.toSet() + setOf(
                 Column("id", INT, "", 11, true)
-            )
+            )).toList()
         }
         val entities = parseEntities(project.tables, project.config)
         val services = parseServices(entities, project.config)
