@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils
 import org.springframework.core.io.support.*
 import org.springframework.stereotype.Component
 import java.io.*
+import java.nio.charset.StandardCharsets
 
 @Component
 class LayuiGenerator(
@@ -58,20 +59,19 @@ class LayuiGenerator(
         }
 
         project.pages.forEach {
-            val addPageWriter = BufferedWriter(FileWriter("${pathConstant.layUIPageDirPath()}/${it.name}/add.html"))
+            val addPageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/add.html"), StandardCharsets.UTF_8)
             addPageTemplate.process(it, addPageWriter)
             addPageWriter.close()
 
-            val editPageWriter = BufferedWriter(FileWriter("${pathConstant.layUIPageDirPath()}/${it.name}/edit.html"))
+            val editPageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/edit.html"), StandardCharsets.UTF_8)
             editPageTemplate.process(it, editPageWriter)
             editPageWriter.close()
 
-            val detailPageWriter =
-                BufferedWriter(FileWriter("${pathConstant.layUIPageDirPath()}/${it.name}/detail.html"))
+            val detailPageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/detail.html"), StandardCharsets.UTF_8)
             detailPageTemplate.process(it, detailPageWriter)
             detailPageWriter.close()
 
-            val tablePageWriter = BufferedWriter(FileWriter("${pathConstant.layUIPageDirPath()}/${it.name}/table.html"))
+            val tablePageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/table.html"), StandardCharsets.UTF_8)
             tablePageTemplate.process(it, tablePageWriter)
             tablePageWriter.close()
         }
