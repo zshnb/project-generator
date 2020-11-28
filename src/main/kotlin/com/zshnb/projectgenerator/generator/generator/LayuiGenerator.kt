@@ -34,15 +34,24 @@ class LayuiGenerator(
         createOtherDirs(project.pages.map { it.name })
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
-        resources.filter { ReUtil.isMatch(".*?\\.[a-zA-Z]*?", it.filename!!) }
-            .forEach {
-                val url = it.url
+
+        resources.forEach {
+            val url = it.url
+            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z]*?$", it.url.path)) {
                 val filePath = url.path.substring(url.path.indexOf("layui") + 5)
-                if (!filePath.contains("page")) {
-                    val destination = File("${pathConstant.resourcesDirPath()}/templates/$filePath")
-                    FileUtils.copyURLToFile(url, destination)
+                File("${pathConstant.resourcesDirPath()}/static/$filePath")
+            } else {
+                val filePath = url.path.substring(url.path.indexOf("layui") + 5)
+                if (ReUtil.isMatch(".html$", it.filename!!)) {
+                    File("${pathConstant.resourcesDirPath()}/templates/$filePath")
+                } else {
+                    File("")
                 }
             }
+            if (destination.name.isNotEmpty()) {
+                FileUtils.copyURLToFile(url, destination)
+            }
+        }
 
         val indexControllerWriter =
             BufferedWriter(FileWriter("${project.config.controllerDir(pathConstant)}/IndexController.java"))
@@ -79,11 +88,12 @@ class LayuiGenerator(
 
     override fun mkdirs(config: Config) {
         super.mkdirs(config)
-        val templateDir = File(pathConstant.resourcesDirPath())
-        templateDir.mkdirs()
 
         val pageDir = File(pathConstant.layUIPageDirPath())
         pageDir.mkdirs()
+
+        val staticDir = File(pathConstant.layUIStaticDirPath())
+        staticDir.mkdir()
     }
 
     private fun createOtherDirs(dirs: List<String>) {
