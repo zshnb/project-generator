@@ -6,8 +6,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" th:href="@{lib/layui-v2.5.5/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{css/public.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
 </head>
 <body>
 <div class="layuimini-container">
@@ -64,7 +64,7 @@
 
     </div>
 </div>
-<script th:src="@{lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script>
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,

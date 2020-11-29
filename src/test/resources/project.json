@@ -193,7 +193,8 @@
           "name": "小说管理",
           "icon": "",
           "href": "/novel/tablePage",
-          "child": []
+          "child": [],
+          "role": "admin"
         },
         {
           "id": 1,
@@ -201,7 +202,8 @@
           "name": "漫画管理",
           "icon": "",
           "href": "/comic/tablePage",
-          "child": []
+          "child": [],
+          "role": "admin"
         }
       ]
     }
