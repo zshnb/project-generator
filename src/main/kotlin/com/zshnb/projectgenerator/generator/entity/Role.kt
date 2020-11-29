@@ -8,7 +8,7 @@ data class Menu(
     val name: String = "",
     val icon: String = "",
     val href: String = "",
-    val role: String = "",
+    var role: String = "",
     val child: List<Menu> = emptyList()
 )
 

@@ -33,6 +33,11 @@ class BackendParser(private val gson: Gson,
                 Column("id", INT, "", 11, true)
             )).toList()
         }
+        project.roles.forEach { role ->
+            role.menus.forEach {
+                it.role = role.name
+            }
+        }
         val entities = parseEntities(project.tables, project.config)
         val services = parseServices(entities, project.config)
         val mappers = parseMappers(entities, project.config)
