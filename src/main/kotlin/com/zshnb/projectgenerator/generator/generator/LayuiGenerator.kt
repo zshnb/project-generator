@@ -42,7 +42,7 @@ class LayuiGenerator(
                 File("${pathConstant.resourcesDirPath()}/static/$filePath")
             } else {
                 val filePath = url.path.substring(url.path.indexOf("layui") + 5)
-                if (ReUtil.isMatch(".html$", it.filename!!)) {
+                if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
                     File("${pathConstant.resourcesDirPath()}/templates/$filePath")
                 } else {
                     File("")
