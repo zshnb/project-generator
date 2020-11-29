@@ -129,7 +129,7 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
-                    title: '添加用户',
+                    title: '添加',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
@@ -155,13 +155,13 @@
             var data = obj.data
             if (obj.event === 'edit') {
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: '编辑',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${name}/editPage/${r"${data.id}"}"`,
+                    content: `/${name}/editPage/${r"${data.id}"}`,
                     end: function () {
                         table.reload('currentTableId')
                     }
@@ -174,7 +174,7 @@
                 layer.confirm('真的删除行么', function (index) {
                     var data = obj.data
                     $.ajax({
-                        url: `/${name}/${r"${data.id}"}"`,
+                        url: `/${name}/${r"${data.id}"}`,
                         type: 'delete'
                     })
                     layer.close(index)

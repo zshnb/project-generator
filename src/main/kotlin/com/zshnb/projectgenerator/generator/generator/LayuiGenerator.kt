@@ -37,7 +37,7 @@ class LayuiGenerator(
 
         resources.forEach {
             val url = it.url
-            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z]*?$", it.url.path)) {
+            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", it.url.path)) {
                 val filePath = url.path.substring(url.path.indexOf("layui") + 5)
                 File("${pathConstant.resourcesDirPath()}/static/$filePath")
             } else {

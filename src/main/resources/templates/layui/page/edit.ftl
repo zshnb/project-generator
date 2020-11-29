@@ -62,7 +62,7 @@
         </div>
     </div>
 </div>
-<script th:src="@{lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
