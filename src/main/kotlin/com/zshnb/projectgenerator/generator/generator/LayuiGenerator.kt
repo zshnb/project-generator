@@ -14,12 +14,11 @@ import java.io.*
 import java.nio.charset.StandardCharsets
 
 @Component
-class LayuiGenerator(
-    private val backendParser: BackendParser,
-    private val pathConstant: PathConstant,
-    private val configuration: Configuration,
-    projectConfig: ProjectConfig,
-) : BaseGenerator(backendParser, pathConstant, projectConfig, configuration) {
+class LayuiGenerator(private val backendParser: BackendParser,
+                     private val pathConstant: PathConstant,
+                     private val configuration: Configuration,
+                     projectConfig: ProjectConfig) :
+    BaseGenerator(backendParser, pathConstant, projectConfig, configuration) {
     override fun generateProject(json: String) {
         super.generateProject(json)
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LAYUI_CONTROLLER_TEMPLATE)
@@ -62,25 +61,34 @@ class LayuiGenerator(
         indexControllerWriter.close()
 
         project.controllers.forEach {
-            val writer = BufferedWriter(FileWriter("${project.config.controllerDir(pathConstant)}/${it.name.capitalize()}Controller.java"))
+            val writer =
+                BufferedWriter(FileWriter("${project.config.controllerDir(pathConstant)}/${it.name.capitalize()}Controller.java"))
             controllerTemplate.process(it, writer)
             writer.close()
         }
 
         project.pages.forEach {
-            val addPageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/add.html"), StandardCharsets.UTF_8)
+            val addPageWriter =
+                OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/add.html"),
+                    StandardCharsets.UTF_8)
             addPageTemplate.process(it, addPageWriter)
             addPageWriter.close()
 
-            val editPageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/edit.html"), StandardCharsets.UTF_8)
+            val editPageWriter =
+                OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/edit.html"),
+                    StandardCharsets.UTF_8)
             editPageTemplate.process(it, editPageWriter)
             editPageWriter.close()
 
-            val detailPageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/detail.html"), StandardCharsets.UTF_8)
+            val detailPageWriter =
+                OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/detail.html"),
+                    StandardCharsets.UTF_8)
             detailPageTemplate.process(it, detailPageWriter)
             detailPageWriter.close()
 
-            val tablePageWriter = OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/table.html"), StandardCharsets.UTF_8)
+            val tablePageWriter =
+                OutputStreamWriter(FileOutputStream("${pathConstant.layUIPageDirPath()}/${it.name}/table.html"),
+                    StandardCharsets.UTF_8)
             tablePageTemplate.process(it, tablePageWriter)
             tablePageWriter.close()
         }
