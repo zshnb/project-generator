@@ -22,7 +22,7 @@
       "name": "novel",
       "columns": [
         {
-          "id": "ccb9cc40-8405-42a7-88a9-51a39b25967f",
+          "id": "44d5a497-92c0-43a0-aef2-e8c493d4aaae",
           "name": "name",
           "type": "varchar",
           "primary": false,
@@ -30,14 +30,15 @@
         }
       ],
       "page": {
+        "name": "novel",
         "form": {
           "formItems": [
             {
-              "id": "0857d6c9-0c5f-4311-9d55-2e08c0464501",
-              "name": "标签",
+              "id": "ba72d678-ea2a-4645-a0ef-01685fb7bee8",
+              "name": "name",
               "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-              "comment": "标签",
-              "require": true,
+              "comment": "小说名",
+              "require": false,
               "options": []
             }
           ]
@@ -45,14 +46,14 @@
         "table": {
           "fields": [
             {
-              "id": "49ca32ca-9aee-4f2f-bc51-b0ea321facbd",
-              "title": "label",
-              "name": "label"
+              "id": "1597a033-e0f7-49ea-b364-b0dff1db8ae3",
+              "title": "小说名",
+              "name": "name"
             }
           ],
           "permissions": [
             {
-              "id": "acbddfb3-9ec9-45f8-9185-1ff34be041ee",
+              "id": "5d7725e9-adcd-42b4-848b-542a1149588b",
               "role": "admin",
               "operations": [
                 "add",
@@ -68,22 +69,23 @@
       "name": "comic",
       "columns": [
         {
-          "id": "1969e09b-e879-41b0-b3d7-cedb494718e3",
-          "name": "label",
+          "id": "02f0e3b0-8ec5-4059-8dd9-0d91c6bd2a93",
+          "name": "name",
           "type": "varchar",
           "primary": false,
           "length": "255"
         }
       ],
       "page": {
+        "name": "comic",
         "form": {
           "formItems": [
             {
-              "id": "0857d6c9-0c5f-4311-9d55-2e08c0464501",
-              "name": "标签",
+              "id": "ebd969b2-3b27-4764-b4d1-4e5d521a1074",
+              "name": "name",
               "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-              "comment": "标签",
-              "require": true,
+              "comment": "漫画名",
+              "require": false,
               "options": []
             }
           ]
@@ -91,14 +93,14 @@
         "table": {
           "fields": [
             {
-              "id": "49ca32ca-9aee-4f2f-bc51-b0ea321facbd",
-              "title": "label",
-              "name": "label"
+              "id": "ef5fec4f-2ee3-4c34-9f69-386369e2ccd4",
+              "title": "漫画名",
+              "name": "name"
             }
           ],
           "permissions": [
             {
-              "id": "acbddfb3-9ec9-45f8-9185-1ff34be041ee",
+              "id": "af7497b7-c7be-4b61-8083-2e3b44fbb42a",
               "role": "admin",
               "operations": [
                 "add",
@@ -113,14 +115,15 @@
   ],
   "pages": [
     {
+      "name": "novel",
       "form": {
         "formItems": [
           {
-            "id": "0857d6c9-0c5f-4311-9d55-2e08c0464501",
-            "name": "标签",
+            "id": "ba72d678-ea2a-4645-a0ef-01685fb7bee8",
+            "name": "name",
             "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "comment": "标签",
-            "require": true,
+            "comment": "小说名",
+            "require": false,
             "options": []
           }
         ]
@@ -128,14 +131,14 @@
       "table": {
         "fields": [
           {
-            "id": "49ca32ca-9aee-4f2f-bc51-b0ea321facbd",
-            "title": "label",
-            "name": "label"
+            "id": "1597a033-e0f7-49ea-b364-b0dff1db8ae3",
+            "title": "小说名",
+            "name": "name"
           }
         ],
         "permissions": [
           {
-            "id": "acbddfb3-9ec9-45f8-9185-1ff34be041ee",
+            "id": "5d7725e9-adcd-42b4-848b-542a1149588b",
             "role": "admin",
             "operations": [
               "add",
@@ -147,14 +150,15 @@
       }
     },
     {
+      "name": "comic",
       "form": {
         "formItems": [
           {
-            "id": "0857d6c9-0c5f-4311-9d55-2e08c0464501",
-            "name": "标签",
+            "id": "ebd969b2-3b27-4764-b4d1-4e5d521a1074",
+            "name": "name",
             "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "comment": "标签",
-            "require": true,
+            "comment": "漫画名",
+            "require": false,
             "options": []
           }
         ]
@@ -162,14 +166,14 @@
       "table": {
         "fields": [
           {
-            "id": "49ca32ca-9aee-4f2f-bc51-b0ea321facbd",
-            "title": "label",
-            "name": "label"
+            "id": "ef5fec4f-2ee3-4c34-9f69-386369e2ccd4",
+            "title": "漫画名",
+            "name": "name"
           }
         ],
         "permissions": [
           {
-            "id": "acbddfb3-9ec9-45f8-9185-1ff34be041ee",
+            "id": "af7497b7-c7be-4b61-8083-2e3b44fbb42a",
             "role": "admin",
             "operations": [
               "add",
@@ -186,20 +190,22 @@
       "name": "admin",
       "menus": [
         {
-          "id": 0,
+          "id": 1,
           "parentId": 0,
           "name": "小说管理",
           "icon": "",
           "href": "/novel/tablePage",
-          "child": []
+          "child": [],
+          "role": "admin"
         },
         {
-          "id": 1,
+          "id": 2,
           "parentId": 0,
           "name": "漫画管理",
           "icon": "",
           "href": "/comic/tablePage",
-          "child": []
+          "child": [],
+          "role": "admin"
         }
       ]
     }

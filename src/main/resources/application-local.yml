@@ -2,4 +2,4 @@ server:
   port: 8888
 
 spring:
-  temp-dir: C:\Users\zsh\temp
+  temp-dir: temp
