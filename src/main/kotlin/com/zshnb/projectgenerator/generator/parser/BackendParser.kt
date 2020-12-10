@@ -64,13 +64,13 @@ class BackendParser(private val gson: Gson,
 
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
-            Column("id", ColumnType.INT, length = 11, primary = true),
+            Column("id", INT, length = 11, primary = true),
             Column("name", VARCHAR, length = 255)
         )
         val roleTable = Table("role", roleColumns)
         val menuColumns = listOf(
-            Column("id", ColumnType.INT, length = 11, primary = true),
-            Column("parent_id", ColumnType.INT, length = 11),
+            Column("id", INT, length = 11, primary = true),
+            Column("parent_id", INT, length = 11),
             Column("name", VARCHAR, length = 255),
             Column("icon", VARCHAR, length = 255),
             Column("role", VARCHAR, length = 255),
@@ -78,7 +78,7 @@ class BackendParser(private val gson: Gson,
         val menuTable = Table("menu", menuColumns)
 
         val permissionColumns = listOf(
-            Column("id", ColumnType.INT, length = 11, primary = true),
+            Column("id", INT, length = 11, primary = true),
             Column("role", VARCHAR, length = 255),
             Column("model", VARCHAR, length = 255),
             Column("operation", VARCHAR, length = 255)
