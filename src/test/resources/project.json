@@ -1,7 +1,7 @@
 {
   "config": {
     "groupId": "com.demo",
-    "artifactId": "demo",
+    "artifactId": "temp",
     "version": "1.0",
     "rootPackageName": "com.demo.demo",
     "entityPackageName": "entity",

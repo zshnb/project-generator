@@ -21,9 +21,9 @@ data class Column(val name: String,
 
 enum class ColumnType(val code: Int, val description: String) {
     INT(1, "int"),
-    TINY_INT(2, "tinyint"),
+    TINYINT(2, "tinyint"),
     VARCHAR(3, "varchar"),
-    DATE_TIME(4, "datetime"),
+    DATETIME(4, "datetime"),
     DOUBLE(5, "double"),
     TEXT(6, "text")
     ;
@@ -32,9 +32,9 @@ enum class ColumnType(val code: Int, val description: String) {
         fun fromDescription(description: String): ColumnType {
             return when(description) {
                 "int" -> INT
-                "tinyint" -> TINY_INT
+                "tinyint" -> TINYINT
                 "varchar" -> VARCHAR
-                "datetime" -> DATE_TIME
+                "datetime" -> DATETIME
                 "double" -> DOUBLE
                 "text" -> TEXT
                 else -> throw Exception()
