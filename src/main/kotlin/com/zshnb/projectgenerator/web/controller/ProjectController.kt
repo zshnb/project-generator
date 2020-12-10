@@ -29,7 +29,8 @@ class ProjectController(
         val project = Gson().fromJson<Project>(json, TypeToken.get(Project::class.java).type)
         val fileName = "${project.config.artifactId}.zip"
         layuiGenerator.generateProject(json)
-        zipFileWriter.createZipFile(fileName)
+        zipFileWriter.createZipFile(fileName, project.config.artifactId)
+        FileUtils.deleteDirectory(File(project.config.artifactId))
         val file = File(projectConfig.tempDir, fileName)
         val resource = InputStreamResource(FileInputStream(file))
         val headers = HttpHeaders()

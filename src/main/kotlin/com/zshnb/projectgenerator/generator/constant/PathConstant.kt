@@ -1,15 +1,17 @@
 package com.zshnb.projectgenerator.generator.constant
 
+import com.zshnb.projectgenerator.generator.entity.Config
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import org.springframework.stereotype.Component
 
-@Component
-class PathConstant(private val projectConfig: ProjectConfig) {
-    fun srcDirPath(): String = "${projectConfig.tempDir}/src/main/java"
+class PathConstant {
+    companion object {
+        fun javaSrcDirPath(config: Config): String = "${config.artifactId}/src/main/java"
 
-    fun resourcesDirPath(): String = "${projectConfig.tempDir}/src/main/resources"
+        fun resourcesDirPath(config: Config): String = "${config.artifactId}/src/main/resources"
 
-    fun layUIPageDirPath(): String = "${projectConfig.tempDir}/src/main/resources/templates/page"
+        fun layUIPageDirPath(config: Config): String = "${config.artifactId}/src/main/resources/templates/page"
 
-    fun layUIStaticDirPath(): String = "${projectConfig.tempDir}/src/main/resources/static"
+        fun layUIStaticDirPath(config: Config): String = "${config.artifactId}/src/main/resources/static"
+    }
 }

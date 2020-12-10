@@ -12,7 +12,6 @@ import java.io.*
 
 @Component
 open class BaseGenerator(private val backendParser: BackendParser,
-                         private val pathConstant: PathConstant,
                          private val projectConfig: ProjectConfig,
                          private val configuration: Configuration) {
     open fun generateProject(json: String) {
@@ -37,13 +36,13 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val menuDtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.MENU_DTO_TEMPLATE)
         val loginRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
 
-        val initSqlWriter = BufferedWriter(FileWriter("${pathConstant.resourcesDirPath()}/init.sql"))
+        val initSqlWriter = BufferedWriter(FileWriter("${PathConstant.resourcesDirPath(project.config)}/init.sql"))
         sqlTemplate.process(project, initSqlWriter)
         initSqlWriter.close()
 
         project.entities.forEach {
-            val entityWriter = BufferedWriter(FileWriter("${project.config.entityDir(pathConstant)}/${it.name.capitalize()}.java"))
-            val listRequestWriter = BufferedWriter(FileWriter("${project.config.requestDir(pathConstant)}/List${it.name.capitalize()}Request.java"))
+            val entityWriter = BufferedWriter(FileWriter("${project.config.entityDir(project.config)}/${it.name.capitalize()}.java"))
+            val listRequestWriter = BufferedWriter(FileWriter("${project.config.requestDir(project.config)}/List${it.name.capitalize()}Request.java"))
             entityTemplate.process(it, entityWriter)
             listRequestTemplate.process(mapOf("packageName" to project.config.requestPackagePath(),
                 "name" to it.name, "commonPackageName" to project.config.commonPackagePath()), listRequestWriter)
@@ -52,8 +51,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
         }
 
         project.services.forEach {
-            val serviceWriter = BufferedWriter(FileWriter("${project.config.serviceDir(pathConstant)}/I${it.name.capitalize()}Service.java"))
-            val serviceImplWriter = BufferedWriter(FileWriter("${project.config.serviceImplDir(pathConstant)}/${it.name.capitalize()}ServiceImpl.java"))
+            val serviceWriter = BufferedWriter(FileWriter("${project.config.serviceDir(project.config)}/I${it.name.capitalize()}Service.java"))
+            val serviceImplWriter = BufferedWriter(FileWriter("${project.config.serviceImplDir(project.config)}/${it.name.capitalize()}ServiceImpl.java"))
             serviceTemplate.process(it, serviceWriter)
             serviceImplTemplate.process(it, serviceImplWriter)
             serviceWriter.close()
@@ -61,48 +60,48 @@ open class BaseGenerator(private val backendParser: BackendParser,
         }
 
         project.mappers.forEach {
-            val writer = BufferedWriter(FileWriter("${project.config.mapperDir(pathConstant)}/${it.name.capitalize()}Mapper.java"))
-            val xmlWriter = BufferedWriter(FileWriter("${project.config.xmlDir(pathConstant)}/${it.name.capitalize()}Mapper.xml"))
+            val writer = BufferedWriter(FileWriter("${project.config.mapperDir(project.config)}/${it.name.capitalize()}Mapper.java"))
+            val xmlWriter = BufferedWriter(FileWriter("${project.config.xmlDir(project.config)}/${it.name.capitalize()}Mapper.xml"))
             mapperTemplate.process(it, writer)
             mapperXmlTemplate.process(it, xmlWriter)
             writer.close()
             xmlWriter.close()
         }
 
-        val pageRequestWriter = BufferedWriter(FileWriter("${project.config.commonDir(pathConstant)}/PageRequest.java"))
+        val pageRequestWriter = BufferedWriter(FileWriter("${project.config.commonDir(project.config)}/PageRequest.java"))
         pageRequestTemplate.process(mapOf("packageName" to project.config.commonPackagePath()), pageRequestWriter)
         pageRequestWriter.close()
 
-        val listResponseWriter = BufferedWriter(FileWriter("${project.config.commonDir(pathConstant)}/ListResponse.java"))
+        val listResponseWriter = BufferedWriter(FileWriter("${project.config.commonDir(project.config)}/ListResponse.java"))
         listResponseTemplate.process(mapOf("packageName" to project.config.commonPackagePath()), listResponseWriter)
         listResponseWriter.close()
 
-        val pomWriter = BufferedWriter(FileWriter("${projectConfig.tempDir}/pom.xml"))
+        val pomWriter = BufferedWriter(FileWriter("${project.config.artifactId}/pom.xml"))
         pomTemplate.process(project.config, pomWriter)
         pomWriter.close()
 
-        val springBootMainWriter = BufferedWriter(FileWriter("${project.config.rootDir(pathConstant)}/SpringMainApplication.java"))
+        val springBootMainWriter = BufferedWriter(FileWriter("${project.config.rootDir(project.config)}/SpringMainApplication.java"))
         springbootMainTemplate.process(mapOf("packageName" to project.config.rootPackageName,
             "mapperPackageName" to project.config.mapperPackagePath()), springBootMainWriter)
         springBootMainWriter.close()
 
-        val responseWriter = BufferedWriter(FileWriter("${project.config.commonDir(pathConstant)}/Response.java"))
+        val responseWriter = BufferedWriter(FileWriter("${project.config.commonDir(project.config)}/Response.java"))
         responseTemplate.process(mapOf("packageName" to project.config.commonPackagePath()), responseWriter)
         responseWriter.close()
 
-        val applicationWriter = BufferedWriter(FileWriter("${pathConstant.resourcesDirPath()}/application.yml"))
+        val applicationWriter = BufferedWriter(FileWriter("${PathConstant.resourcesDirPath(project.config)}/application.yml"))
         applicationTemplate.process(project.config, applicationWriter)
         applicationWriter.close()
 
-        val configWriter = BufferedWriter(FileWriter("${project.config.configDir(pathConstant)}/MybatisPlusConfig.java"))
+        val configWriter = BufferedWriter(FileWriter("${project.config.configDir(project.config)}/MybatisPlusConfig.java"))
         mybatisPlusConfigTemplate.process(mapOf("packageName" to project.config.configPackagePath()), configWriter)
         configWriter.close()
 
-        val menuWriter = BufferedWriter(FileWriter("${project.config.dtoDir(pathConstant)}/MenuDto.java"))
+        val menuWriter = BufferedWriter(FileWriter("${project.config.dtoDir(project.config)}/MenuDto.java"))
         menuDtoTemplate.process(mapOf("packageName" to project.config.dtoPackagePath()), menuWriter)
         menuWriter.close()
 
-        val loginRequestWriter = BufferedWriter(FileWriter("${project.config.requestDir(pathConstant)}/LoginRequest.java"))
+        val loginRequestWriter = BufferedWriter(FileWriter("${project.config.requestDir(project.config)}/LoginRequest.java"))
         loginRequestTemplate.process(mapOf("packageName" to project.config.requestPackagePath()), loginRequestWriter)
         loginRequestWriter.close()
 
@@ -120,7 +119,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
             }
         }.flatten().flatten()
 
-        val initDataWriter = BufferedWriter(FileWriter("${pathConstant.resourcesDirPath()}/initData.sql"))
+        val initDataWriter = BufferedWriter(FileWriter("${PathConstant.resourcesDirPath(project.config)}/initData.sql"))
         initDataTemplate.process(mapOf( "roles" to roles, "menus" to menus, "permissions" to permissions), initDataWriter)
         initDataWriter.close()
     }
@@ -134,17 +133,16 @@ open class BaseGenerator(private val backendParser: BackendParser,
     }
 
     open fun mkdirs(config: Config) {
-        FileUtils.cleanDirectory(File(projectConfig.tempDir))
-        val entityDir = File(config.entityDir(pathConstant))
-        val serviceDir = File(config.serviceDir(pathConstant))
-        val serviceImplDir = File(config.serviceImplDir(pathConstant))
-        val mapperDir = File(config.mapperDir(pathConstant))
-        val controllerDir = File(config.controllerDir(pathConstant))
-        val mapperXmlDir = File(config.xmlDir(pathConstant))
-        val requestDir = File(config.requestDir(pathConstant))
-        val commonDir = File(config.commonDir(pathConstant))
-        val configDir = File(config.configDir(pathConstant))
-        val dtoDir = File(config.dtoDir(pathConstant))
+        val entityDir = File(config.entityDir(config))
+        val serviceDir = File(config.serviceDir(config))
+        val serviceImplDir = File(config.serviceImplDir(config))
+        val mapperDir = File(config.mapperDir(config))
+        val controllerDir = File(config.controllerDir(config))
+        val mapperXmlDir = File(config.xmlDir(config))
+        val requestDir = File(config.requestDir(config))
+        val commonDir = File(config.commonDir(config))
+        val configDir = File(config.configDir(config))
+        val dtoDir = File(config.dtoDir(config))
 
         entityDir.mkdirs()
         serviceDir.mkdirs()
