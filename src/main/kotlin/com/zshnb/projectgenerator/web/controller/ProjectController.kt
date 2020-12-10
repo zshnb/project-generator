@@ -1,6 +1,7 @@
 package com.zshnb.projectgenerator.web.controller
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.zshnb.projectgenerator.generator.constant.PathConstant
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.generator.LayuiGenerator
@@ -24,10 +25,12 @@ class ProjectController(
     private val projectConfig: ProjectConfig
 ) {
     @PostMapping("/api/project/generate")
-    fun generate(@RequestBody project: Project): ResponseEntity<InputStreamResource> {
+    fun generate(@RequestBody json: String): ResponseEntity<InputStreamResource> {
+        val project = Gson().fromJson<Project>(json, TypeToken.get(Project::class.java).type)
         val fileName = "${project.config.artifactId}.zip"
-        layuiGenerator.generateProject(Gson().toJson(project))
-        zipFileWriter.createZipFile(fileName)
+        layuiGenerator.generateProject(json)
+        zipFileWriter.createZipFile(fileName, project.config.artifactId)
+        FileUtils.deleteDirectory(File(project.config.artifactId))
         val file = File(projectConfig.tempDir, fileName)
         val resource = InputStreamResource(FileInputStream(file))
         val headers = HttpHeaders()

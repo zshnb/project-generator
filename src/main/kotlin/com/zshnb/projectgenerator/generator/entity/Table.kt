@@ -1,7 +1,6 @@
 package com.zshnb.projectgenerator.generator.entity
 
-data class Table(val name: String, var columns: List<Column>) {
-}
+data class Table(val name: String, var columns: List<Column> = emptyList())
 
 data class Column(val name: String,
                   val type: ColumnType,
