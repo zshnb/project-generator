@@ -2,9 +2,10 @@ package com.zshnb.projectgenerator.generator.generator
 
 import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.constant.*
-import com.zshnb.projectgenerator.generator.entity.Config
+import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.util.toCamelCase
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
@@ -28,6 +29,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
 
         val project = backendParser.parseProject(json)
+        project.pages = project.pages.map { Page(it.name.toCamelCase(), it.form, it.table) }
         createOtherDirs(project.pages.map { it.name }, project.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")

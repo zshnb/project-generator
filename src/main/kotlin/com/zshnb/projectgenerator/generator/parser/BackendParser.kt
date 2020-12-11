@@ -58,7 +58,7 @@ class BackendParser(private val gson: Gson,
                 Field(column.name.toCamelCase(), typeUtil.convertColumnTypeToFieldType(column.type).description,
                     column.comment, column.primary)
             }
-            Entity(config.entityPackagePath(), it.name, fields)
+            Entity(config.entityPackagePath(), it.name.toCamelCase(), fields)
         }
     }
 

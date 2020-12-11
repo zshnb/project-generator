@@ -10,7 +10,7 @@ data class Project(
     var entities: List<Entity> = emptyList(),
     var services: List<Service> = emptyList(),
     var mappers: List<Mapper> = emptyList(),
-    val pages: List<Page> = emptyList(),
+    var pages: List<Page> = emptyList(),
     val roles: List<Role> = emptyList()
 )
 
