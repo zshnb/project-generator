@@ -25,6 +25,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
 	implementation("commons-io:commons-io:2.6")
 	implementation("cn.hutool:hutool-all:5.5.0")
+	implementation("org.reflections:reflections:0.9.12")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

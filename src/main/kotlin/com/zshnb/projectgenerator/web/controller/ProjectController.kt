@@ -12,19 +12,18 @@ import org.apache.commons.io.FileUtils
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.*
 import org.springframework.util.ResourceUtils
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.io.*
 
 @RestController
+@RequestMapping("/api/project")
 class ProjectController(
     private val layuiGenerator: LayuiGenerator,
     private val restfulBackendGenerator: RestfulBackendGenerator,
     private val zipFileWriter: ZipFileWriter,
     private val projectConfig: ProjectConfig
 ) {
-    @PostMapping("/api/project/generate")
+    @PostMapping("/generate")
     fun generate(@RequestBody json: String): ResponseEntity<InputStreamResource> {
         val project = Gson().fromJson<Project>(json, TypeToken.get(Project::class.java).type)
         val fileName = "${project.config.artifactId}.zip"
