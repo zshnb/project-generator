@@ -2,9 +2,10 @@ package com.zshnb.projectgenerator.generator.generator
 
 import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.constant.*
-import com.zshnb.projectgenerator.generator.entity.Config
+import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.util.toCamelCase
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils

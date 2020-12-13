@@ -1,4 +1,2 @@
 1. 初始化时在initData.sql初始化预设用户
-2. 为datetime类型的字段做处理
-3. FormItem类型从接口返回
 4. 所有通过ftl生成的文件都需要指定uft8编码

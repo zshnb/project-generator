@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component
 @Component
 class TypeUtil {
     private val typeMap = mapOf(
-        ColumnType.INT to FieldType.INT,
-        ColumnType.VARCHAR to FieldType.STRING,
-        ColumnType.TEXT to FieldType.STRING,
+        ColumnType.INT to INT,
+        ColumnType.VARCHAR to STRING,
+        ColumnType.TEXT to STRING,
         ColumnType.DOUBLE to DOUBLE,
-        ColumnType.DATE_TIME to LOCAL_DATE_TIME,
-        ColumnType.TINY_INT to Boolean
+        ColumnType.DATETIME to LOCAL_DATE_TIME,
+        ColumnType.TINYINT to Boolean
     )
 
     fun convertColumnTypeToFieldType(columnType: ColumnType): FieldType = typeMap.getValue(columnType)

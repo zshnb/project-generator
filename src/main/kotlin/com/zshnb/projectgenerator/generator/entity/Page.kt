@@ -1,5 +1,9 @@
 package com.zshnb.projectgenerator.generator.entity
 
+/**
+ * @param form 表单组件
+ * @param table 表格组件
+ * */
 class Page(val name: String,
            val form: FormComponent,
            val table: TableComponent) {
@@ -13,37 +17,30 @@ data class TableField(val name: String, val title: String)
 
 data class TablePermission(val role: String, val operations: List<String>)
 
-open class FormItem {
-    var typeName: String = ""
+open class FormItem(val name: String) {}
 
-    init {
-        typeName = javaClass.simpleName
-    }
-}
-
-class InputFormItem(val name: String = "",
+class InputFormItem(name: String = "",
                     val comment: String = "",
-                    val require: Boolean = false) : FormItem() {
-}
+                    val require: Boolean = false) : FormItem(name) {}
 
 class SelectFormItem(
-    val name: String = "",
+    name: String = "",
     val comment: String = "",
     val require: Boolean = false,
     val options: List<Option> = emptyList()
-)
+) : FormItem(name) {}
 
 class RadioFormItem(
-    val name: String = "",
+    name: String = "",
     val comment: String = "",
     val require: Boolean = false,
     val options: List<Option> = emptyList()
-)
+) : FormItem(name) {}
 
 class TextAreaFormItem(
-    val name: String = "",
+    name: String = "",
     val comment: String = "",
     val require: Boolean = false
-)
+) : FormItem(name) {}
 
 data class Option(val title: String, val value: String)

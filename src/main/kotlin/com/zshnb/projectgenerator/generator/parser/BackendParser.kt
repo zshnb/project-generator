@@ -2,7 +2,7 @@ package com.zshnb.projectgenerator.generator.parser
 
 import com.google.gson.Gson
 import com.zshnb.projectgenerator.generator.entity.*
-import com.zshnb.projectgenerator.generator.entity.ColumnType.INT
+import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.util.TypeUtil
 import com.zshnb.projectgenerator.generator.util.toCamelCase
@@ -17,20 +17,22 @@ class BackendParser(private val gson: Gson,
         val userTable = project.tables.find { it.name == "user" }
         if (userTable != null) {
             userTable.columns = (userTable.columns.toSet() + setOf(
-                Column("username", ColumnType.VARCHAR, length = 255),
-                Column("password", ColumnType.VARCHAR, length = 255),
-                Column("role", ColumnType.VARCHAR, length = 255)
+                Column("username", VARCHAR, length = 255),
+                Column("password", VARCHAR, length = 255),
+                Column("role", VARCHAR, length = 255)
             )).toList()
         } else {
             project.tables = project.tables + Table("user", listOf(
-                Column("username", ColumnType.VARCHAR, length = 255),
-                Column("password", ColumnType.VARCHAR, length = 255),
-                Column("role", ColumnType.VARCHAR, length = 255)
+                Column("username", VARCHAR, length = 255),
+                Column("password", VARCHAR, length = 255),
+                Column("role", VARCHAR, length = 255)
             ))
         }
         project.tables.forEach { table ->
             table.columns = (table.columns.toSet() + setOf(
-                Column("id", INT, "", 11, true)
+                Column("id", INT, length = 11, primary = true),
+                Column("create_at", DATETIME, length = 0),
+                Column("update_at", DATETIME, length = 0)
             )).toList()
         }
         project.roles.forEach { role ->
@@ -53,35 +55,33 @@ class BackendParser(private val gson: Gson,
     private fun parseEntities(tables: List<Table>, config: Config): List<Entity> {
         return tables.map {
             val fields = it.columns.map { column ->
-                Field(
-                    column.name.toCamelCase(), typeUtil.convertColumnTypeToFieldType(column.type).description,
-                    column.comment, column.primary
-                )
+                Field(column.name.toCamelCase(), typeUtil.convertColumnTypeToFieldType(column.type).description,
+                    column.comment, column.primary)
             }
-            Entity(config.entityPackagePath(), it.name, fields)
+            Entity(config.entityPackagePath(), it.name.toCamelCase(), fields)
         }
     }
 
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
-            Column("id", ColumnType.INT, length = 11, primary = true),
-            Column("name", ColumnType.VARCHAR, length = 255)
+            Column("id", INT, length = 11, primary = true),
+            Column("name", VARCHAR, length = 255)
         )
         val roleTable = Table("role", roleColumns)
         val menuColumns = listOf(
-            Column("id", ColumnType.INT, length = 11, primary = true),
-            Column("parent_id", ColumnType.INT, length = 11),
-            Column("name", ColumnType.VARCHAR, length = 255),
-            Column("icon", ColumnType.VARCHAR, length = 255),
-            Column("role", ColumnType.VARCHAR, length = 255),
-            Column("href", ColumnType.VARCHAR, length = 255))
+            Column("id", INT, length = 11, primary = true),
+            Column("parent_id", INT, length = 11),
+            Column("name", VARCHAR, length = 255),
+            Column("icon", VARCHAR, length = 255),
+            Column("role", VARCHAR, length = 255),
+            Column("href", VARCHAR, length = 255))
         val menuTable = Table("menu", menuColumns)
 
         val permissionColumns = listOf(
-            Column("id", ColumnType.INT, length = 11, primary = true),
-            Column("role", ColumnType.VARCHAR, length = 255),
-            Column("model", ColumnType.VARCHAR, length = 255),
-            Column("operation", ColumnType.VARCHAR, length = 255)
+            Column("id", INT, length = 11, primary = true),
+            Column("role", VARCHAR, length = 255),
+            Column("model", VARCHAR, length = 255),
+            Column("operation", VARCHAR, length = 255)
         )
         val permissionTable = Table("permission", permissionColumns)
         return listOf(roleTable, menuTable, permissionTable)
@@ -89,8 +89,14 @@ class BackendParser(private val gson: Gson,
 
     private fun parseServices(entities: List<Entity>, config: Config): List<Service> =
         entities.map {
-            Service(config.servicePackagePath(), it.name, config.serviceImplPackagePath(), listOf(config.entityPackagePath(),
-                config.commonPackagePath(), config.requestPackagePath(), config.mapperPackagePath(), config.dtoPackagePath()))
+            Service(config.servicePackagePath(),
+                it.name,
+                config.serviceImplPackagePath(),
+                listOf(config.entityPackagePath(),
+                    config.commonPackagePath(),
+                    config.requestPackagePath(),
+                    config.mapperPackagePath(),
+                    config.dtoPackagePath()))
         }
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
@@ -100,7 +106,9 @@ class BackendParser(private val gson: Gson,
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =
         entities.map {
-            Controller(config.controllerPackagePath(), it.name, listOf(config.entityPackagePath(), config.dtoPackagePath(),
-                config.serviceImplPackagePath(), config.commonPackagePath(), config.requestPackagePath()))
+            Controller(config.controllerPackagePath(),
+                it.name,
+                listOf(config.entityPackagePath(), config.dtoPackagePath(),
+                    config.serviceImplPackagePath(), config.commonPackagePath(), config.requestPackagePath()))
         }
 }

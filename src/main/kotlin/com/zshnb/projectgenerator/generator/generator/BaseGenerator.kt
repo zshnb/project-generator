@@ -9,6 +9,7 @@ import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.stereotype.Component
 import java.io.*
+import java.nio.charset.StandardCharsets
 
 @Component
 open class BaseGenerator(private val backendParser: BackendParser,
@@ -119,7 +120,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
             }
         }.flatten().flatten()
 
-        val initDataWriter = BufferedWriter(FileWriter("${PathConstant.resourcesDirPath(project.config)}/initData.sql"))
+        val initDataWriter = OutputStreamWriter(FileOutputStream(
+            "${PathConstant.resourcesDirPath(project.config)}/initData.sql"), StandardCharsets.UTF_8)
         initDataTemplate.process(mapOf( "roles" to roles, "menus" to menus, "permissions" to permissions), initDataWriter)
         initDataWriter.close()
     }
