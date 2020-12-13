@@ -13,11 +13,11 @@ class FormComponent(val formItems: List<FormItem>)
 
 class TableComponent(val fields: List<TableField>, val permissions: List<TablePermission>)
 
-data class TableField(var name: String, val title: String)
+data class TableField(val name: String, val title: String)
 
 data class TablePermission(val role: String, val operations: List<String>)
 
-open class FormItem(var name: String) {}
+open class FormItem(val name: String) {}
 
 class InputFormItem(name: String = "",
                     val comment: String = "",
