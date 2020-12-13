@@ -29,7 +29,11 @@ class LayuiGenerator(private val backendParser: BackendParser,
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
 
         val project = backendParser.parseProject(json)
-        project.pages = project.pages.map { Page(it.name.toCamelCase(), it.form, it.table) }
+        project.pages = project.pages.map {
+            it.form.formItems.forEach { formItem ->  formItem.name = formItem.name.toCamelCase() }
+            it.table.fields.forEach { field -> field.name = field.name.toCamelCase() }
+            Page(it.name.toCamelCase(), it.form, it.table)
+        }
         createOtherDirs(project.pages.map { it.name }, project.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")

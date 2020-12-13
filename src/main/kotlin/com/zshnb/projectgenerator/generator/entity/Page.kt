@@ -13,34 +13,34 @@ class FormComponent(val formItems: List<FormItem>)
 
 class TableComponent(val fields: List<TableField>, val permissions: List<TablePermission>)
 
-data class TableField(val name: String, val title: String)
+data class TableField(var name: String, val title: String)
 
 data class TablePermission(val role: String, val operations: List<String>)
 
-open class FormItem {}
+open class FormItem(var name: String) {}
 
-class InputFormItem(val name: String = "",
+class InputFormItem(name: String = "",
                     val comment: String = "",
-                    val require: Boolean = false) : FormItem() {}
+                    val require: Boolean = false) : FormItem(name) {}
 
 class SelectFormItem(
-    val name: String = "",
+    name: String = "",
     val comment: String = "",
     val require: Boolean = false,
     val options: List<Option> = emptyList()
-) : FormItem() {}
+) : FormItem(name) {}
 
 class RadioFormItem(
-    val name: String = "",
+    name: String = "",
     val comment: String = "",
     val require: Boolean = false,
     val options: List<Option> = emptyList()
-) : FormItem() {}
+) : FormItem(name) {}
 
 class TextAreaFormItem(
-    val name: String = "",
+    name: String = "",
     val comment: String = "",
     val require: Boolean = false
-) : FormItem() {}
+) : FormItem(name) {}
 
 data class Option(val title: String, val value: String)

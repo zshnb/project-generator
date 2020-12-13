@@ -92,9 +92,9 @@
             cols: [
                 [
                     <#list table.fields as field>
-                    {field: '${field.name}', width: 80, title: '${field.title}', sort: true},
+                    {field: '${field.name}', title: '${field.title}', sort: true},
                     </#list>
-                    {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: 'center'}
+                    {title: '操作', toolbar: '#currentTableBar', align: 'center'}
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],
