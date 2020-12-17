@@ -27,6 +27,11 @@
           "type": "varchar",
           "primary": false,
           "length": "255"
+        },
+        {
+          "name": "create_at",
+          "type": "datetime",
+          "primary": false
         }
       ],
       "page": {
@@ -123,6 +128,14 @@
             "name": "name",
             "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "comment": "小说名",
+            "require": false,
+            "options": []
+          },
+          {
+            "name": "create_at",
+            "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "comment": "创建时间",
+            "columnType": "datetime",
             "require": false,
             "options": []
           }
