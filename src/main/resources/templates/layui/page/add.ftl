@@ -23,7 +23,15 @@
                 <div class="layui-input-block">
                     <input type="text" name="${formItem.name}"
                             <#if formItem.require>lay-verify="required" lay-reqtext="${formItem.comment}不能为空"</#if>
-                            <#if formItem.columnType.name() == "DATETIME">id="${formItem.name}"</#if>
+                           placeholder="请输入${formItem.comment}" value="" class="layui-input">
+                </div>
+            </div>
+        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+            <div class="layui-form-item">
+                <label class="layui-form-label <#if formItem.require>required</#if>">${formItem.comment}</label>
+                <div class="layui-input-block">
+                    <input type="text" name="${formItem.name}" id="${formItem.name}"
+                           <#if formItem.require>lay-verify="required" lay-reqtext="${formItem.comment}不能为空"</#if>
                            placeholder="请输入${formItem.comment}" value="" class="layui-input">
                 </div>
             </div>
@@ -74,7 +82,7 @@
             $ = layui.$,
             laydate = layui.laydate
         <#list form.formItems as formItem>
-        <#if formItem.columnType.name() == "DATETIME">
+        <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.name}',
             type: 'datetime'

@@ -22,7 +22,6 @@
       "name": "novel",
       "columns": [
         {
-          "id": "44d5a497-92c0-43a0-aef2-e8c493d4aaae",
           "name": "name",
           "type": "varchar",
           "primary": false,
@@ -33,89 +32,7 @@
           "type": "datetime",
           "primary": false
         }
-      ],
-      "page": {
-        "name": "novel",
-        "form": {
-          "formItems": [
-            {
-              "id": "ba72d678-ea2a-4645-a0ef-01685fb7bee8",
-              "name": "name",
-              "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-              "comment": "小说名",
-              "require": false,
-              "options": []
-            }
-          ]
-        },
-        "table": {
-          "fields": [
-            {
-              "id": "1597a033-e0f7-49ea-b364-b0dff1db8ae3",
-              "title": "小说名",
-              "name": "name"
-            }
-          ],
-          "permissions": [
-            {
-              "id": "5d7725e9-adcd-42b4-848b-542a1149588b",
-              "role": "admin",
-              "operations": [
-                "add",
-                "edit",
-                "delete"
-              ]
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "comic_manage",
-      "columns": [
-        {
-          "id": "02f0e3b0-8ec5-4059-8dd9-0d91c6bd2a93",
-          "name": "name",
-          "type": "varchar",
-          "primary": false,
-          "length": "255"
-        }
-      ],
-      "page": {
-        "name": "comic_manage",
-        "form": {
-          "formItems": [
-            {
-              "id": "ebd969b2-3b27-4764-b4d1-4e5d521a1074",
-              "name": "name",
-              "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-              "comment": "漫画名",
-              "require": false,
-              "options": []
-            }
-          ]
-        },
-        "table": {
-          "fields": [
-            {
-              "id": "ef5fec4f-2ee3-4c34-9f69-386369e2ccd4",
-              "title": "漫画名",
-              "name": "name"
-            }
-          ],
-          "permissions": [
-            {
-              "id": "af7497b7-c7be-4b61-8083-2e3b44fbb42a",
-              "role": "admin",
-              "operations": [
-                "add",
-                "edit",
-                "delete"
-              ]
-            }
-          ]
-        }
-      }
+      ]
     }
   ],
   "pages": [
@@ -124,7 +41,6 @@
       "form": {
         "formItems": [
           {
-            "id": "ba72d678-ea2a-4645-a0ef-01685fb7bee8",
             "name": "name",
             "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "comment": "小说名",
@@ -133,9 +49,8 @@
           },
           {
             "name": "create_at",
-            "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "typeName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
             "comment": "创建时间",
-            "columnType": "datetime",
             "require": false,
             "options": []
           }
@@ -144,49 +59,12 @@
       "table": {
         "fields": [
           {
-            "id": "1597a033-e0f7-49ea-b364-b0dff1db8ae3",
             "title": "小说名",
             "name": "name"
           }
         ],
         "permissions": [
           {
-            "id": "5d7725e9-adcd-42b4-848b-542a1149588b",
-            "role": "admin",
-            "operations": [
-              "add",
-              "edit",
-              "delete"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "comic_manage",
-      "form": {
-        "formItems": [
-          {
-            "id": "ebd969b2-3b27-4764-b4d1-4e5d521a1074",
-            "name": "name",
-            "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "comment": "漫画名",
-            "require": false,
-            "options": []
-          }
-        ]
-      },
-      "table": {
-        "fields": [
-          {
-            "id": "ef5fec4f-2ee3-4c34-9f69-386369e2ccd4",
-            "title": "漫画名",
-            "name": "name"
-          }
-        ],
-        "permissions": [
-          {
-            "id": "af7497b7-c7be-4b61-8083-2e3b44fbb42a",
             "role": "admin",
             "operations": [
               "add",
