@@ -19,28 +19,28 @@ data class TableField(val name: String, val title: String)
 
 data class TablePermission(val role: String, val operations: List<String>)
 
-open class FormItem(val name: String, val columnType: ColumnType) {}
+open class FormItem(val name: String) {}
 
 class InputFormItem(name: String = "",
-                    columnType: ColumnType = INT,
                     val comment: String = "",
-                    val require: Boolean = false) : FormItem(name, columnType) {}
+                    val require: Boolean = false) : FormItem(name)
+
+class DateTimeFormItem(name: String = "",
+                       val comment: String = "",
+                       val require: Boolean = false) : FormItem(name)
 
 class SelectFormItem(name: String = "",
-                     columnType: ColumnType = INT,
                      val comment: String = "",
                      val require: Boolean = false,
-                     val options: List<Option> = emptyList()) : FormItem(name, columnType) {}
+                     val options: List<Option> = emptyList()) : FormItem(name)
 
 class RadioFormItem(name: String = "",
-                    columnType: ColumnType = INT,
                     val comment: String = "",
                     val require: Boolean = false,
-                    val options: List<Option> = emptyList()) : FormItem(name, columnType) {}
+                    val options: List<Option> = emptyList()) : FormItem(name)
 
 class TextAreaFormItem(name: String = "",
-                       columnType: ColumnType = INT,
                        val comment: String = "",
-                       val require: Boolean = false) : FormItem(name, columnType) {}
+                       val require: Boolean = false) : FormItem(name)
 
 data class Option(val title: String, val value: String)
