@@ -38,7 +38,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val menuDtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.MENU_DTO_TEMPLATE)
         val loginRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
 
-        ioUtil.writeTemplate(sqlTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/init.sql")
+        ioUtil.writeTemplate(sqlTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/sql.sql")
 
         project.entities.forEach {
             ioUtil.writeTemplate(entityTemplate, it,

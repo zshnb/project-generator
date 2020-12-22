@@ -1,6 +1,12 @@
 package com.zshnb.projectgenerator.generator.entity
 
-data class Role(val name: String, val menus: List<Menu>)
+/**
+ * 权限表
+ * @param name 权限名
+ * @param description 权限描述，前端显示用
+ * @param menus 权限拥有的菜单
+ * */
+data class Role(val name: String, val description: String, val menus: List<Menu>)
 
 data class Menu(
     val id: Int = 0,
