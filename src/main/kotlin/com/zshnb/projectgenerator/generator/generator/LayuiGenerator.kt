@@ -5,19 +5,17 @@ import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
-import com.zshnb.projectgenerator.generator.util.toCamelCase
-import com.zshnb.projectgenerator.web.config.ProjectConfig
+import com.zshnb.projectgenerator.generator.util.*
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.core.io.support.*
 import org.springframework.stereotype.Component
 import java.io.*
-import java.nio.charset.StandardCharsets
 
 @Component
 class LayuiGenerator(private val backendParser: BackendParser,
                      private val configuration: Configuration,
-                     projectConfig: ProjectConfig) : BaseGenerator(backendParser, projectConfig, configuration) {
+                     private val ioUtil: IOUtil) : BaseGenerator(backendParser, ioUtil, configuration) {
     override fun generateProject(json: String) {
         super.generateProject(json)
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LAYUI_CONTROLLER_TEMPLATE)
@@ -50,46 +48,26 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 FileUtils.copyURLToFile(url, destination)
             }
         }
-
-        val indexControllerWriter =
-            BufferedWriter(FileWriter("${project.config.controllerDir(project.config)}/IndexController.java"))
-        indexControllerTemplate.process(mapOf(
-            "packageName" to project.config.controllerPackagePath(),
-            "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
-                project.config.commonPackagePath(), project.config.requestPackagePath())), indexControllerWriter)
-        indexControllerWriter.close()
+        ioUtil.writeTemplate(indexControllerTemplate, mapOf(
+                "packageName" to project.config.controllerPackagePath(),
+                "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
+                    project.config.commonPackagePath(), project.config.requestPackagePath())
+            ), "${project.config.controllerDir(project.config)}/IndexController.java")
 
         project.controllers.forEach {
-            val writer =
-                BufferedWriter(FileWriter("${project.config.controllerDir(project.config)}/${it.name.capitalize()}Controller.java"))
-            controllerTemplate.process(it, writer)
-            writer.close()
+            ioUtil.writeTemplate(controllerTemplate, it,
+                "${project.config.controllerDir(project.config)}/${it.name.capitalize()}Controller.java")
         }
 
         project.pages.forEach {
-            val addPageWriter =
-                OutputStreamWriter(FileOutputStream("${PathConstant.layUIPageDirPath(project.config)}/${it.name}/add.html"),
-                    StandardCharsets.UTF_8)
-            addPageTemplate.process(it, addPageWriter)
-            addPageWriter.close()
-
-            val editPageWriter =
-                OutputStreamWriter(FileOutputStream("${PathConstant.layUIPageDirPath(project.config)}/${it.name}/edit.html"),
-                    StandardCharsets.UTF_8)
-            editPageTemplate.process(it, editPageWriter)
-            editPageWriter.close()
-
-            val detailPageWriter =
-                OutputStreamWriter(FileOutputStream("${PathConstant.layUIPageDirPath(project.config)}/${it.name}/detail.html"),
-                    StandardCharsets.UTF_8)
-            detailPageTemplate.process(it, detailPageWriter)
-            detailPageWriter.close()
-
-            val tablePageWriter =
-                OutputStreamWriter(FileOutputStream("${PathConstant.layUIPageDirPath(project.config)}/${it.name}/table.html"),
-                    StandardCharsets.UTF_8)
-            tablePageTemplate.process(it, tablePageWriter)
-            tablePageWriter.close()
+            ioUtil.writeTemplate(addPageTemplate, it,
+            "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/add.html")
+            ioUtil.writeTemplate(editPageTemplate, it,
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/edit.html")
+            ioUtil.writeTemplate(detailPageTemplate, it,
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/detail.html")
+            ioUtil.writeTemplate(tablePageTemplate, it,
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/table.html")
         }
     }
 
