@@ -146,13 +146,7 @@
             }
         })
 
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        })
-
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data
             if (obj.event === 'edit') {
                 var index = layer.open({
                     title: '编辑',
@@ -184,6 +178,5 @@
         })
     })
 </script>
-
 </body>
 </html>

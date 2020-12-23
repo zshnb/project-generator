@@ -1,5 +1,5 @@
 <#list roles as role>
-    insert into role(name) values('${role.name}');
+    insert into role(name, description) values('${role.name}', '${role.description}');
 </#list>
 <#list menus as menu>
     insert into menu(id, parent_id, name, icon, href, role) values(${menu.id}, ${menu.parentId}, '${menu.name}', '${menu.icon}', '${menu.href}', '${menu.role}');

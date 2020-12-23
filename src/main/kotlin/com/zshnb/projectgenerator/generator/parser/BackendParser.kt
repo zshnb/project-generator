@@ -65,7 +65,8 @@ class BackendParser(private val gson: Gson,
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
             Column("id", INT, length = 11, primary = true),
-            Column("name", VARCHAR, length = 255)
+            Column("name", VARCHAR, length = 255),
+            Column("description", VARCHAR, length = 255)
         )
         val roleTable = Table("role", roleColumns)
         val menuColumns = listOf(
