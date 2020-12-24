@@ -1,6 +1,6 @@
 package ${packageName};
 
-import ${commonPackageName};
+import ${commonPackageName}.Response;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.GetMapping;

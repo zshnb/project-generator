@@ -63,7 +63,7 @@ public class ${name?capFirst}Controller {
     @PostMapping("/list")
     @ResponseBody
     public ListResponse<${className}> list(@RequestBody List${className}Request request, HttpSession session) {
-        User user = (User) httpSession.getAttribute("user");
+        User user = (User) session.getAttribute("user");
         return ${service}.list(request);
     }
 

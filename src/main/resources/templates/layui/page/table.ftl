@@ -147,6 +147,7 @@
         })
 
         table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data
             if (obj.event === 'edit') {
                 var index = layer.open({
                     title: '编辑',
