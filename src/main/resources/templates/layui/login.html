@@ -79,7 +79,7 @@
             contentType: 'application/json',
             success: function (data) {
                 data.data.forEach(role => {
-                    $('select[name=role]').append(`<option value="${role.name}">${role.name}</option>`)
+                    $('select[name=role]').append(`<option value="${role.name}">${role.description}</option>`)
                 });
                 form.render('select');
             }
