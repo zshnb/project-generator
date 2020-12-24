@@ -31,7 +31,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${formItem.comment}</label>
                 <div class="layui-input-block">
-                    <input type="text" name="${formItem.name}" id="${formItem.name}" th:value="${r"${" + name + "." + formItem.name + "}"}"
+                    <input type="text" name="${formItem.name}" id="${formItem.name}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${formItem.comment}不能为空"</#if>
                            placeholder="请输入${formItem.comment}" value="" class="layui-input">
                 </div>
@@ -80,7 +80,7 @@
     </div>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-<script>
+<script th:inline="javascript">
     layui.use(['form', 'laydate'], function () {
         var form = layui.form,
             $ = layui.$,
@@ -92,7 +92,7 @@
             elem: '#${formItem.name}',
             type: 'datetime',
             format: 'yyyy-MM-dd HH:mm:ss',
-            value: ${r"[[${#temporals.format(weekWork.workDate, 'yyyy-MM-dd HH:mm:ss')}]]"}
+            value: ${r"[[${#temporals.format(" + name + "." + formItem.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
         })
         </#if>
         </#list>
