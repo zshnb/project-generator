@@ -49,19 +49,19 @@ class LayuiGenerator(private val backendParser: BackendParser,
             }
         }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
-                "packageName" to project.config.controllerPackagePath(),
-                "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
-                    project.config.commonPackagePath(), project.config.requestPackagePath())
-            ), "${project.config.controllerDir(project.config)}/IndexController.java")
+            "packageName" to project.config.controllerPackagePath(),
+            "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
+                project.config.commonPackagePath(), project.config.requestPackagePath())
+        ), "${project.config.controllerDir()}/IndexController.java")
 
         project.controllers.forEach {
             ioUtil.writeTemplate(controllerTemplate, it,
-                "${project.config.controllerDir(project.config)}/${it.name.capitalize()}Controller.java")
+                "${project.config.controllerDir()}/${it.name.capitalize()}Controller.java")
         }
 
         project.pages.forEach {
             ioUtil.writeTemplate(addPageTemplate, it,
-            "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/add.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/add.html")
             ioUtil.writeTemplate(editPageTemplate, it,
                 "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/edit.html")
             ioUtil.writeTemplate(detailPageTemplate, it,

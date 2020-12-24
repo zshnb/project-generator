@@ -6,7 +6,6 @@ import com.zshnb.projectgenerator.generator.parser.BackendParser
 import com.zshnb.projectgenerator.generator.util.IOUtil
 import freemarker.template.Configuration
 import org.springframework.stereotype.Component
-import java.io.*
 
 @Component
 class RestfulBackendGenerator(private val backendParser: BackendParser,
@@ -19,7 +18,7 @@ class RestfulBackendGenerator(private val backendParser: BackendParser,
         val project = backendParser.parseProject(json)
         project.controllers.forEach {
             ioUtil.writeTemplate(controllerTemplate, it,
-                "${project.config.controllerDir(project.config)}/${it.name.capitalize()}Controller.java")
+                "${project.config.controllerDir()}/${it.name.capitalize()}Controller.java")
         }
     }
 }
