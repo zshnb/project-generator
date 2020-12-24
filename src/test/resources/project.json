@@ -79,6 +79,7 @@
   "roles": [
     {
       "name": "admin",
+      "description": "管理员",
       "menus": [
         {
           "id": 1,

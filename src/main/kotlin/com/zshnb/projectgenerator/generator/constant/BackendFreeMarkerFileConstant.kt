@@ -22,5 +22,6 @@ class BackendFreeMarkerFileConstant {
         const val INIT_DATA_TEMPLATE = "ssmp/initData.ftl"
         const val MENU_DTO_TEMPLATE = "ssmp/menuDto.ftl"
         const val LOGIN_REQUEST_TEMPLATE = "ssmp/loginRequest.ftl"
+        const val STATIC_RESOURCE_CONTROLLER = "ssmp/staticResourceController.ftl"
     }
 }
