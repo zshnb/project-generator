@@ -8,6 +8,9 @@ import com.zshnb.projectgenerator.generator.util.TypeUtil
 import com.zshnb.projectgenerator.generator.util.toCamelCase
 import org.springframework.stereotype.Component
 
+/**
+ * 从[Project]的json中解析出项目的各个部分
+ * */
 @Component
 class BackendParser(private val gson: Gson,
                     private val typeUtil: TypeUtil) {
@@ -52,6 +55,9 @@ class BackendParser(private val gson: Gson,
         return project
     }
 
+    /**
+     * 从[Table]解析出Java代码的实体类
+     * */
     private fun parseEntities(tables: List<Table>, config: Config): List<Entity> {
         return tables.map {
             val fields = it.columns.map { column ->
@@ -62,6 +68,9 @@ class BackendParser(private val gson: Gson,
         }
     }
 
+    /**
+     * 创建角色，菜单，权限表
+     * */
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
             Column("id", INT, length = 11, primary = true),
@@ -88,16 +97,14 @@ class BackendParser(private val gson: Gson,
         return listOf(roleTable, menuTable, permissionTable)
     }
 
+    /**
+     *
+     * */
     private fun parseServices(entities: List<Entity>, config: Config): List<Service> =
         entities.map {
-            Service(config.servicePackagePath(),
-                it.name,
-                config.serviceImplPackagePath(),
-                listOf(config.entityPackagePath(),
-                    config.commonPackagePath(),
-                    config.requestPackagePath(),
-                    config.mapperPackagePath(),
-                    config.dtoPackagePath()))
+            Service(config.servicePackagePath(), it.name, config.serviceImplPackagePath(), listOf(
+                config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(),
+                    config.mapperPackagePath(), config.dtoPackagePath()))
         }
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
@@ -107,9 +114,8 @@ class BackendParser(private val gson: Gson,
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =
         entities.map {
-            Controller(config.controllerPackagePath(),
-                it.name,
-                listOf(config.entityPackagePath(), config.dtoPackagePath(),
-                    config.serviceImplPackagePath(), config.commonPackagePath(), config.requestPackagePath()))
+            Controller(config.controllerPackagePath(), it.name, listOf(
+                config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
+                config.commonPackagePath(), config.requestPackagePath()))
         }
 }
