@@ -82,22 +82,28 @@
       "description": "管理员",
       "menus": [
         {
-          "id": 1,
-          "parentId": 0,
           "name": "小说管理",
           "icon": "",
           "href": "/novel/tablePage",
-          "child": [],
           "role": "admin"
         },
         {
-          "id": 2,
-          "parentId": 0,
           "name": "漫画管理",
           "icon": "",
           "href": "/comic/tablePage",
-          "child": [],
           "role": "admin"
+        },
+        {
+          "name": "用户管理",
+          "icon": "",
+          "href": "/user/tablePage",
+          "child": [{
+            "name": "漫画管理-1",
+            "icon": "",
+            "href": "/comic/tablePage",
+            "role": "user"
+          }],
+          "role": "user"
         }
       ]
     }

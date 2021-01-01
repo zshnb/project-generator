@@ -93,10 +93,20 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(loginRequestTemplate, project.config.requestPackagePath().packageName(),
             "${project.config.requestDir()}/LoginRequest.java")
 
+        var initMenuId = 1
         val roles = project.roles
-        val menus = roles.map { it.menus }.flatten()
+        val menus = roles.asSequence().map { it.menus }
+            .flatten()
             .map { getChildMenus(it) }
             .flatten()
+            .map {
+                Menu(initMenuId++, it.parentId, it.name, it.icon, it.href, it.role, it.child).apply {
+                    child.forEach {
+                        it.parentId = id
+                        it.role = role
+                    }
+                }
+            }.toList()
 
         val permissions = project.pages.map { page ->
             val model = page.name
