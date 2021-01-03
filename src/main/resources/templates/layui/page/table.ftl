@@ -67,7 +67,7 @@
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script>
     layui.use(['form', 'table'], function () {
-        var $ = layui.jquery,
+        let $ = layui.jquery,
             form = layui.form,
             table = layui.table
 
@@ -105,10 +105,7 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field)
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            })
+            let result = JSON.stringify(data.field)
 
             //执行搜索重载
             table.reload('currentTableId', {
@@ -128,7 +125,7 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
-                var index = layer.open({
+                let index = layer.open({
                     title: '添加',
                     type: 2,
                     shade: 0.2,
@@ -147,7 +144,7 @@
         })
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data
+            let data = obj.data
             if (obj.event === 'edit') {
                 var index = layer.open({
                     title: '编辑',
@@ -167,7 +164,7 @@
                 return false
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    var data = obj.data
+                    let data = obj.data
                     $.ajax({
                         url: `/${name}/${r"${data.id}"}`,
                         type: 'delete'
