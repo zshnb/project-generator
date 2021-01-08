@@ -8,3 +8,5 @@
 16. rootPackageName要动态改变
 17. select等表单添加选项
 18. page和table的结构需要重构
+19. 一对多的支持
+20. 支持表格页面条件过滤
