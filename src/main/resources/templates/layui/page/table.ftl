@@ -12,46 +12,48 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-<#--        <fieldset class="table-search-fieldset">-->
-<#--            <legend>搜索信息</legend>-->
-<#--            <div style="margin: 10px 10px 10px 10px">-->
-<#--                <form class="layui-form layui-form-pane" action="">-->
-<#--                    <div class="layui-form-item">-->
-<#--                        <div class="layui-inline">-->
-<#--                            <label class="layui-form-label">用户姓名</label>-->
-<#--                            <div class="layui-input-inline">-->
-<#--                                <input type="text" name="username" autocomplete="off" class="layui-input">-->
-<#--                            </div>-->
-<#--                        </div>-->
-<#--                        <div class="layui-inline">-->
-<#--                            <label class="layui-form-label">用户性别</label>-->
-<#--                            <div class="layui-input-inline">-->
-<#--                                <input type="text" name="sex" autocomplete="off" class="layui-input">-->
-<#--                            </div>-->
-<#--                        </div>-->
-<#--                        <div class="layui-inline">-->
-<#--                            <label class="layui-form-label">用户城市</label>-->
-<#--                            <div class="layui-input-inline">-->
-<#--                                <input type="text" name="city" autocomplete="off" class="layui-input">-->
-<#--                            </div>-->
-<#--                        </div>-->
-<#--                        <div class="layui-inline">-->
-<#--                            <label class="layui-form-label">用户职业</label>-->
-<#--                            <div class="layui-input-inline">-->
-<#--                                <input type="text" name="classify" autocomplete="off" class="layui-input">-->
-<#--                            </div>-->
-<#--                        </div>-->
-<#--                        <div class="layui-inline">-->
-<#--                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>-->
-<#--                        </div>-->
-<#--                    </div>-->
-<#--                </form>-->
-<#--            </div>-->
-<#--        </fieldset>-->
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户性别</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户城市</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="city" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户职业</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="classify" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
             </div>
         </script>
 
@@ -92,9 +94,9 @@
             cols: [
                 [
                     <#list table.fields as field>
-                    {field: '${field.name}', title: '${field.title}', sort: true},
+                    { field: '${field.name}', title: '${field.title}', sort: true },
                     </#list>
-                    {title: '操作', toolbar: '#currentTableBar', align: 'center'}
+                    { title: '操作', toolbar: '#currentTableBar', align: 'center' }
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],
@@ -106,13 +108,12 @@
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
             let result = JSON.stringify(data.field)
-
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
                     curr: 1
-                }
-                , where: {
+                },
+                where: {
                     searchParams: result
                 }
             }, 'data')
@@ -129,7 +130,7 @@
                     title: '添加',
                     type: 2,
                     shade: 0.2,
-                    maxmin:true,
+                    maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
                     content: '/${name}/addPage',
@@ -150,7 +151,7 @@
                     title: '编辑',
                     type: 2,
                     shade: 0.2,
-                    maxmin:true,
+                    maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
                     content: `/${name}/editPage/${r"${data.id}"}`,
