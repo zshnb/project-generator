@@ -16,7 +16,7 @@ class BackendFreeMarkerFileConstant {
         const val POM_TEMPLATE = "ssmp/pom.ftl"
         const val SPRING_BOOT_MAIN_APPLICATION = "ssmp/springbootMain.ftl"
         const val RESPONSE_TEMPLATE = "ssmp/response.ftl"
-        const val SQL_TEMPLATE = "ssmp/sql.ftl"
+        const val INIT_TABLE_TEMPLATE = "ssmp/initTable.ftl"
         const val APPLICATION_TEMPLATE = "ssmp/application.ftl"
         const val MYBATIS_PLUS_CONFIG_TEMPLATE = "ssmp/mybatisPlusConfig.ftl"
         const val INIT_DATA_TEMPLATE = "ssmp/initData.ftl"

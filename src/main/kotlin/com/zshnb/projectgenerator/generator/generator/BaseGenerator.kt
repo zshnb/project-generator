@@ -29,7 +29,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val springbootMainTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.SPRING_BOOT_MAIN_APPLICATION)
         val responseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.RESPONSE_TEMPLATE)
-        val sqlTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.SQL_TEMPLATE)
+        val initTableTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.INIT_TABLE_TEMPLATE)
         val applicationTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.APPLICATION_TEMPLATE)
         val mybatisPlusConfigTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.MYBATIS_PLUS_CONFIG_TEMPLATE)
@@ -39,7 +39,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val staticResourceControllerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER)
 
-        ioUtil.writeTemplate(sqlTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/sql.sql")
+        ioUtil.writeTemplate(initTableTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/initTable.sql")
         ioUtil.writeTemplate(staticResourceControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),
             "commonPackageName" to project.config.commonPackagePath()
