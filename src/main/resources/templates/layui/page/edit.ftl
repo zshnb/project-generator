@@ -20,59 +20,60 @@
     <#list form.formItems as formItem>
         <#assign comment>${formItem.field.column.comment}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
+        <#assign name>${entity.name}</#assign>
         <#if formItem.class.simpleName == "InputFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
                 <div class="layui-input-block">
-                    <input type="text" name="${formItemName}" th:value="${r"${" + entity.name + "." + formItemName + "}"}"
+                    <input type="text" name="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
                             <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>
                            placeholder="请输入${comment}" class="layui-input">
                 </div>
             </div>
-<#--        <#elseif formItem.class.simpleName == "DateTimeFormItem">-->
-<#--            <div class="layui-form-item">-->
-<#--                <label class="layui-form-label <#if formItem.require>required</#if>">${formItem.comment}</label>-->
-<#--                <div class="layui-input-block">-->
-<#--                    <input type="text" name="${formItem.name}" id="${formItem.name}"-->
-<#--                           <#if formItem.require>lay-verify="required" lay-reqtext="${formItem.comment}不能为空"</#if>-->
-<#--                           placeholder="请输入${formItem.comment}" value="" class="layui-input">-->
-<#--                </div>-->
-<#--            </div>-->
-<#--        <#elseif formItem.class.simpleName == "SelectFormItem">-->
-<#--            <div class="layui-form-item">-->
-<#--                <label class="layui-form-label <#if formItem.require>required</#if>">${formItem.comment}</label>-->
-<#--                <div class="layui-input-block">-->
-<#--                    <select name="${formItem.name}" <#if formItem.require>lay-verify="required"-->
-<#--                            lay-reqtext="${formItem.comment}不能为空"</#if>>-->
-<#--                        <option value=""></option>-->
-<#--                        <#list formItem.options as option>-->
-<#--                            <option value="${option.value}"-->
-<#--                                    th:selected="${r"${" + name + "." + formItem.name + " == " + option.value + "}"}">${option.title}</option>-->
-<#--                        </#list>-->
-<#--                    </select>-->
-<#--                </div>-->
-<#--            </div>-->
-<#--        <#elseif formItem.class.simpleName == "RadioFormItem">-->
-<#--            <div class="layui-form-item">-->
-<#--                <label class="layui-form-label <#if formItem.require>required</#if>">${formItem.comment}</label>-->
-<#--                <div class="layui-input-block">-->
-<#--                    <#list formItem.options as option>-->
-<#--                        <input type="radio" name="${formItem.name}" value="${option.value}" title="${option.name}"-->
-<#--                               th:checked="${r"${" + name + "." + formItem.name + " == " + option.value + "}"}"-->
-<#--                               <#if formItem.require>lay-verify="required" lay-reqtext="${formItem.comment}不能为空"</#if>>>-->
-<#--                    </#list>-->
-<#--                </div>-->
-<#--            </div>-->
-<#--        <#elseif formItem.class.simpleName == "TextAreaFormItem">-->
-<#--            <div class="layui-form-item layui-form-text">-->
-<#--                <label class="layui-form-label <#if formItem.require>required</#if>">${formItem.comment}</label>-->
-<#--                <div class="layui-input-block">-->
-<#--                    <textarea placeholder="请输入内容" class="layui-textarea" name="${formItem.name}"-->
-<#--                              th:text="${r"${" + name + "." + formItem.name + "}"}"-->
-<#--                              <#if formItem.require>lay-verify="required" lay-reqtext="${formItem.comment}不能为空"</#if>>-->
-<#--                    </textarea>-->
-<#--                </div>-->
-<#--            </div>-->
+        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+            <div class="layui-form-item">
+                <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                <div class="layui-input-block">
+                    <input type="text" name="${formItemName}" id="${formItemName}"
+                           <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>
+                           placeholder="请输入${comment}" value="" class="layui-input">
+                </div>
+            </div>
+        <#elseif formItem.class.simpleName == "SelectFormItem">
+            <div class="layui-form-item">
+                <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                <div class="layui-input-block">
+                    <select name="${formItemName}" <#if formItem.require>lay-verify="required"
+                            lay-reqtext="${comment}不能为空"</#if>>
+                        <option value="">请选择${comment}</option>
+                        <#list formItem.options as option>
+                            <option value="${option.value}"
+                                    th:selected="${r"${" + name + "." + formItemName + " == " + option.value + "}"}">${option.title}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+        <#elseif formItem.class.simpleName == "RadioFormItem">
+            <div class="layui-form-item">
+                <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                <div class="layui-input-block">
+                    <#list formItem.options as option>
+                        <input type="radio" name="${formItemName}" value="${option.value}" title="${option.name}"
+                               th:checked="${r"${" + name + "." + formItemName + " == " + option.value + "}"}"
+                               <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>>
+                    </#list>
+                </div>
+            </div>
+        <#elseif formItem.class.simpleName == "TextAreaFormItem">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="${formItemName}"
+                              th:text="${r"${" + name + "." + formItemName + "}"}"
+                              <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>
+                    </textarea>
+                </div>
+            </div>
         </#if>
     </#list>
     <div class="layui-form-item">
@@ -111,10 +112,8 @@
                     parent.layer.close(iframeIndex)
                 }
             })
-
             return false
         })
-
     })
 </script>
 </body>
