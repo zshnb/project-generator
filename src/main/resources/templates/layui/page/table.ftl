@@ -12,44 +12,32 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+        <#if entity.table.searchable>
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <#list entity.fields as field>
+                                <#if field.column.searchable>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">${field.column.tableFieldTitle}</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="${field.name}" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                        lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                                </button>
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
-                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </fieldset>
+                    </form>
+                </div>
+            </fieldset>
+        </#if>
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
@@ -77,7 +65,7 @@
             elem: '#currentTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [],
-            url: '/${name}/list',
+            url: '/${entity.name}/list',
             method: 'post',
             contentType: 'application/json',
             parseData: function (res) {
@@ -93,8 +81,8 @@
             },
             cols: [
                 [
-                    <#list table.fields as field>
-                    { field: '${field.name}', title: '${field.title}', sort: true },
+                    <#list entity.fields as field>
+                    { field: '${field.name}', title: '${field.column.tableFieldTitle}', sort: true },
                     </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
                 ]
@@ -107,14 +95,16 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            let result = JSON.stringify(data.field)
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
                     curr: 1
-                },
-                where: {
-                    searchParams: result
+                }, where: {
+                    <#list entity.fields as field>
+                        <#if field.column.searchable>
+                            ${field.name}: data.field.${field.name}<#if field_has_next>,</#if>
+                        </#if>
+                    </#list>
                 }
             }, 'data')
 
@@ -133,7 +123,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/${name}/addPage',
+                    content: '/${entity.name}/addPage',
                     end: function () {
                         table.reload('currentTableId')
                     }
@@ -147,14 +137,14 @@
         table.on('tool(currentTableFilter)', function (obj) {
             let data = obj.data
             if (obj.event === 'edit') {
-                var index = layer.open({
+                let index = layer.open({
                     title: '编辑',
                     type: 2,
                     shade: 0.2,
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${name}/editPage/${r"${data.id}"}`,
+                    content: `/${entity.name}/editPage/${r"${data.id}"}`,
                     end: function () {
                         table.reload('currentTableId')
                     }
@@ -167,7 +157,7 @@
                 layer.confirm('真的删除行么', function (index) {
                     let data = obj.data
                     $.ajax({
-                        url: `/${name}/${r"${data.id}"}`,
+                        url: `/${entity.name}/${r"${data.id}"}`,
                         type: 'delete'
                     })
                     layer.close(index)

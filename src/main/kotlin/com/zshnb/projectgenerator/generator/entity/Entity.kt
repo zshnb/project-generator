@@ -1,14 +1,13 @@
 package com.zshnb.projectgenerator.generator.entity
 
-class Entity(val packageName: String,
-             val name: String,
-             val fields: List<Field>) {
-}
+class Entity(val packageName: String = "",
+             val name: String = "",
+             val table: Table = Table(),
+             val fields: List<Field> = emptyList())
 
 data class Field(val name: String,
-                 val type: String,
-                 val comment: String? = "",
-                 val primary: Boolean? = false)
+                 val column: Column,
+                 val type: String)
 
 enum class FieldType(val code: Int, val description: String) {
     INT(1, "Integer"),

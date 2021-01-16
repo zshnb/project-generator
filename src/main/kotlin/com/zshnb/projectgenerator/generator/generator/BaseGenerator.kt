@@ -46,12 +46,12 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ), "${project.config.controllerDir()}/StaticResourceController.java")
 
         project.entities.forEach {
-            ioUtil.writeTemplate(entityTemplate, it, "${project.config.entityDir()}/${it.name.capitalize()}.java")
-
+            ioUtil.writeTemplate(entityTemplate, it, "${project.config.entityDir()}/${it.table.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to project.config.requestPackagePath(),
-                "name" to it.name, "commonPackageName" to project.config.commonPackagePath()),
-                "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
+                "entity" to it,
+                "commonPackageName" to project.config.commonPackagePath()),
+                "${project.config.requestDir()}/List${it.table.name.capitalize()}Request.java")
         }
 
         project.services.forEach {
@@ -108,16 +108,16 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 }
             }.toList()
 
-        val permissions = project.pages.map { page ->
-            val model = page.name
-            page.table.permissions.map {
-                it.operations.map { op ->
-                    Permission(op, it.role, model)
-                }
-            }
-        }.flatten().flatten()
+//        val permissions = project.pages.map { page ->
+//            val model = page.entity.table.name
+//            page.table.permissions.map {
+//                it.operations.map { op ->
+//                    Permission(op, it.role, model)
+//                }
+//            }
+//        }.flatten().flatten()
 
-        ioUtil.writeTemplate(initDataTemplate, mapOf("roles" to roles, "menus" to menus, "permissions" to permissions),
+        ioUtil.writeTemplate(initDataTemplate, mapOf("roles" to roles, "menus" to menus, "permissions" to emptyList()),
             "${PathConstant.resourcesDirPath(project.config)}/initData.sql")
     }
 

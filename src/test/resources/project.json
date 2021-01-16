@@ -25,14 +25,18 @@
           "name": "name",
           "type": "varchar",
           "primary": false,
-          "length": "255"
+          "comment": "小说名",
+          "length": "255",
+          "searchable": true,
+          "formItem": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
         },
         {
           "name": "create_at",
           "type": "datetime",
           "primary": false
         }
-      ]
+      ],
+      "enablePage": true
     }
   ],
   "pages": [
@@ -42,14 +46,14 @@
         "formItems": [
           {
             "name": "name",
-            "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "comment": "小说名",
             "require": false,
             "options": []
           },
           {
             "name": "create_at",
-            "typeName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "formItemClassName": "",
             "comment": "创建时间",
             "require": false,
             "options": []
@@ -60,7 +64,8 @@
         "fields": [
           {
             "title": "小说名",
-            "name": "name"
+            "name": "name",
+            "searchable": true
           }
         ],
         "permissions": [

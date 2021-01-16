@@ -78,6 +78,7 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
     <#else>
     @Override
     public ListResponse<${name?capFirst}> list(List${name?capFirst}Request request) {
+<#--        <#if entity.fields.f-->
         IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
         return new ListResponse<>(page.getRecords(), page.getTotal());
     }

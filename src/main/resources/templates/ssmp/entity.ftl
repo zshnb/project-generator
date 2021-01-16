@@ -12,7 +12,7 @@ public class ${name?cap_first} extends Model<${name?cap_first}> {
     private static final long serialVersionUID = 1L;
 
     <#list fields! as field>
-        <#if field.primary>
+        <#if field.column.primary>
             @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif field.type == 'LocalDateTime'>
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
