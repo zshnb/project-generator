@@ -77,7 +77,17 @@
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
-            "require": false
+            "require": false,
+            "options": [
+              {
+                "title": "选项1",
+                "value": "选项1"
+              },
+              {
+                "title": "选项2",
+                "value": "选项2"
+              }
+            ]
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",

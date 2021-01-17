@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/${name}")
