@@ -4,7 +4,7 @@ import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
-import com.zshnb.projectgenerator.generator.util.IOUtil
+import com.zshnb.projectgenerator.generator.util.*
 import freemarker.template.Configuration
 import org.springframework.stereotype.Component
 import java.io.*
@@ -46,18 +46,18 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ), "${project.config.controllerDir()}/StaticResourceController.java")
 
         project.entities.forEach {
-            ioUtil.writeTemplate(entityTemplate, it, "${project.config.entityDir()}/${it.table.name.capitalize()}.java")
+            ioUtil.writeTemplate(entityTemplate, it, "${project.config.entityDir()}/${it.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to project.config.requestPackagePath(),
                 "entity" to it,
                 "commonPackageName" to project.config.commonPackagePath()),
-                "${project.config.requestDir()}/List${it.table.name.capitalize()}Request.java")
+                "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
         }
 
         project.services.forEach {
-            ioUtil.writeTemplate(serviceTemplate, it, "${project.config.serviceDir()}/I${it.name.capitalize()}Service.java")
+            ioUtil.writeTemplate(serviceTemplate, it, "${project.config.serviceDir()}/I${it.entity.name.capitalize()}Service.java")
 
-            ioUtil.writeTemplate(serviceImplTemplate, it, "${project.config.serviceImplDir()}/${it.name.capitalize()}ServiceImpl.java")
+            ioUtil.writeTemplate(serviceImplTemplate, it, "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
         }
 
         project.mappers.forEach {
@@ -108,16 +108,16 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 }
             }.toList()
 
-//        val permissions = project.pages.map { page ->
-//            val model = page.entity.table.name
-//            page.table.permissions.map {
-//                it.operations.map { op ->
-//                    Permission(op, it.role, model)
-//                }
-//            }
-//        }.flatten().flatten()
+        val permissions = project.entities.map { entity ->
+            val model = entity.name
+            entity.table.permissions.map {
+                it.operations.map { op ->
+                    Permission(op, it.role, model)
+                }
+            }
+        }.flatten().flatten()
 
-        ioUtil.writeTemplate(initDataTemplate, mapOf("roles" to roles, "menus" to menus, "permissions" to emptyList()),
+        ioUtil.writeTemplate(initDataTemplate, mapOf("roles" to roles, "menus" to menus, "permissions" to permissions),
             "${PathConstant.resourcesDirPath(project.config)}/initData.sql")
     }
 

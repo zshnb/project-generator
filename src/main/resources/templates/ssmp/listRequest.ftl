@@ -1,8 +1,8 @@
 package ${packageName};
 import ${commonPackageName}.PageRequest;
 
-public class List${entity.table.name?cap_first}Request extends PageRequest {
-    <#if entity.table.name == "menu">
+public class List${entity.name?cap_first}Request extends PageRequest {
+    <#if entity.name == "menu">
     private String role = "";
 
     public String getRole() {

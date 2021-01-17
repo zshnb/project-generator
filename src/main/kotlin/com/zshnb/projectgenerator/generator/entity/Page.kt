@@ -4,7 +4,7 @@ package com.zshnb.projectgenerator.generator.entity
  * @param form 表单组件
  * @param table 表格组件
  * */
-class Page(val entity: Entity = Entity(),
+class Page(val entity: Entity?,
            val form: FormComponent) {
 }
 
@@ -19,18 +19,8 @@ class FormComponent(val formItems: List<FormItem>)
  * */
 data class TableField(val title: String, val field: Field)
 
-/**
- * 角色在表格页面上的权限
- * @param role 角色名
- * @param operations 可以允许的权限集合
- * */
-data class TablePermission(val role: String, val operations: List<String>)
 
 open class FormItem(val field: Field?, val formItemClassName: String, val require: Boolean)
-
-class NullFormItem(field: Field? = null,
-                   formItemClassName: String = "",
-                   require: Boolean = false) : FormItem(field, formItemClassName, require)
 
 class InputFormItem(field: Field,
                     formItemClassName: String,

@@ -19,9 +19,9 @@
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
                             <#list entity.fields as field>
-                                <#if field.column.searchable>
+                                <#if field.column.enableFormItem && field.column.searchable>
                                     <div class="layui-inline">
-                                        <label class="layui-form-label">${field.column.tableFieldTitle}</label>
+                                        <label class="layui-form-label">${field.column.comment}</label>
                                         <div class="layui-input-inline">
                                             <input type="text" name="${field.name}" autocomplete="off" class="layui-input">
                                         </div>
@@ -40,7 +40,7 @@
         </#if>
 
         <script type="text/html" id="toolbarDemo">
-            <div class="layui-btn-container">
+            <div class="layui-btn-container" th:if="${r"${#lists.contains(permissions, 'add')}"}">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
             </div>
         </script>
@@ -48,8 +48,9 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <a th:if="${r"${#lists.contains(permissions, 'detail')}"}" class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看</a>
+            <a th:if="${r"${#lists.contains(permissions, 'edit')}"}" class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a th:if="${r"${#lists.contains(permissions, 'delete')}"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
     </div>
@@ -82,7 +83,9 @@
             cols: [
                 [
                     <#list entity.fields as field>
-                    { field: '${field.name}', title: '${field.column.tableFieldTitle}', sort: true },
+                    <#if field.column.enableFormItem>
+                    { field: '${field.name}', title: '${field.column.comment}', sort: true },
+                    </#if>
                     </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
                 ]
@@ -101,7 +104,7 @@
                     curr: 1
                 }, where: {
                     <#list entity.fields as field>
-                        <#if field.column.searchable>
+                        <#if field.column.enableFormItem && field.column.searchable>
                             ${field.name}: data.field.${field.name}<#if field_has_next>,</#if>
                         </#if>
                     </#list>
@@ -148,6 +151,20 @@
                     end: function () {
                         table.reload('currentTableId')
                     }
+                })
+                $(window).on('resize', function () {
+                    layer.full(index)
+                })
+                return false
+            } else if (obj.event === 'detail') {
+                let index = layer.open({
+                    title: '查看',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: `/${entity.name}/detailPage/${r"${data.id}"}`,
                 })
                 $(window).on('resize', function () {
                     layer.full(index)

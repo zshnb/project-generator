@@ -29,7 +29,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
 
         val project = backendParser.parseProject(json)
         val pages = frontendParser.parsePages(project)
-        createOtherDirs(pages.map { it.entity.table.name }, project.config)
+        createOtherDirs(pages.map { it.entity!!.name }, project.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
 
@@ -62,14 +62,15 @@ class LayuiGenerator(private val backendParser: BackendParser,
         }
 
         pages.forEach {
+            it.entity!!
             ioUtil.writeTemplate(addPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.table.name}/add.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/add.html")
             ioUtil.writeTemplate(editPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.table.name}/edit.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/edit.html")
             ioUtil.writeTemplate(detailPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.table.name}/detail.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/detail.html")
             ioUtil.writeTemplate(tablePageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.table.name}/table.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/table.html")
         }
     }
 

@@ -18,6 +18,6 @@ class JsonInheritDeserializer : JsonDeserializer<FormItem> {
             val clazz = Class.forName(className)
             return context?.deserialize(json, clazz)
         }
-        return NullFormItem()
+        return null
     }
 }

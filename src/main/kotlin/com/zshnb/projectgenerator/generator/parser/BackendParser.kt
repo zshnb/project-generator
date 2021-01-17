@@ -36,7 +36,7 @@ class BackendParser(private val gson: Gson,
                 Column("id", INT, length = 11, primary = true),
                 Column("create_at", DATETIME, length = 0),
                 Column("update_at", DATETIME, length = 0)
-            )).toList(), it.columns.any { column -> column.searchable }, it.enablePage)
+            )).toList(), it.permissions, it.columns.any { column -> column.searchable }, it.enablePage)
         }
         project.roles.forEach { role ->
             role.menus.forEach {
@@ -101,19 +101,19 @@ class BackendParser(private val gson: Gson,
      * */
     private fun parseServices(entities: List<Entity>, config: Config): List<Service> =
         entities.map {
-            Service(config.servicePackagePath(), it, it.table.name, config.serviceImplPackagePath(), listOf(
+            Service(config.servicePackagePath(), it, config.serviceImplPackagePath(), listOf(
                 config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(),
                     config.mapperPackagePath(), config.dtoPackagePath()))
         }
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
         entities.map {
-            Mapper(config.mapperPackagePath(), it.table.name, config.entityPackagePath())
+            Mapper(config.mapperPackagePath(), it.name, config.entityPackagePath())
         }
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =
         entities.map {
-            Controller(config.controllerPackagePath(), it.table.name, listOf(
+            Controller(config.controllerPackagePath(), it.name, listOf(
                 config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
                 config.commonPackagePath(), config.requestPackagePath()))
         }

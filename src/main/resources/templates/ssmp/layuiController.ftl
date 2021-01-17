@@ -34,8 +34,8 @@ public class ${name?capFirst}Controller {
     <#if name == "menu">
     @PostMapping("/list")
     @ResponseBody
-    public ListResponse<MenuDto> list(HttpSession httpSession) {
-        String role = (String) httpSession.getAttribute("role");
+    public ListResponse<MenuDto> list(HttpSession session) {
+        String role = ((User) session.getAttribute("user")).getRole();
         return menuService.list(role);
     }
     <#else>
@@ -69,11 +69,11 @@ public class ${name?capFirst}Controller {
 
     @GetMapping("/tablePage")
     public String tablePage(HttpSession httpSession, Model model) {
-        String role = (String) httpSession.getAttribute("role");
+        String role = ((User) httpSession.getAttribute("user")).getRole();
         List<Permission> permissions = permissionService.list(new QueryWrapper<Permission>()
             .eq("role", role)
-            .eq("model", "user"));
-        model.addAttribute("permissions", permissions);
+            .eq("model", "${name}"));
+        model.addAttribute("permissions", permissions.stream().map(Permission::getOperation).collect(Collectors.toList()));
         return "page/${name}/table";
     }
 
