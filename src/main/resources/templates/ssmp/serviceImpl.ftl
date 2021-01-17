@@ -1,5 +1,6 @@
 package ${implPackageName};
 
+<#assign name>${entity.name}</#assign>
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -78,8 +79,24 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
     <#else>
     @Override
     public ListResponse<${name?capFirst}> list(List${name?capFirst}Request request) {
-        IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
-        return new ListResponse<>(page.getRecords(), page.getTotal());
+        <#if entity.table.searchable>
+            QueryWrapper<${name?capFirst}> queryWrapper = new QueryWrapper<>();
+            <#list entity.fields as field>
+                <#if field.column.searchable>
+                    <#assign getField>request.get${field.name?capFirst}()</#assign>
+                    <#if field.type == "String">
+                        queryWrapper.eq(!${getField}.isEmpty(), "${field.column.name}", ${getField});
+                    <#elseIf field.type == "Integer">
+                        queryWrapper.eq(${getField} != 0, "${field.column.name}", ${getField});
+                    </#if>
+                </#if>
+            </#list>
+            IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()), queryWrapper);
+            return new ListResponse<>(page.getRecords(), page.getTotal());
+        <#else>
+            IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
+            return new ListResponse<>(page.getRecords(), page.getTotal());
+        </#if>
     }
     </#if>
 

@@ -1,10 +1,9 @@
 8. 多用户下页面要分开
-10. 页面的权限
 11. layui的菜单自动生成路径
 12. 可以选择图标
-13. 可以选择表是否生成页面
-14. page对象需放在table对象下
 15. 对图片的支持
 16. rootPackageName要动态改变
 17. select等表单添加选项
-18. page和table的结构需要重构
+19. pageName需要lowerCamelCase
+20. 一对多关联的支持
+21. list接口支持无分页

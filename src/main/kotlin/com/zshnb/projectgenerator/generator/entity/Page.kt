@@ -1,46 +1,47 @@
 package com.zshnb.projectgenerator.generator.entity
 
-import com.zshnb.projectgenerator.generator.entity.ColumnType.INT
-
 /**
  * @param form 表单组件
  * @param table 表格组件
  * */
-class Page(val name: String,
-           val form: FormComponent,
-           val table: TableComponent) {
+class Page(val entity: Entity?,
+           val form: FormComponent) {
 }
 
 class FormComponent(val formItems: List<FormItem>)
 
-class TableComponent(val fields: List<TableField>, val permissions: List<TablePermission>)
+//class TableComponent(val permissions: List<TablePermission>)
 
-data class TableField(val name: String, val title: String)
+/**
+ * 表格的列
+ * @param field 列对应实体的属性域
+ * @param title 列在表格页面上显示的列描述
+ * */
+data class TableField(val title: String, val field: Field)
 
-data class TablePermission(val role: String, val operations: List<String>)
 
-open class FormItem(val name: String) {}
+open class FormItem(val field: Field?, val formItemClassName: String, val require: Boolean)
 
-class InputFormItem(name: String = "",
-                    val comment: String = "",
-                    val require: Boolean = false) : FormItem(name)
+class InputFormItem(field: Field,
+                    formItemClassName: String,
+                    require: Boolean) : FormItem(field, formItemClassName, require)
 
-class DateTimeFormItem(name: String = "",
-                       val comment: String = "",
-                       val require: Boolean = false) : FormItem(name)
+class DateTimeFormItem(field: Field,
+                       formItemClassName: String,
+                       require: Boolean) : FormItem(field, formItemClassName, require)
 
-class SelectFormItem(name: String = "",
-                     val comment: String = "",
-                     val require: Boolean = false,
-                     val options: List<Option> = emptyList()) : FormItem(name)
+class TextAreaFormItem(field: Field,
+                       formItemClassName: String,
+                       require: Boolean) : FormItem(field, formItemClassName, require)
 
-class RadioFormItem(name: String = "",
-                    val comment: String = "",
-                    val require: Boolean = false,
-                    val options: List<Option> = emptyList()) : FormItem(name)
+class SelectFormItem(field: Field,
+                     val options: List<Option> = emptyList(),
+                     formItemClassName: String,
+                     require: Boolean) : FormItem(field, formItemClassName, require)
 
-class TextAreaFormItem(name: String = "",
-                       val comment: String = "",
-                       val require: Boolean = false) : FormItem(name)
+class RadioFormItem(field: Field,
+                    val options: List<Option> = emptyList(),
+                    formItemClassName: String,
+                    require: Boolean) : FormItem(field, formItemClassName, require)
 
 data class Option(val title: String, val value: String)

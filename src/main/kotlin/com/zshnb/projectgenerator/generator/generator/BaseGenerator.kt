@@ -4,7 +4,7 @@ import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
-import com.zshnb.projectgenerator.generator.util.IOUtil
+import com.zshnb.projectgenerator.generator.util.*
 import freemarker.template.Configuration
 import org.springframework.stereotype.Component
 import java.io.*
@@ -29,7 +29,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val springbootMainTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.SPRING_BOOT_MAIN_APPLICATION)
         val responseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.RESPONSE_TEMPLATE)
-        val sqlTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.SQL_TEMPLATE)
+        val initTableTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.INIT_TABLE_TEMPLATE)
         val applicationTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.APPLICATION_TEMPLATE)
         val mybatisPlusConfigTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.MYBATIS_PLUS_CONFIG_TEMPLATE)
@@ -39,7 +39,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val staticResourceControllerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER)
 
-        ioUtil.writeTemplate(sqlTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/sql.sql")
+        ioUtil.writeTemplate(initTableTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/initTable.sql")
         ioUtil.writeTemplate(staticResourceControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),
             "commonPackageName" to project.config.commonPackagePath()
@@ -47,17 +47,17 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
         project.entities.forEach {
             ioUtil.writeTemplate(entityTemplate, it, "${project.config.entityDir()}/${it.name.capitalize()}.java")
-
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to project.config.requestPackagePath(),
-                "name" to it.name, "commonPackageName" to project.config.commonPackagePath()),
+                "entity" to it,
+                "commonPackageName" to project.config.commonPackagePath()),
                 "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
         }
 
         project.services.forEach {
-            ioUtil.writeTemplate(serviceTemplate, it, "${project.config.serviceDir()}/I${it.name.capitalize()}Service.java")
+            ioUtil.writeTemplate(serviceTemplate, it, "${project.config.serviceDir()}/I${it.entity.name.capitalize()}Service.java")
 
-            ioUtil.writeTemplate(serviceImplTemplate, it, "${project.config.serviceImplDir()}/${it.name.capitalize()}ServiceImpl.java")
+            ioUtil.writeTemplate(serviceImplTemplate, it, "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
         }
 
         project.mappers.forEach {
@@ -108,9 +108,9 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 }
             }.toList()
 
-        val permissions = project.pages.map { page ->
-            val model = page.name
-            page.table.permissions.map {
+        val permissions = project.entities.map { entity ->
+            val model = entity.name
+            entity.table.permissions.map {
                 it.operations.map { op ->
                     Permission(op, it.role, model)
                 }

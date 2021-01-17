@@ -8,7 +8,7 @@ import org.springframework.context.annotation.*
 open class GsonConfig(
     private val columnTypeDeserializer: ColumnTypeDeserializer,
     private val projectTypeDeserializer: ProjectTypeDeserializer,
-    private val jsonInheritDeserializer: JsonInheritDeserializer<FormItem>
+    private val jsonInheritDeserializer: JsonInheritDeserializer,
 ) {
     @Bean
     open fun gson(): Gson {

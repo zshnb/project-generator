@@ -4,7 +4,7 @@ import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
-import com.zshnb.projectgenerator.generator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.parser.*
 import com.zshnb.projectgenerator.generator.util.*
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
@@ -15,6 +15,7 @@ import java.io.*
 @Component
 class LayuiGenerator(private val backendParser: BackendParser,
                      private val configuration: Configuration,
+                     private val frontendParser: FrontendParser,
                      private val ioUtil: IOUtil) : BaseGenerator(backendParser, ioUtil, configuration) {
     override fun generateProject(json: String) {
         super.generateProject(json)
@@ -27,7 +28,8 @@ class LayuiGenerator(private val backendParser: BackendParser,
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
 
         val project = backendParser.parseProject(json)
-        createOtherDirs(project.pages.map { it.name }, project.config)
+        val pages = frontendParser.parsePages(project)
+        createOtherDirs(pages.map { it.entity!!.name }, project.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
 
@@ -59,15 +61,16 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 "${project.config.controllerDir()}/${it.name.capitalize()}Controller.java")
         }
 
-        project.pages.forEach {
+        pages.forEach {
+            it.entity!!
             ioUtil.writeTemplate(addPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/add.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/add.html")
             ioUtil.writeTemplate(editPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/edit.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/edit.html")
             ioUtil.writeTemplate(detailPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/detail.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/detail.html")
             ioUtil.writeTemplate(tablePageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.name}/table.html")
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/table.html")
         }
     }
 

@@ -19,58 +19,79 @@
   "type": 1,
   "tables": [
     {
-      "name": "novel",
+      "name": "test_table",
       "columns": [
         {
-          "name": "name",
+          "name": "input_column",
           "type": "varchar",
-          "primary": false,
-          "length": "255"
+          "length": 255,
+          "comment": "输入框",
+          "searchable": true,
+          "enableFormItem": true
         },
         {
-          "name": "create_at",
+          "name": "select_column",
+          "type": "varchar",
+          "length": 255,
+          "comment": "下拉选择框",
+          "searchable": true,
+          "enableFormItem": true
+        },
+        {
+          "name": "disable_form_item_column",
+          "type": "varchar",
+          "length": 255,
+          "comment": "下拉选择框",
+          "searchable": true,
+          "enableFormItem": false
+        },
+        {
+          "name": "datetime_column",
           "type": "datetime",
-          "primary": false
+          "length": 0,
+          "comment": "日期时间选择框",
+          "searchable": false,
+          "enableFormItem": true
         }
-      ]
+      ],
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": ["add", "delete", "edit", "detail"]
+        },
+        {
+          "role": "user",
+          "operations": ["detail"]
+        }
+      ],
+      "enablePage": true
     }
   ],
   "pages": [
     {
-      "name": "novel",
       "form": {
         "formItems": [
           {
-            "name": "name",
-            "typeName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "comment": "小说名",
-            "require": false,
-            "options": []
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": false
           },
           {
-            "name": "create_at",
-            "typeName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
-            "comment": "创建时间",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "require": false,
-            "options": []
-          }
-        ]
-      },
-      "table": {
-        "fields": [
-          {
-            "title": "小说名",
-            "name": "name"
-          }
-        ],
-        "permissions": [
-          {
-            "role": "admin",
-            "operations": [
-              "add",
-              "edit",
-              "delete"
+            "options": [
+              {
+                "title": "选项1",
+                "value": "选项1"
+              },
+              {
+                "title": "选项2",
+                "value": "选项2"
+              }
             ]
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": false
           }
         ]
       }
@@ -82,27 +103,21 @@
       "description": "管理员",
       "menus": [
         {
-          "name": "小说管理",
+          "name": "测试菜单1",
           "icon": "",
-          "href": "/novel/tablePage",
+          "href": "/testTable/tablePage",
           "role": "admin"
-        },
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "description": "用户",
+      "menus": [
         {
-          "name": "漫画管理",
+          "name": "测试菜单1",
           "icon": "",
-          "href": "/comic/tablePage",
-          "role": "admin"
-        },
-        {
-          "name": "用户管理",
-          "icon": "",
-          "href": "/user/tablePage",
-          "child": [{
-            "name": "漫画管理-1",
-            "icon": "",
-            "href": "/comic/tablePage",
-            "role": "user"
-          }],
+          "href": "/testTable/tablePage",
           "role": "user"
         }
       ]

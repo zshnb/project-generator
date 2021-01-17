@@ -25,8 +25,8 @@ public class IndexController {
     private UserServiceImpl userService;
 
     @RequestMapping("/")
-    public String index(HttpSession httpSession) {
-        User user = (User) httpSession.getAttribute("user");
+    public String index(HttpSession session) {
+        User user = (User) session.getAttribute("user");
         if (user != null) {
             return "index";
         }
@@ -44,13 +44,12 @@ public class IndexController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Response<String> login(HttpSession httpSession, @RequestBody LoginRequest request) {
+    public Response<String> login(HttpSession session, @RequestBody LoginRequest request) {
         User user = userService.getOne(new QueryWrapper<User>()
             .eq("username", request.getUsername())
             .eq("password", request.getPassword())
             .eq("role", request.getRole()));
-        httpSession.setAttribute("user", user);
-        httpSession.setAttribute("role", request.getRole());
+        session.setAttribute("user", user);
         return Response.ok();
     }
 }
