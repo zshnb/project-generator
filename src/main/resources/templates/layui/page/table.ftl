@@ -9,6 +9,11 @@
     <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
 </head>
+<style>
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
@@ -82,9 +87,15 @@
             },
             cols: [
                 [
-                    <#list entity.fields as field>
-                    <#if field.column.enableFormItem>
-                    { field: '${field.name}', title: '${field.column.comment}', sort: true },
+                    <#list form.formItems as formItem>
+                    <#assign fieldName>${formItem.field.name}</#assign>
+                    <#assign comment>${formItem.field.column.comment}</#assign>
+                    <#if formItem.field.column.enableFormItem>
+                        <#if formItem.class.simpleName == "ImageFormItem">
+                        { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
+                        <#else>
+                        { field: '${fieldName}', title: '${comment}', sort: true },
+                        </#if>
                     </#if>
                     </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }

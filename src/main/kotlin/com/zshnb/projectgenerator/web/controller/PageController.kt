@@ -13,7 +13,8 @@ class PageController {
         FormItemType("下拉选择框", SelectFormItem::class.qualifiedName!!),
         FormItemType("单选框", RadioFormItem::class.qualifiedName!!),
         FormItemType("文本域", TextAreaFormItem::class.qualifiedName!!),
-        FormItemType("日期选择框", DateTimeFormItem::class.qualifiedName!!)
+        FormItemType("日期时间选择框", DateTimeFormItem::class.qualifiedName!!),
+        FormItemType("上传图片", ImageFormItem::class.qualifiedName!!)
     )
 
     @GetMapping("/form-items")

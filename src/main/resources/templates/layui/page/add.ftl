@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
     <style>
         body {
             background-color: #ffffff;
@@ -69,6 +70,14 @@
                               lay-reqtext="${comment}不能为空"</#if>></textarea>
                 </div>
             </div>
+        <#elseif formItem.class.simpleName == "ImageFormItem">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">${comment}</label>
+                <div class="layui-input-block">
+                    <div id="${formItemName}" class="${formItemName}"></div>
+                    <input name="${formItemName}" type="text" hidden>
+                </div>
+            </div>
         </#if>
     </#list>
     <div class="layui-form-item">
@@ -78,6 +87,8 @@
     </div>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/lib/jq-module/zyupload/zyupload-1.0.0.min.js}" charset="utf-8"></script>
 <script>
     layui.use(['form', 'laydate'], function () {
         let form = layui.form,
@@ -89,6 +100,32 @@
             elem: '#${formItem.field.name}',
             type: 'datetime'
         })
+        <#elseif formItem.class.simpleName == "ImageFormItem">
+        $('#${formItem.field.name}').zyUpload({
+            width: '650px',                 // 宽度
+            height: '200px',
+            itemWidth: '140px',                 // 文件项的宽度
+            itemHeight: '115px',                 // 文件项的高度
+            url: '/upload',  // 上传文件的路径
+            fileType: ['jpg', 'png'],// 上传文件的类型
+            fileSize: 51200000,                // 上传文件的大小
+            multiple: false,                    // 是否可以多个文件上传
+            dragDrop: false,                    // 是否可以拖动上传文件
+            tailor: false,                    // 是否可以裁剪图片
+            del: true,                    // 是否可以删除文件
+            finishDel: false,  				  // 是否在上传文件完成后删除预览
+            /* 外部获得的回调接口 */
+            onSelect: function (selectFiles, allFiles) {    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+            },
+            onDelete: function (file, files) {              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+            },
+            onSuccess: function (file, response) {          // 文件上传成功的回调方法
+                $('input[name=${formItem.field.name}]').val(JSON.parse(response).data)
+            },
+            onFailure: function (file, response) {          // 文件上传失败的回调方法
+            },
+        })
+        $('#rapidAddImg').remove()
         </#if>
         </#list>
 

@@ -23,6 +23,10 @@ public class StaticResourceController {
     @PostMapping("/upload")
     public Response<String> upload(@RequestParam MultipartFile file) {
         try {
+            if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+                Files.createDirectory(path);
+            }
+
             Files.copy(file.getInputStream(), this.path.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Could not store the file", e);
