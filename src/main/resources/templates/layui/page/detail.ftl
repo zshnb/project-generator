@@ -25,7 +25,7 @@
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
                     <input type="text" th:value="${r"${" + name + "." + formItemName + "}"}"
-                           class="layui-input">
+                           class="layui-input" readonly>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "DateTimeFormItem">
@@ -33,18 +33,17 @@
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
                     <input type="text" id="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
-                           value="" class="layui-input">
+                           value="" class="layui-input" readonly>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "SelectFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
-                    <select>
-                        <option value=""></option>
+                    <select disabled>
                         <#list formItem.options as option>
                             <option value="${option.value}"
-                                    th:selected="${r"${" + name + "." + formItemName + " == " + option.value + "}"}">${option.title}</option>
+                                    th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
                         </#list>
                     </select>
                 </div>
@@ -54,8 +53,8 @@
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
                     <#list formItem.options as option>
-                        <input type="radio" value="${option.value}" title="${option.name}"
-                               th:checked="${r"${" + name + "." + formItemName + " == " + option.value + "}"}">
+                        <input type="radio" value="${option.value}" title="${option.name}" readonly
+                               th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">
                     </#list>
                 </div>
             </div>
@@ -63,7 +62,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea"
+                    <textarea placeholder="请输入内容" class="layui-textarea" readonly
                               th:text="${r"${" + name + "." + formItemName + "}"}">
                     </textarea>
                 </div>

@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
-    <link rel="stylesheet" th:href="@{/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
     <style>
         body {
             background-color: #ffffff;
@@ -73,10 +72,24 @@
         <#elseif formItem.class.simpleName == "ImageFormItem">
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">${comment}</label>
-                <div class="layui-input-block">
-                    <div id="${formItemName}" class="${formItemName}"></div>
-                    <input name="${formItemName}" type="text" hidden>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-normal" id="upload">选择文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>图片名</th>
+                                <th>大小</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="image-list"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="layui-btn" id="upload-btn">开始上传</button>
                 </div>
+                <input name="${formItemName}" type="text" hidden>
             </div>
         </#if>
     </#list>
@@ -87,13 +100,12 @@
     </div>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-<script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
-<script th:src="@{/lib/jq-module/zyupload/zyupload-1.0.0.min.js}" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'laydate'], function () {
+    layui.use(['form', 'laydate', 'upload'], function () {
         let form = layui.form,
             $ = layui.$,
-            laydate = layui.laydate
+            laydate = layui.laydate,
+            upload = layui.upload
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
@@ -101,31 +113,59 @@
             type: 'datetime'
         })
         <#elseif formItem.class.simpleName == "ImageFormItem">
-        $('#${formItem.field.name}').zyUpload({
-            width: '650px',                 // 宽度
-            height: '200px',
-            itemWidth: '140px',                 // 文件项的宽度
-            itemHeight: '115px',                 // 文件项的高度
-            url: '/upload',  // 上传文件的路径
-            fileType: ['jpg', 'png'],// 上传文件的类型
-            fileSize: 51200000,                // 上传文件的大小
-            multiple: false,                    // 是否可以多个文件上传
-            dragDrop: false,                    // 是否可以拖动上传文件
-            tailor: false,                    // 是否可以裁剪图片
-            del: true,                    // 是否可以删除文件
-            finishDel: false,  				  // 是否在上传文件完成后删除预览
-            /* 外部获得的回调接口 */
-            onSelect: function (selectFiles, allFiles) {    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+        //多文件列表示例
+        let imageList = $('#image-list')
+        let uploadListIns = upload.render({
+            elem: '#upload',
+            url: '/upload',
+            accept: 'file',
+            multiple: false,
+            auto: false,
+            bindAction: '#upload-btn',
+            choose: function (obj) {
+                let files = this.files = obj.pushFile() //将每次选择的文件追加到文件队列
+                //读取本地文件
+                obj.preview(function (index, file) {
+                    let tr = $(`
+                        <tr id="upload-${r"${index}"}">
+                            <td>${r"${file.name}"}</td>
+                            <td>${r"${(file.size / 1024).toFixed(1)}kb"}</td>
+                            <td>等待上传</td>
+                            <td>
+                                <button class="layui-btn layui-btn-xs reload-btn layui-hide">重传</button>
+                                <button class="layui-btn layui-btn-xs layui-btn-danger delete-btn">删除</button>
+                            </td>
+                        </tr>
+                    `)
+                    //单个重传
+                    tr.find('.reload-btn').on('click', function () {
+                        obj.upload(index, file)
+                    })
+
+                    //删除
+                    tr.find('.delete-btn').on('click', function () {
+                        delete files[index] //删除对应的文件
+                        tr.remove()
+                        uploadListIns.config.elem.next()[0].value = '' //清空 input file 值，以免删除后出现同名文件不可选
+                    })
+                    imageList.append(tr)
+                })
             },
-            onDelete: function (file, files) {              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+            done: function (res, index) {
+                let tr = imageList.find(${r"`tr#upload-${index}`"}),
+                    tds = tr.children()
+                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
+                tds.eq(3).html('') //清空操作
+                $('input[name=imageColumn]').val(res.data)
+                return delete this.files[index] //删除文件队列已经上传成功的文件
             },
-            onSuccess: function (file, response) {          // 文件上传成功的回调方法
-                $('input[name=${formItem.field.name}]').val(JSON.parse(response).data)
-            },
-            onFailure: function (file, response) {          // 文件上传失败的回调方法
-            },
+            error: function () {
+                let tr = imageList.find(${r"`tr#upload-${index}`"}),
+                    tds = tr.children()
+                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>')
+                tds.eq(3).find('.reload-btn').removeClass('layui-hide') //显示重传
+            }
         })
-        $('#rapidAddImg').remove()
         </#if>
         </#list>
 
