@@ -61,7 +61,7 @@
     </div>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-<script>
+<script th:inline="javascript">
     layui.use(['form', 'table'], function () {
         let $ = layui.jquery,
             form = layui.form,
@@ -191,6 +191,7 @@
                     layer.close(index)
                     table.reload('currentTableId')
                 })
+                return false
             }
         })
     })

@@ -74,8 +74,9 @@
 </body>
 </html>
 <script>
-    layui.use(['laydate'], function () {
-        let laydate = layui.laydate
+    layui.use(['laydate', 'form'], function () {
+        let laydate = layui.laydate,
+            form = layui.form
 
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
@@ -85,6 +86,8 @@
             format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
         })
+        <#elseif formItem.class.simpleName == "SelectFormItem">
+        form.render('select')
         </#if>
         </#list>
     })

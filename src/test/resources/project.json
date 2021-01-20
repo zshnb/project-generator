@@ -1,9 +1,9 @@
 {
   "config": {
     "groupId": "com.demo",
-    "artifactId": "temp",
+    "artifactId": "achievement",
     "version": "1.0",
-    "rootPackageName": "com.demo.demo",
+    "rootPackageName": "com.demo.achievement",
     "entityPackageName": "entity",
     "servicePackageName": "service",
     "serviceImplPackageName": "serviceImpl",
@@ -13,63 +13,78 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "db",
+    "jdbcDatabase": "achievement",
     "type": 1
   },
   "type": 1,
   "tables": [
     {
-      "name": "test_table",
+      "name": "achievement",
       "columns": [
         {
-          "name": "input_column",
-          "type": "varchar",
-          "length": 255,
-          "comment": "输入框",
-          "searchable": true,
-          "enableFormItem": true
-        },
-        {
-          "name": "select_column",
-          "type": "varchar",
-          "length": 255,
-          "comment": "下拉选择框",
-          "searchable": true,
-          "enableFormItem": true
-        },
-        {
-          "name": "disable_form_item_column",
-          "type": "varchar",
-          "length": 255,
-          "comment": "下拉选择框",
-          "searchable": true,
+          "name": "user_id",
+          "type": "int",
+          "length": 11,
           "enableFormItem": false
         },
         {
-          "name": "datetime_column",
-          "type": "datetime",
-          "length": 0,
-          "comment": "日期时间选择框",
-          "searchable": false,
-          "enableFormItem": true
-        },
-        {
-          "name": "image_column",
+          "name": "author",
           "type": "varchar",
           "length": 255,
-          "comment": "图片",
-          "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": false
+        },
+        {
+          "name": "position",
+          "type": "int",
+          "length": 11,
+          "comment": "位序"
+        },
+        {
+          "name": "title",
+          "type": "varchar",
+          "length": 255,
+          "comment": "标题"
+        },
+        {
+          "name": "publish_institution",
+          "type": "varchar",
+          "length": 255,
+          "comment": "出版机构"
+        },
+        {
+          "name": "year",
+          "type": "varchar",
+          "length": 255,
+          "comment": "年份"
+        },
+        {
+          "name": "no",
+          "type": "varchar",
+          "length": 255,
+          "comment": "期号"
+        },
+        {
+          "name": "page_no",
+          "type": "int",
+          "length": 11,
+          "comment": "起始页码"
+        },
+        {
+          "name": "status",
+          "type": "varchar",
+          "length": 255,
+          "comment": "审核状态",
+          "enableFormItem": false
         }
       ],
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "delete", "edit", "detail"]
+          "operations": ["delete", "edit", "detail", "review"]
         },
         {
           "role": "user",
-          "operations": ["detail"]
+          "operations": ["add","detail"]
         }
       ],
       "enablePage": true
@@ -80,29 +95,41 @@
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "require": false
-          },
-          {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "require": false,
             "options": [
               {
-                "title": "选项1",
-                "value": "选项1"
+                "title": "1",
+                "value": "1"
               },
               {
-                "title": "选项2",
-                "value": "选项2"
+                "title": "2",
+                "value": "2"
+              },
+              {
+                "title": "3",
+                "value": "3"
               }
             ]
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": false
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": false
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": false
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": false
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": false
           }
         ]
@@ -115,9 +142,9 @@
       "description": "管理员",
       "menus": [
         {
-          "name": "测试菜单1",
+          "name": "科研成果管理",
           "icon": "",
-          "href": "/testTable/tablePage",
+          "href": "/achievement/tablePage",
           "role": "admin"
         }
       ]
@@ -127,10 +154,10 @@
       "description": "用户",
       "menus": [
         {
-          "name": "测试菜单1",
+          "name": "科研成果管理",
           "icon": "",
-          "href": "/testTable/tablePage",
-          "role": "user"
+          "href": "/achievement/tablePage",
+          "role": "admin"
         }
       ]
     }
