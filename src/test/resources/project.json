@@ -52,6 +52,14 @@
           "comment": "日期时间选择框",
           "searchable": false,
           "enableFormItem": true
+        },
+        {
+          "name": "image_column",
+          "type": "varchar",
+          "length": 255,
+          "comment": "图片",
+          "searchable": false,
+          "enableFormItem": true
         }
       ],
       "permissions": [
@@ -91,6 +99,10 @@
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": false
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
             "require": false
           }
         ]

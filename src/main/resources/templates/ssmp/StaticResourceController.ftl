@@ -11,10 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 
 @RestController
 public class StaticResourceController {
@@ -23,6 +20,10 @@ public class StaticResourceController {
     @PostMapping("/upload")
     public Response<String> upload(@RequestParam MultipartFile file) {
         try {
+            if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+                Files.createDirectory(path);
+            }
+
             Files.copy(file.getInputStream(), this.path.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Could not store the file", e);

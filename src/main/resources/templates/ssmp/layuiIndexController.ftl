@@ -49,6 +49,9 @@ public class IndexController {
             .eq("username", request.getUsername())
             .eq("password", request.getPassword())
             .eq("role", request.getRole()));
+        if (user == null) {
+            throw new RuntimeException("用户名或密码错误");
+        }
         session.setAttribute("user", user);
         return Response.ok();
     }

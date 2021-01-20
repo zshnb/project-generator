@@ -48,7 +48,7 @@
                         <option value="">请选择${comment}</option>
                         <#list formItem.options as option>
                             <option value="${option.value}"
-                                    th:selected="${r"${" + name + "." + formItemName + " == " + option.value + "}"}">${option.title}</option>
+                                    th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
                         </#list>
                     </select>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="layui-input-block">
                     <#list formItem.options as option>
                         <input type="radio" name="${formItemName}" value="${option.value}" title="${option.name}"
-                               th:checked="${r"${" + name + "." + formItemName + " == " + option.value + "}"}"
+                               th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}"
                                <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>>
                     </#list>
                 </div>
@@ -73,6 +73,28 @@
                               <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>
                     </textarea>
                 </div>
+            </div>
+        <#elseif formItem.class.simpleName == "FileFormItem">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">${comment}</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-normal" id="upload">选择文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>文件名</th>
+                                <th>大小</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="file-list"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="layui-btn" id="upload-btn">开始上传</button>
+                </div>
+                <input name="${formItemName}" type="text" hidden>
             </div>
         </#if>
     </#list>
@@ -96,6 +118,60 @@
             type: 'datetime',
             format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
+        })
+        <#elseif formItem.class.simpleName == "FileFormItem">
+        //多文件列表示例
+        let imageList = $('#file-list')
+        let uploadListIns = upload.render({
+            elem: '#upload',
+            url: '/upload',
+            accept: 'file',
+            multiple: false,
+            auto: false,
+            bindAction: '#upload-btn',
+            choose: function (obj) {
+                let files = this.files = obj.pushFile() //将每次选择的文件追加到文件队列
+                //读取本地文件
+                obj.preview(function (index, file) {
+                    let tr = $(`
+                        <tr id="upload-${r"${index}"}">
+                            <td>${r"${file.name}"}</td>
+                            <td>${r"${(file.size / 1024).toFixed(1)}kb"}</td>
+                            <td>等待上传</td>
+                            <td>
+                                <button class="layui-btn layui-btn-xs reload-btn layui-hide">重传</button>
+                                <button class="layui-btn layui-btn-xs layui-btn-danger delete-btn">删除</button>
+                            </td>
+                        </tr>
+                    `)
+                    //单个重传
+                    tr.find('.reload-btn').on('click', function () {
+                        obj.upload(index, file)
+                    })
+
+                    //删除
+                    tr.find('.delete-btn').on('click', function () {
+                        delete files[index] //删除对应的文件
+                        tr.remove()
+                        uploadListIns.config.elem.next()[0].value = '' //清空 input file 值，以免删除后出现同名文件不可选
+                    })
+                    imageList.append(tr)
+                })
+            },
+            done: function (res, index) {
+                let tr = imageList.find(${r"`tr#upload-${index}`"}),
+                    tds = tr.children()
+                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
+                tds.eq(3).html('') //清空操作
+                $('input[name=${formItem.field.name}]').val(res.data)
+                return delete this.files[index] //删除文件队列已经上传成功的文件
+            },
+            error: function () {
+                let tr = imageList.find(${r"`tr#upload-${index}`"}),
+                    tds = tr.children()
+                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>')
+                tds.eq(3).find('.reload-btn').removeClass('layui-hide') //显示重传
+            }
         })
         </#if>
         </#list>

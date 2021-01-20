@@ -17,7 +17,7 @@ data class Column(val name: String = "",
                   val length: Int = 0,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
-                  val enableFormItem: Boolean = false) {
+                  val enableFormItem: Boolean = true) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
