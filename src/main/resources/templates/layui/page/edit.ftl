@@ -74,7 +74,7 @@
                     </textarea>
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "ImageFormItem">
+        <#elseif formItem.class.simpleName == "FileFormItem">
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-upload">
@@ -83,13 +83,13 @@
                         <table class="layui-table">
                             <thead>
                             <tr>
-                                <th>图片名</th>
+                                <th>文件名</th>
                                 <th>大小</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="image-list"></tbody>
+                            <tbody id="file-list"></tbody>
                         </table>
                     </div>
                     <button type="button" class="layui-btn" id="upload-btn">开始上传</button>
@@ -119,9 +119,9 @@
             format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
         })
-        <#elseif formItem.class.simpleName == "ImageFormItem">
+        <#elseif formItem.class.simpleName == "FileFormItem">
         //多文件列表示例
-        let imageList = $('#image-list')
+        let imageList = $('#file-list')
         let uploadListIns = upload.render({
             elem: '#upload',
             url: '/upload',
@@ -163,7 +163,7 @@
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
                 tds.eq(3).html('') //清空操作
-                $('input[name=imageColumn]').val(res.data)
+                $('input[name=${formItem.field.name}]').val(res.data)
                 return delete this.files[index] //删除文件队列已经上传成功的文件
             },
             error: function () {

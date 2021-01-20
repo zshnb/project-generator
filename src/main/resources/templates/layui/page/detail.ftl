@@ -67,13 +67,18 @@
                     </textarea>
                 </div>
             </div>
+        <#elseif formItem.class.simpleName == "FileFormItem">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">${comment}</label>
+                <img th:src="${r"${" + name + "." + formItemName + "}"}"/>
+            </div>
         </#if>
     </#list>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 </body>
 </html>
-<script>
+<script th:inline="javascript">
     layui.use(['laydate', 'form'], function () {
         let laydate = layui.laydate,
             form = layui.form

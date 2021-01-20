@@ -43,8 +43,8 @@ class RadioFormItem(field: Field,
                     formItemClassName: String,
                     require: Boolean) : FormItem(field, formItemClassName, require)
 
-class ImageFormItem(field: Field,
-                    formItemClassName: String,
-                    require: Boolean) : FormItem(field, formItemClassName, require)
+class FileFormItem(field: Field,
+                   formItemClassName: String,
+                   require: Boolean) : FormItem(field, formItemClassName, require)
 
 data class Option(val title: String, val value: String)

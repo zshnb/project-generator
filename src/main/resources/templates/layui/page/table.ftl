@@ -91,7 +91,7 @@
                     <#assign fieldName>${formItem.field.name}</#assign>
                     <#assign comment>${formItem.field.column.comment}</#assign>
                     <#if formItem.field.column.enableFormItem>
-                        <#if formItem.class.simpleName == "ImageFormItem">
+                        <#if formItem.class.simpleName == "FileFormItem">
                         { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
                         <#else>
                         { field: '${fieldName}', title: '${comment}', sort: true },

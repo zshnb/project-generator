@@ -2,7 +2,6 @@ package com.zshnb.projectgenerator.web.controller
 
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.web.common.*
-import com.zshnb.projectgenerator.web.common.Response.Companion
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -14,7 +13,7 @@ class PageController {
         FormItemType("单选框", RadioFormItem::class.qualifiedName!!),
         FormItemType("文本域", TextAreaFormItem::class.qualifiedName!!),
         FormItemType("日期时间选择框", DateTimeFormItem::class.qualifiedName!!),
-        FormItemType("上传图片", ImageFormItem::class.qualifiedName!!)
+        FormItemType("上传文件", FileFormItem::class.qualifiedName!!)
     )
 
     @GetMapping("/form-items")
