@@ -76,8 +76,6 @@
     </#list>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-</body>
-</html>
 <script th:inline="javascript">
     layui.use(['laydate', 'form'], function () {
         let laydate = layui.laydate,
@@ -91,9 +89,9 @@
             format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
         })
-        <#elseif formItem.class.simpleName == "SelectFormItem">
-        form.render('select')
         </#if>
         </#list>
     })
 </script>
+</body>
+</html>
