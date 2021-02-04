@@ -106,13 +106,13 @@
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:src="@{/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
 <script>
-    layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
+    layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
-            miniAdmin = layui.miniAdmin;
+            miniAdmin = layui.miniAdmin
 
         var options = {
-            iniUrl: "/menu/list",    // 初始化接口
+            iniUrl: '/menu/list',    // 初始化接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
             multiModule: false,          // 是否开启多模块
@@ -120,15 +120,15 @@
             loadingTime: 0,             // 初始化加载时间
             pageAnim: true,             // iframe窗口动画
             maxTabNum: 20,              // 最大的tab打开数量
-        };
-        miniAdmin.render(options);
+        }
+        miniAdmin.render(options)
 
-        $('.logout').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = 'http://localhost:8081/loginPage';
-            });
-        });
-    });
+        $('.logout').on('click', function () {
+            layer.msg('退出登录成功', { time: 1000 }, function () {
+                window.location = 'http://localhost:8081/loginPage'
+            })
+        })
+    })
 </script>
 </body>
 </html>
