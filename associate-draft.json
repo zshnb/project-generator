@@ -1,0 +1,16 @@
+{
+  "name": "aaa",
+  "columns": [
+    {
+      "associateTable": {
+        "name": "bbb",
+        "column": "aaa_id",
+        "selectColumns": [
+          {
+            "name": "id" // 一个column对象
+          }
+        ]
+      }
+    }
+  ]
+}
