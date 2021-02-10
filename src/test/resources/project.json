@@ -1,9 +1,9 @@
 {
   "config": {
     "groupId": "com.github",
-    "artifactId": "employee",
+    "artifactId": "ticketSystem",
     "version": "1.0",
-    "rootPackageName": "com.github.employee",
+    "rootPackageName": "com.github.ticketSystem",
     "entityPackageName": "entity",
     "servicePackageName": "service",
     "serviceImplPackageName": "serviceImpl",
@@ -13,55 +13,375 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "employee",
+    "jdbcDatabase": "ticketSystem",
     "type": 1
   },
   "tables": [
     {
-      "name": "organization",
+      "name": "visit_info",
       "columns": [
+        {
+          "name": "type",
+          "type": "varchar",
+          "length": 255,
+          "comment": "项目类型",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "options": []
+        },
         {
           "name": "name",
           "type": "varchar",
           "length": 255,
-          "comment": "名称",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-        },
-        {
-          "name": "description",
-          "type": "text",
-          "length": 0,
-          "comment": "简介",
+          "comment": "项目名称",
           "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-          "id": 0.1975468188954118
+          "id": 0.35319409246485867
         },
         {
-          "name": "logo",
+          "name": "reason",
           "type": "varchar",
           "length": 255,
-          "comment": "logo",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
-          "id": 0.5001765713818446
-        },
-        {
-          "name": "person_count",
-          "type": "int",
-          "length": 11,
-          "comment": "规模人数",
+          "comment": "走访事由",
           "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-          "id": 0.46276549870102635
+          "id": 0.8689507037806139
+        },
+        {
+          "name": "people_number",
+          "type": "varchar",
+          "length": 255,
+          "comment": "走访人员编码",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.46209010347405566
+        },
+        {
+          "name": "people_name",
+          "type": "varchar",
+          "length": 255,
+          "comment": "走访人员姓名",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.8196925772551087
+        },
+        {
+          "name": "people_service_unit",
+          "type": "varchar",
+          "length": 255,
+          "comment": "所属业务单元",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.08529101865800692,
+          "options": []
+        },
+        {
+          "name": "visit_time",
+          "type": "datetime",
+          "length": 0,
+          "comment": "走访时间",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+          "id": 0.5023177362849292
+        },
+        {
+          "name": "cooperator_name",
+          "type": "varchar",
+          "length": 255,
+          "comment": "走访合作方名称",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.48468181849498115
+        },
+        {
+          "name": "cooperator_depart",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方所属事业部",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.43412746751041886,
+          "options": []
+        },
+        {
+          "name": "cooperator_region",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方所属大区",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.1860146158811249,
+          "options": []
+        },
+        {
+          "name": "cooperator_city",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方所属城市",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.8479734133587014,
+          "options": []
+        },
+        {
+          "name": "cooperator_factory",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方所属工厂",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.979624343020031,
+          "options": []
+        },
+        {
+          "name": "cooperator_warehouse",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方所属分仓",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.552323398157856,
+          "options": []
+        },
+        {
+          "name": "dock_people_name",
+          "type": "varchar",
+          "length": 255,
+          "comment": "对接人姓名",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.9097380892725965
+        },
+        {
+          "name": "dock_people_phone",
+          "type": "varchar",
+          "length": 255,
+          "comment": "对接人电话",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.8266158408275615
+        },
+        {
+          "name": "dock_people_job",
+          "type": "varchar",
+          "length": 255,
+          "comment": "对接人职务",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.7432799552361912,
+          "options": []
+        },
+        {
+          "name": "consistent_dock_person",
+          "type": "int",
+          "length": 11,
+          "comment": "是否与我司系统预留信息一致",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+          "id": 0.17003043304093346
+        },
+        {
+          "name": "cooperator_site",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方地点",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.9733827892708147
+        },
+        {
+          "name": "cooperator_address",
+          "type": "varchar",
+          "length": 255,
+          "comment": "合作方详细地址",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.2227306915464471
+        },
+        {
+          "name": "address_type",
+          "type": "varchar",
+          "length": 255,
+          "comment": "地址类型",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.15185347420218098,
+          "options": []
+        },
+        {
+          "name": "email",
+          "type": "varchar",
+          "length": 255,
+          "comment": "邮箱",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.27953879927405223
+        },
+        {
+          "name": "identity_number",
+          "type": "varchar",
+          "length": 255,
+          "comment": "身份证号",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.4309851738424857
+        },
+        {
+          "name": "bank_number",
+          "type": "varchar",
+          "length": 255,
+          "comment": "银行卡号",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.049909199691176465
+        },
+        {
+          "name": "wechat_name",
+          "type": "varchar",
+          "length": 255,
+          "comment": "微信名",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.9324877672450163
+        },
+        {
+          "name": "wechat_number",
+          "type": "varchar",
+          "length": 255,
+          "comment": "微信号",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.1669240176639183
+        },
+        {
+          "name": "cooperate",
+          "type": "int",
+          "length": 11,
+          "comment": "是否配合",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+          "id": 0.8884682715122143
+        },
+        {
+          "name": "info_provide_status",
+          "type": "varchar",
+          "length": 255,
+          "comment": "资料提供情况",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.7517270951362437,
+          "options": []
+        },
+        {
+          "name": "dock_people_character",
+          "type": "varchar",
+          "length": 255,
+          "comment": "对接人性格类型",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.8010837012159954,
+          "options": []
+        },
+        {
+          "name": "company_scale",
+          "type": "varchar",
+          "length": 255,
+          "comment": "公司规模",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+          "id": 0.4784694256838439,
+          "options": []
+        },
+        {
+          "name": "consistent_address",
+          "type": "int",
+          "length": 11,
+          "comment": "地址是否一致",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+          "id": 0.46043383961474393
+        },
+        {
+          "name": "suspect_relation",
+          "type": "varchar",
+          "length": 255,
+          "comment": "公司内疑似关系",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.4604914523773357
+        },
+        {
+          "name": "exception_info",
+          "type": "varchar",
+          "length": 255,
+          "comment": "其他异常线索",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+          "id": 0.012398247473101476
         }
       ],
       "permissions": [
@@ -73,26 +393,203 @@
             "detail",
             "delete"
           ]
+        },
+        {
+          "role": "1",
+          "operations": [
+            "add",
+            "edit",
+            "detail",
+            "delete"
+          ],
+          "id": 0.2705232190173472
+        },
+        {
+          "role": "2",
+          "operations": [
+            "add",
+            "edit",
+            "detail",
+            "delete"
+          ],
+          "id": 0.2423953999772116
+        },
+        {
+          "role": "3",
+          "operations": [
+            "add",
+            "edit",
+            "detail",
+            "delete"
+          ],
+          "id": 0.2200825107024703
+        },
+        {
+          "role": "4",
+          "operations": [
+            "add",
+            "edit",
+            "detail",
+            "delete"
+          ],
+          "id": 0.9707799097525709
         }
       ],
       "enablePage": true,
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
           }
         ]
       },
-      "id": 0.7773974570814159
+      "id": 0.8463401484566121
     },
     {
       "name": "user",
@@ -114,9 +611,9 @@
           "comment": "密码",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-          "id": 0.9615805391750575
+          "enableFormItem": false,
+          "formItemType": "",
+          "id": 0.9805664006360583
         },
         {
           "name": "role",
@@ -127,18 +624,8 @@
           "searchable": false,
           "enableFormItem": true,
           "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
-          "id": 0.6336806243645868
-        },
-        {
-          "name": "organization_id",
-          "type": "int",
-          "length": 11,
-          "comment": "单位",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
-          "id": 0.4673199154646528
+          "id": 0.36574970134185103,
+          "options": []
         }
       ],
       "permissions": [
@@ -156,247 +643,16 @@
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-          },
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem"
-          },
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "options": []
           }
         ]
       },
-      "id": 0.47685657686052607
-    },
-    {
-      "name": "job",
-      "columns": [
-        {
-          "name": "name",
-          "type": "varchar",
-          "length": 255,
-          "comment": "名称",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-        },
-        {
-          "name": "description",
-          "type": "text",
-          "length": 0,
-          "comment": "描述",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.TextAreaFormItem",
-          "id": 0.336633815036152
-        },
-        {
-          "name": "salary",
-          "type": "varchar",
-          "length": 255,
-          "comment": "薪资范围",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-          "id": 0.8981347308788319
-        }
-      ],
-      "permissions": [
-        {
-          "role": "hr",
-          "operations": [
-            "add",
-            "edit",
-            "detail",
-            "delete"
-          ]
-        }
-      ],
-      "enablePage": true,
-      "form": {
-        "formItems": [
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-          },
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.TextAreaFormItem"
-          },
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-          }
-        ]
-      },
-      "id": 0.6963828057558522
-    },
-    {
-      "name": "resume",
-      "columns": [
-        {
-          "name": "job_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "id": 0.9825240792106216
-        },
-        {
-          "name": "file",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "id": 0.6614380288299317
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": true,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.6506554413174946
-    },
-    {
-      "name": "comment",
-      "columns": [
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": ""
-        },
-        {
-          "name": "job_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "",
-          "id": 0.9459393932422864
-        },
-        {
-          "name": "content",
-          "type": "text",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "",
-          "id": 0.7356787316607408
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": [
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          }
-        ]
-      },
-      "id": 0.5599615967836233
-    },
-    {
-      "name": "reply",
-      "columns": [
-        {
-          "name": "comment_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": ""
-        },
-        {
-          "name": "content",
-          "type": "text",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "",
-          "id": 0.33268445703854
-        },
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "formItemType": "",
-          "id": 0.0906080880549397
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": [
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          }
-        ]
-      },
-      "id": 0.2033551007181883
+      "id": 0.45462103469858073
     }
   ],
   "pages": [
@@ -404,28 +660,138 @@
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-          }
-        ]
-      }
-    },
-    {
-      "form": {
-        "formItems": [
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "options": []
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
@@ -434,6 +800,19 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.RadioFormItem",
+            "require": true,
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
           }
         ]
       }
@@ -442,48 +821,12 @@
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "options": []
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.TextAreaFormItem"
-          },
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
-          }
-        ]
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": [
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          }
-        ]
-      }
-    },
-    {
-      "form": {
-        "formItems": [
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
-          },
-          {
-            "formItemClassName": ""
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "options": []
           }
         ]
       }
@@ -495,63 +838,163 @@
       "description": "管理员",
       "menus": [
         {
-          "name": "单位管理",
-          "icon": "",
-          "href": "/organization/tablePage",
-          "tableName": "",
-          "role": "admin"
-        },
-        {
-          "name": "学生管理",
+          "name": "用户管理",
           "icon": "",
           "href": "/user/tablePage",
           "tableName": "",
+          "id": 0,
+          "role": "admin"
+        },
+        {
+          "name": "走访管理",
+          "icon": "",
+          "href": "/visitInfo/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "admin"
+        },
+        {
+          "name": "工单管理",
+          "icon": "",
+          "href": "/ticket/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "admin"
+        },
+        {
+          "name": "问题清单",
+          "icon": "",
+          "href": "/problemInfo/tablePage",
+          "tableName": "",
+          "id": 0,
           "role": "admin"
         }
       ],
-      "id": 0.8525046743067698
+      "id": 0.39632320349578476
     },
     {
-      "name": "hr",
-      "description": "HR",
+      "name": "1",
+      "description": "一级用户",
       "menus": [
         {
-          "name": "岗位管理",
+          "name": "走访管理",
           "icon": "",
-          "href": "/job/tablePage",
+          "href": "/visitInfo/tablePage",
           "tableName": "",
-          "role": "hr"
+          "id": 0,
+          "role": "1"
+        },
+        {
+          "name": "工单管理",
+          "icon": "",
+          "href": "/ticket/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "1"
+        },
+        {
+          "name": "问题清单",
+          "icon": "",
+          "href": "/problemInfo/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "1"
         }
       ],
-      "id": 0.07274812028173427
+      "id": 0.8587810071807593
     },
     {
-      "name": "student",
-      "description": "学生",
+      "name": "2",
+      "description": "二级用户",
       "menus": [
         {
-          "name": "推荐企业",
+          "name": "走访管理",
           "icon": "",
-          "href": "/recommendPage",
+          "href": "/visitInfo/tablePage",
           "tableName": "",
-          "role": "student"
+          "id": 0,
+          "role": "2"
         },
         {
-          "name": "已投岗位",
+          "name": "工单管理",
           "icon": "",
-          "href": "/job/applyPage",
+          "href": "/ticket/tablePage",
           "tableName": "",
-          "role": "student"
+          "id": 0,
+          "role": "2"
         },
         {
-          "name": "岗位浏览",
+          "name": "问题清单",
           "icon": "",
-          "href": "/job/tablePage",
+          "href": "/problemInfo/tablePage",
           "tableName": "",
-          "role": "student"
+          "id": 0,
+          "role": "2"
         }
       ],
-      "id": 0.8131162955850774
+      "id": 0.4653368685308039
+    },
+    {
+      "name": "3",
+      "description": "三级用户",
+      "menus": [
+        {
+          "name": "走访管理",
+          "icon": "",
+          "href": "/visitInfo/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "3"
+        },
+        {
+          "name": "工单管理",
+          "icon": "",
+          "href": "/ticket/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "3"
+        },
+        {
+          "name": "问题清单",
+          "icon": "",
+          "href": "/problemInfo/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "3"
+        }
+      ],
+      "id": 0.3757408686945374
+    },
+    {
+      "name": "4",
+      "description": "四级用户",
+      "menus": [
+        {
+          "name": "走访管理",
+          "icon": "",
+          "href": "/visitInfo/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "4"
+        },
+        {
+          "name": "工单管理",
+          "icon": "",
+          "href": "/ticket/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "4"
+        },
+        {
+          "name": "问题清单",
+          "icon": "",
+          "href": "/problemInfo/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "4"
+        }
+      ],
+      "id": 0.5789935405750234
     }
   ]
 }
