@@ -21,7 +21,7 @@ class PageController {
         return ListResponse.ok(formItemTypes)
     }
 
-    @GetMapping("/add-option-form-item")
+    @GetMapping("/option-form-items")
     fun listNeedAddOptionFormItems(@RequestParam formItemType: String): Response<Boolean> {
         return Response.ok(formItemType in listOf(
             SelectFormItem::class.qualifiedName,

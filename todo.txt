@@ -1,9 +1,6 @@
 8. 多用户下页面要分开
 11. layui的菜单自动生成路径
 12. 可以选择图标
-15. 对图片的支持
-16. rootPackageName要动态改变
 17. select等表单添加选项
-19. pageName需要lowerCamelCase
 20. 一对多关联的支持
 21. list接口支持无分页
