@@ -120,6 +120,13 @@
             format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
         })
+        <#elseif formItem.class.simpleName == "DateFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'date',
+            format: 'yyyy-MM-dd',
+            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"}
+        })
         <#elseif formItem.class.simpleName == "FileFormItem">
         //多文件列表示例
         let imageList = $('#file-list')

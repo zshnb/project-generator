@@ -16,6 +16,8 @@ public class ${name?cap_first} extends Model<${name?cap_first}> {
             @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif field.type == 'LocalDateTime'>
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+        <#elseif field.type == 'LocalDate'>
+            @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
         </#if>
         private ${field.type} ${field.name};
     </#list>

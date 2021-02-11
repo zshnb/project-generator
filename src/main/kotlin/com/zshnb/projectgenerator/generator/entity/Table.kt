@@ -1,6 +1,6 @@
 package com.zshnb.projectgenerator.generator.entity
 
-import com.zshnb.projectgenerator.generator.entity.ColumnType.INT
+import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 
 /**
  * @param searchable 表是否有支持搜索的列
@@ -60,7 +60,8 @@ enum class ColumnType(val code: Int, val description: String) {
     VARCHAR(3, "varchar"),
     DATETIME(4, "datetime"),
     DOUBLE(5, "double"),
-    TEXT(6, "text")
+    TEXT(6, "text"),
+    LOCAL_DATE(7, "date")
     ;
 
     companion object {
@@ -72,6 +73,7 @@ enum class ColumnType(val code: Int, val description: String) {
                 "datetime" -> DATETIME
                 "double" -> DOUBLE
                 "text" -> TEXT
+                "date" -> LOCAL_DATE
                 else -> throw Exception()
             }
         }

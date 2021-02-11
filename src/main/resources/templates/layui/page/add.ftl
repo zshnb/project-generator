@@ -112,6 +112,11 @@
             elem: '#${formItem.field.name}',
             type: 'datetime'
         })
+        <#elseif formItem.class.simpleName == "DateFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'date'
+        })
         <#elseif formItem.class.simpleName == "FileFormItem">
         //多文件列表示例
         let imageList = $('#file-list')

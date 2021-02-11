@@ -13,7 +13,8 @@ class TypeUtil {
         ColumnType.TEXT to STRING,
         ColumnType.DOUBLE to DOUBLE,
         ColumnType.DATETIME to LOCAL_DATE_TIME,
-        ColumnType.TINYINT to Boolean
+        ColumnType.TINYINT to Boolean,
+        ColumnType.LOCAL_DATE to LOCAL_DATE
     )
 
     fun convertColumnTypeToFieldType(columnType: ColumnType): FieldType = typeMap.getValue(columnType)
