@@ -106,10 +106,11 @@
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:inline="javascript">
-    layui.use(['form', 'laydate'], function () {
+    layui.use(['form', 'laydate', 'upload'], function () {
         let form = layui.form,
             $ = layui.$,
-            laydate = layui.laydate
+            laydate = layui.laydate,
+            upload = layui.upload
 
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
