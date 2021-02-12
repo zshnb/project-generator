@@ -8,6 +8,9 @@ import com.zshnb.projectgenerator.generator.entity.*
 import org.springframework.stereotype.Component
 import java.lang.reflect.Type
 
+/***
+ * Gson反序列化继承类
+ * */
 @Component
 class JsonInheritDeserializer : JsonDeserializer<FormItem> {
     override fun deserialize(json: JsonElement?, type: Type?, context: JsonDeserializationContext?): FormItem? {

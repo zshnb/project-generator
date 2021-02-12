@@ -96,9 +96,6 @@ class BackendParser(private val gson: Gson,
         return listOf(roleTable, menuTable, permissionTable)
     }
 
-    /**
-     *
-     * */
     private fun parseServices(entities: List<Entity>, config: Config): List<Service> =
         entities.map {
             Service(config.servicePackagePath(), it, config.serviceImplPackagePath(), listOf(

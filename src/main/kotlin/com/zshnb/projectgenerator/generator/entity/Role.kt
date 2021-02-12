@@ -1,10 +1,10 @@
 package com.zshnb.projectgenerator.generator.entity
 
 /**
- * 权限表
- * @param name 权限名
- * @param description 权限描述，前端显示用
- * @param menus 权限拥有的菜单
+ * 角色表
+ * @param name 角色名
+ * @param description 角色描述，前端显示用
+ * @param menus 角色拥有的菜单
  * */
 data class Role(val name: String, val description: String, val menus: List<Menu>)
 
@@ -19,9 +19,9 @@ data class Menu(
 )
 
 /**
- * [operation]: 增删改等操作
- * [role]: 角色
- * [model]: 前端概念中的页面
+ * @param operation 增删改等操作
+ * @param role 拥有权限的角色
+ * @param model 前端概念中的页面
  * */
 data class Permission(val operation: String, val role: String, val model: String) {
     override fun toString(): String {
