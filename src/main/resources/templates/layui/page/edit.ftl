@@ -30,7 +30,7 @@
                            placeholder="请输入${comment}" class="layui-input">
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
                 <div class="layui-input-block">
@@ -106,18 +106,24 @@
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:inline="javascript">
-    layui.use(['form', 'laydate'], function () {
+    layui.use(['form', 'laydate', 'upload'], function () {
         let form = layui.form,
             $ = layui.$,
-            laydate = layui.laydate
+            laydate = layui.laydate,
+            upload = layui.upload
 
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
-            format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
+        })
+        <#elseif formItem.class.simpleName == "DateFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'date',
+            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"}
         })
         <#elseif formItem.class.simpleName == "FileFormItem">
         //多文件列表示例

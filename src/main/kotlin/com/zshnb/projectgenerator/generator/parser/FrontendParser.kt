@@ -18,6 +18,7 @@ class FrontendParser {
                     is FileFormItem -> FileFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                     is SelectFormItem -> SelectFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require)
                     is RadioFormItem -> RadioFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require)
+                    is DateFormItem -> DateFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                     else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
                 }
             }

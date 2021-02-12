@@ -28,7 +28,7 @@
                            class="layui-input" readonly>
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
@@ -86,8 +86,13 @@
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
-            format: 'yyyy-MM-dd HH:mm:ss',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
+        })
+        <#elseif formItem.class.simpleName == "DateFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'date',
+            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"}
         })
         </#if>
         </#list>

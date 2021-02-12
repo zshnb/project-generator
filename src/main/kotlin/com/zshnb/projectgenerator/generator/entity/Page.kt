@@ -29,6 +29,10 @@ class DateTimeFormItem(field: Field,
                        formItemClassName: String,
                        require: Boolean) : FormItem(field, formItemClassName, require)
 
+class DateFormItem(field: Field,
+                   formItemClassName: String,
+                   require: Boolean) : FormItem(field, formItemClassName, require)
+
 class TextAreaFormItem(field: Field,
                        formItemClassName: String,
                        require: Boolean) : FormItem(field, formItemClassName, require)

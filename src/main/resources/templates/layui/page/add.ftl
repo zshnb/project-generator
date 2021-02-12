@@ -28,7 +28,7 @@
                            placeholder="请输入${comment}" value="" class="layui-input">
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
                 <div class="layui-input-block">
@@ -111,6 +111,11 @@
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime'
+        })
+        <#elseif formItem.class.simpleName == "DateFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'date'
         })
         <#elseif formItem.class.simpleName == "FileFormItem">
         //多文件列表示例
