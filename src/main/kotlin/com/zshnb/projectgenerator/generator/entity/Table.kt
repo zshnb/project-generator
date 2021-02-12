@@ -25,25 +25,12 @@ data class Column(val name: String = "",
         other as Column
 
         if (name != other.name) return false
-        if (type != other.type) return false
-        if (comment != other.comment) return false
-        if (length != other.length) return false
-        if (primary != other.primary) return false
-        if (searchable != other.searchable) return false
-        if (enableFormItem != other.enableFormItem) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + type.hashCode()
-        result = 31 * result + comment.hashCode()
-        result = 31 * result + length
-        result = 31 * result + primary.hashCode()
-        result = 31 * result + searchable.hashCode()
-        result = 31 * result + enableFormItem.hashCode()
-        return result
+        return name.hashCode()
     }
 }
 

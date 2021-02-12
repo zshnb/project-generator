@@ -1,6 +1,8 @@
 package ${packageName};
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
@@ -19,6 +21,11 @@ public class ${name?cap_first} extends Model<${name?cap_first}> {
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
         <#elseif field.type == 'LocalDate'>
             @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+        </#if>
+        <#if field.name == 'createAt'>
+            @TableField(fill = FieldFill.INSERT)
+        <#elseif field.name == 'updateAt'>
+            @TableField(fill = FieldFill.INSERT_UPDATE)
         </#if>
         private ${field.type} ${field.name};
     </#list>
