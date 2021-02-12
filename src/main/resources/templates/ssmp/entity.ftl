@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ${name?cap_first} extends Model<${name?cap_first}> {

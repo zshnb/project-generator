@@ -28,7 +28,7 @@
                            placeholder="请输入${comment}" value="" class="layui-input">
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
                 <div class="layui-input-block">
