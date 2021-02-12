@@ -2,15 +2,13 @@ package com.zshnb.projectgenerator.generator.entity
 
 /**
  * @param form 表单组件
- * @param table 表格组件
+ * @param entity 页面所代表的实体
  * */
 class Page(val entity: Entity?,
            val form: FormComponent) {
 }
 
 class FormComponent(val formItems: List<FormItem>)
-
-//class TableComponent(val permissions: List<TablePermission>)
 
 /**
  * 表格的列

@@ -38,8 +38,12 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val loginRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
         val staticResourceControllerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER)
+        val localDateTimeMetaObjectHandlerTemplate =
+            configuration.getTemplate(BackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER)
 
-        ioUtil.writeTemplate(initTableTemplate, project, "${PathConstant.resourcesDirPath(project.config)}/initTable.sql")
+        ioUtil.writeTemplate(initTableTemplate,
+            project,
+            "${PathConstant.resourcesDirPath(project.config)}/initTable.sql")
         ioUtil.writeTemplate(staticResourceControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),
             "commonPackageName" to project.config.commonPackagePath()
@@ -55,9 +59,13 @@ open class BaseGenerator(private val backendParser: BackendParser,
         }
 
         project.services.forEach {
-            ioUtil.writeTemplate(serviceTemplate, it, "${project.config.serviceDir()}/I${it.entity.name.capitalize()}Service.java")
+            ioUtil.writeTemplate(serviceTemplate,
+                it,
+                "${project.config.serviceDir()}/I${it.entity.name.capitalize()}Service.java")
 
-            ioUtil.writeTemplate(serviceImplTemplate, it, "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
+            ioUtil.writeTemplate(serviceImplTemplate,
+                it,
+                "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
         }
 
         project.mappers.forEach {
@@ -82,7 +90,9 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(responseTemplate, project.config.commonPackagePath().packageName(),
             "${project.config.commonDir()}/Response.java")
 
-        ioUtil.writeTemplate(applicationTemplate, project.config, "${PathConstant.resourcesDirPath(project.config)}/application.yml")
+        ioUtil.writeTemplate(applicationTemplate,
+            project.config,
+            "${PathConstant.resourcesDirPath(project.config)}/application.yml")
 
         ioUtil.writeTemplate(mybatisPlusConfigTemplate, project.config.configPackagePath().packageName(),
             "${project.config.configDir()}/MybatisPlusConfig.java")
@@ -93,6 +103,11 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(loginRequestTemplate, project.config.requestPackagePath().packageName(),
             "${project.config.requestDir()}/LoginRequest.java")
 
+        ioUtil.writeTemplate(
+            localDateTimeMetaObjectHandlerTemplate, project.config.configPackagePath().packageName(),
+            "${project.config.configDir()}/LocalDateTimeMetaObjectHandler.java"
+        )
+
         var initMenuId = 1
         val roles = project.roles
         val menus = roles.asSequence().map { it.menus }
@@ -101,9 +116,9 @@ open class BaseGenerator(private val backendParser: BackendParser,
             .flatten()
             .map {
                 Menu(initMenuId++, it.parentId, it.name, it.icon, it.href, it.role, it.child).apply {
-                    child.forEach {
-                        it.parentId = id
-                        it.role = role
+                    child.forEach { childMenu ->
+                        childMenu.parentId = id
+                        childMenu.role = role
                     }
                 }
             }.toList()
