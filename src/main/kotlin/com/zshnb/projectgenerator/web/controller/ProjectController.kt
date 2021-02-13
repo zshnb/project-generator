@@ -33,7 +33,7 @@ class ProjectController(
         val file = File(projectConfig.tempDir, fileName)
         val resource = InputStreamResource(FileInputStream(file))
         val headers = HttpHeaders()
-        headers.add("Content-Disposition", String.format("attachment;fileName=%s", file.name))
+        headers.add("Content-Disposition", "attachment;fileName=${file.name}")
         headers.add("Cache-Control", "no-cache,no-store,must-revalidate")
         headers.add("Pragma", "no-cache")
         headers.add("Expires", "0")
