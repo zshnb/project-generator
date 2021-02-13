@@ -24,5 +24,6 @@ class BackendFreeMarkerFileConstant {
         const val LOGIN_REQUEST_TEMPLATE = "ssmp/loginRequest.ftl"
         const val STATIC_RESOURCE_CONTROLLER = "ssmp/staticResourceController.ftl"
         const val LOCAL_DATE_TIME_META_OBJECT_HANDLER = "ssmp/localDateTimeMetaObjectHandler.ftl"
+        const val UPLOAD_RESPONSE = "ssmp/uploadResponse.ftl"
     }
 }

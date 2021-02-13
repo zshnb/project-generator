@@ -40,6 +40,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
             configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER)
         val localDateTimeMetaObjectHandlerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER)
+        val uploadResponseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.UPLOAD_RESPONSE)
 
         ioUtil.writeTemplate(initTableTemplate,
             project,
@@ -105,8 +106,10 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
         ioUtil.writeTemplate(
             localDateTimeMetaObjectHandlerTemplate, project.config.configPackagePath().packageName(),
-            "${project.config.configDir()}/LocalDateTimeMetaObjectHandler.java"
-        )
+            "${project.config.configDir()}/LocalDateTimeMetaObjectHandler.java")
+
+        ioUtil.writeTemplate(uploadResponseTemplate, project.config.commonPackagePath().packageName(),
+            "${project.config.commonDir()}/UploadResponse.java")
 
         var initMenuId = 1
         val roles = project.roles

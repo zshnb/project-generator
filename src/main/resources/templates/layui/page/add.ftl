@@ -161,7 +161,7 @@
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
                 tds.eq(3).html('') //清空操作
-                $('input[name=${formItem.field.name}]').val(res.data)
+                $('input[name=${formItem.field.name}]').val(res.data.url)
                 return delete this.files[index] //删除文件队列已经上传成功的文件
             },
             error: function () {
