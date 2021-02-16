@@ -23,10 +23,10 @@ class PageController {
     }
 
     @GetMapping("/option-form-items")
-    fun listNeedAddOptionFormItems(@RequestParam formItemType: String): Response<Boolean> {
-        return Response.ok(formItemType in listOf(
-            SelectFormItem::class.qualifiedName,
-            RadioFormItem::class.qualifiedName))
+    fun listNeedAddOptionFormItems(): ListResponse<String> {
+        return ListResponse.ok(listOf(
+            SelectFormItem::class.qualifiedName!!,
+            RadioFormItem::class.qualifiedName!!))
     }
 
     data class FormItemType(val name: String, val className: String)
