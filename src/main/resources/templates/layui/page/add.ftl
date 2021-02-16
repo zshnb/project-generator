@@ -28,6 +28,15 @@
                            placeholder="请输入${comment}" value="" class="layui-input">
                 </div>
             </div>
+        <#elseif formItem.class.simpleName == "PasswordFormItem">
+            <div class="layui-form-item">
+                <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                <div class="layui-input-block">
+                    <input type="password" name="${formItemName}"
+                           <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>
+                           placeholder="请输入${comment}" value="" class="layui-input">
+                </div>
+            </div>
         <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>

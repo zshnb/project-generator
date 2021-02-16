@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/page")
 class PageController {
     private val formItemTypes = listOf(
-        FormItemType("输入框", InputFormItem::class.qualifiedName!!),
+        FormItemType("文本输入框", InputFormItem::class.qualifiedName!!),
+        FormItemType("密码输入框", PasswordFormItem::class.qualifiedName!!),
         FormItemType("下拉选择框", SelectFormItem::class.qualifiedName!!),
         FormItemType("单选框", RadioFormItem::class.qualifiedName!!),
         FormItemType("文本域", TextAreaFormItem::class.qualifiedName!!),

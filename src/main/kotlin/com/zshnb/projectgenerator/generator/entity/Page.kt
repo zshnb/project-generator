@@ -23,6 +23,10 @@ class InputFormItem(field: Field,
                     formItemClassName: String,
                     require: Boolean) : FormItem(field, formItemClassName, require)
 
+class PasswordFormItem(field: Field,
+                       formItemClassName: String,
+                       require: Boolean) : FormItem(field, formItemClassName, require)
+
 class DateTimeFormItem(field: Field,
                        formItemClassName: String,
                        require: Boolean) : FormItem(field, formItemClassName, require)
