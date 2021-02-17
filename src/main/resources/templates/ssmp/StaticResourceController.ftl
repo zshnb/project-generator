@@ -2,8 +2,10 @@ package ${packageName};
 
 import ${commonPackageName}.Response;
 import ${commonPackageName}.UploadResponse;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,21 +42,21 @@ public class StaticResourceController {
     }
 
     @GetMapping("/download")
-    public Resource download(@RequestParam String filename) {
+    public ResponseEntity<Object> download(@RequestParam String fileName) throws FileNotFoundException {
         File file = new File("upload/" + fileName);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", String.format("attachment;fileName=%s",
-            new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
+        new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
         headers.add("Cache-Control", "no-cache,no-store,must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
 
         return ResponseEntity.ok()
-            .headers(headers)
-            .contentLength(file.length())
-            .contentType(MediaType.parseMediaType("application/octet-stream"))
-            .body(resource);
+        .headers(headers)
+        .contentLength(file.length())
+        .contentType(MediaType.parseMediaType("application/octet-stream"))
+        .body(resource);
     }
 }
