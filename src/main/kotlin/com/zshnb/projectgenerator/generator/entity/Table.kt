@@ -5,11 +5,12 @@ import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 /**
  * @param searchable 表是否有支持搜索的列
  * */
-data class Table(val name: String,
-                 var columns: List<Column>,
+data class Table(val name: String = "",
+                 var columns: List<Column> = emptyList(),
                  val permissions: List<TablePermission> = emptyList(),
                  val searchable: Boolean = false,
-                 val enablePage: Boolean = false)
+                 val enablePage: Boolean = false,
+                 val associate: Associate = Associate())
 
 data class Column(val name: String = "",
                   val type: ColumnType = INT,
@@ -17,8 +18,7 @@ data class Column(val name: String = "",
                   val length: Int = 0,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
-                  val enableFormItem: Boolean = true,
-                  val associate: Associate? = null) {
+                  val enableFormItem: Boolean = true) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -35,21 +35,22 @@ data class Column(val name: String = "",
     }
 }
 
-data class Associate(val targetTable: Table,
-                     val targetColumn: Column,
-                     val associateResultColumns: List<AssociateResultColumn>,
-                     val formItemName: String)
+data class Associate(val targetTableName: String = "",
+                     val targetColumnName: String = "",
+                     val sourceColumnName: String = "",
+                     val associateResultColumns: List<AssociateResultColumn> = emptyList(),
+                     val formItemName: String = "")
 
-data class AssociateResultColumn(val sourceColumnName: String,
-                                 val aliasColumnName: String,
-                                 val tableFieldTitle: String)
+data class AssociateResultColumn(val originColumnName: String = "",
+                                 val aliasColumnName: String = "",
+                                 val tableFieldTitle: String = "")
 
 /**
  * 角色在表格页面上的权限
  * @param role 角色名
  * @param operations 可以允许的权限集合
  * */
-data class TablePermission(val role: String, val operations: List<String>)
+data class TablePermission(val role: String = "", val operations: List<String> = emptyList())
 
 enum class ColumnType(val code: Int, val description: String) {
     INT(1, "int"),

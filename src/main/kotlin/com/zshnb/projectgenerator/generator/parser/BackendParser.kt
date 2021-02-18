@@ -105,7 +105,7 @@ class BackendParser(private val gson: Gson,
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
         entities.map {
-            Mapper(config.mapperPackagePath(), it.name, config.entityPackagePath())
+            Mapper(config.mapperPackagePath(), it.name, config.entityPackagePath(), config.dtoPackagePath(), it)
         }
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =
