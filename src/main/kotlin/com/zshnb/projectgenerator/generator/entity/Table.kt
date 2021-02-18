@@ -17,7 +17,8 @@ data class Column(val name: String = "",
                   val length: Int = 0,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
-                  val enableFormItem: Boolean = true) {
+                  val enableFormItem: Boolean = true,
+                  val associate: Associate? = null) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -33,6 +34,15 @@ data class Column(val name: String = "",
         return name.hashCode()
     }
 }
+
+data class Associate(val targetTable: Table,
+                     val targetColumn: Column,
+                     val associateResultColumns: List<AssociateResultColumn>,
+                     val formItemName: String)
+
+data class AssociateResultColumn(val sourceColumnName: String,
+                                 val aliasColumnName: String,
+                                 val tableFieldTitle: String)
 
 /**
  * 角色在表格页面上的权限
