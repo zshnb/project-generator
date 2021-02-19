@@ -1,9 +1,9 @@
 {
   "config": {
-    "groupId": "com.github",
-    "artifactId": "studyPlatform",
+    "groupId": "com.temp",
+    "artifactId": "temp",
     "version": "1.0",
-    "rootPackageName": "com.github.studyPlatform",
+    "rootPackageName": "com.temp.temp",
     "entityPackageName": "entity",
     "servicePackageName": "service",
     "serviceImplPackageName": "serviceImpl",
@@ -18,847 +18,89 @@
   },
   "tables": [
     {
-      "name": "school",
+      "name": "test_table",
       "columns": [
         {
-          "name": "name",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.9138196325685007
-    },
-    {
-      "name": "college",
-      "columns": [
-        {
-          "name": "school_id",
+          "name": "user_id",
           "type": "int",
           "length": 11,
           "comment": "",
           "primary": false,
           "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "name",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.6095784065947661
+          "enableFormItem": false
         }
       ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.7571522293186053
-    },
-    {
-      "name": "major",
-      "columns": [
-        {
-          "name": "school_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "college_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.34578259321762983
-        },
-        {
-          "name": "name",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.3316978273925256
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.12485852031531086
+      "enablePage": true,
+      "associate": {
+        "targetTableName": "user",
+        "targetColumnName": "id",
+        "sourceColumnName": "user_id",
+        "associateResultColumns": [
+          {
+            "originColumnName": "name",
+            "aliasColumnName": "userName",
+            "tableFieldTitle": "用户名"
+          }
+        ],
+        "formItemName": "用户"
+      }
     },
     {
       "name": "user",
       "columns": [
         {
-          "name": "username",
-          "type": "varchar",
-          "length": 255,
+          "name": "id",
+          "type": "int",
+          "length": 11,
           "comment": "",
           "primary": false,
           "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "password",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.7349114630213265
-        },
-        {
-          "name": "role",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.41190219341623335
+          "enableFormItem": true
         },
         {
           "name": "name",
           "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.6126155602711504
-        },
-        {
-          "name": "sex",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.10510459561018581
-        },
-        {
-          "name": "school_id",
-          "type": "int",
           "length": 11,
           "comment": "",
           "primary": false,
           "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.1968247034529833
-        },
-        {
-          "name": "college_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.34521984472167244
-        },
-        {
-          "name": "major_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.4289094869221367
+          "enableFormItem": true
         }
       ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.1342172927591706
-    },
-    {
-      "name": "course",
-      "columns": [
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "name",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.11981708240971245
-        },
-        {
-          "name": "description",
-          "type": "text",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.22489606220008895
-        },
-        {
-          "name": "chapter_count",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.5681718235923469
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.24626622557994204
-    },
-    {
-      "name": "chappter",
-      "columns": [
-        {
-          "name": "course_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "title",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.46967495060559417
-        },
-        {
-          "name": "duration",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.3876718919683708
-        },
-        {
-          "name": "url",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.9716032165995082
-        },
-        {
-          "name": "problems",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.9850644819957041
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.3940506212929604
-    },
-    {
-      "name": "user_course",
-      "columns": [
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "course_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.7403216128216503
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.64234632533712
-    },
-    {
-      "name": "exam",
-      "columns": [
-        {
-          "name": "course_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.8373090003498107
-        },
-        {
-          "name": "start_at",
-          "type": "datetime",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.03505231228546202
-        },
-        {
-          "name": "end_at",
-          "type": "datetime",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.21188748825703496
-        },
-        {
-          "name": "duration",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.06484803931548822
-        },
-        {
-          "name": "problems",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.994031750289972
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.14911624605788165
-    },
-    {
-      "name": "submission",
-      "columns": [
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "details",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.21064157358994262
-        },
-        {
-          "name": "score",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.8005523581958552
-        },
-        {
-          "name": "associate_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.2550413549769198
-        },
-        {
-          "name": "type",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.04915804211770958
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.8600920795751387
-    },
-    {
-      "name": "discussion",
-      "columns": [
-        {
-          "name": "course_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "title",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.3633374600221554
-        },
-        {
-          "name": "content",
-          "type": "text",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.8217178270809582
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.5592696363310447
-    },
-    {
-      "name": "comment",
-      "columns": [
-        {
-          "name": "discussion_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.542337769028956
-        },
-        {
-          "name": "content",
-          "type": "text",
-          "length": 0,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.18626577316897253
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.5887621894942634
-    },
-    {
-      "name": "course_assistant",
-      "columns": [
-        {
-          "name": "course_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "user_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.1132812357937718
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.22681135741659642
-    },
-    {
-      "name": "attachment",
-      "columns": [
-        {
-          "name": "name",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "url",
-          "type": "varchar",
-          "length": 255,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.23525555989590774
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.9568031971557391
-    },
-    {
-      "name": "chapter_attachment",
-      "columns": [
-        {
-          "name": "chapter_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": ""
-        },
-        {
-          "name": "attachment_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": false,
-          "formItemType": "",
-          "require": false,
-          "id": 0.396783764878599
-        }
-      ],
-      "permissions": [
-        {
-          "role": "",
-          "operations": []
-        }
-      ],
-      "enablePage": false,
-      "form": {
-        "formItems": []
-      },
-      "id": 0.5187308051241714
+      "enablePage": true
     }
   ],
   "pages": [
     {
       "form": {
-        "formItems": []
+        "formItems": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": []
+          }
+        ]
       }
     },
     {
       "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
-      }
-    },
-    {
-      "form": {
-        "formItems": []
+        "formItems": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [
+              {
+                "title": "title",
+                "value": "value"
+              }
+            ]
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true
+
+          }
+        ]
       }
     }
   ],

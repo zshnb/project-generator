@@ -1,17 +1,13 @@
 package com.zshnb.projectgenerator.web.controller
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.zshnb.projectgenerator.generator.constant.PathConstant
+import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
-import com.zshnb.projectgenerator.generator.generator.LayuiGenerator
-import com.zshnb.projectgenerator.generator.generator.RestfulBackendGenerator
+import com.zshnb.projectgenerator.generator.generator.*
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import org.apache.commons.io.FileUtils
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.*
-import org.springframework.util.ResourceUtils
 import org.springframework.web.bind.annotation.*
 import java.io.*
 
@@ -21,11 +17,13 @@ class ProjectController(
     private val layuiGenerator: LayuiGenerator,
     private val restfulBackendGenerator: RestfulBackendGenerator,
     private val zipFileWriter: ZipFileWriter,
-    private val projectConfig: ProjectConfig
+    private val projectConfig: ProjectConfig,
+    private val moshi: Moshi
 ) {
     @PostMapping("/generate")
     fun generate(@RequestBody json: String): ResponseEntity<InputStreamResource> {
-        val project = Gson().fromJson<Project>(json, TypeToken.get(Project::class.java).type)
+        val adapter = moshi.adapter(Project::class.java)
+        val project = adapter.fromJson(json)!!
         val fileName = "${project.config.artifactId}.zip"
         layuiGenerator.generateProject(json)
         zipFileWriter.createZipFile(fileName, project.config.artifactId)
