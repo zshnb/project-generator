@@ -1,7 +1,5 @@
 package com.zshnb.projectgenerator.generator.entity
 
-import com.squareup.moshi.*
-
 /**
  * @param form 表单组件
  * @param entity 页面所代表的实体
