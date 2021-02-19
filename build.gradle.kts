@@ -24,12 +24,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.baomidou:mybatis-plus-boot-starter:3.4.0")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("com.google.code.gson:gson:2.8.6")
 	implementation("com.squareup.moshi:moshi-kotlin:1.11.0")
 	implementation("commons-io:commons-io:2.6")
 	implementation("cn.hutool:hutool-all:5.5.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
 }
 
 tasks.withType<Test> {
