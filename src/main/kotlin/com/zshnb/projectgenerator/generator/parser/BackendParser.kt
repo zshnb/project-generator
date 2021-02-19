@@ -113,6 +113,6 @@ class BackendParser(private val moshi: Moshi,
         entities.map {
             Controller(config.controllerPackagePath(), it.name, listOf(
                 config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
-                config.commonPackagePath(), config.requestPackagePath()))
+                config.commonPackagePath(), config.requestPackagePath()), it)
         }
 }

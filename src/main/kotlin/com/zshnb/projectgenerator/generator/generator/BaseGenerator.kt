@@ -59,7 +59,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "commonPackageName" to project.config.commonPackagePath()),
                 "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
             if (it.table.associate != null) {
-                ioUtil.writeTemplate(dtoTemplate, it, "${project.config.dtoDir()}/${it.name.capitalize()}Dto.java")
+                val dto = Dto(it, project.config.dtoPackagePath())
+                ioUtil.writeTemplate(dtoTemplate, dto, "${project.config.dtoDir()}/${it.name.capitalize()}Dto.java")
             }
         }
 

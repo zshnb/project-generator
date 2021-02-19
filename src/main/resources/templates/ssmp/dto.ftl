@@ -1,20 +1,15 @@
 package ${packageName};
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class ${name?cap_first} extends Model<${name?cap_first}> {
+public class ${entity.name?cap_first}Dto {
 
     private static final long serialVersionUID = 1L;
 
-    <#list fields! as field>
+    <#list entity.fields! as field>
         <#if field.type == 'LocalDateTime'>
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
         <#elseif field.type == 'LocalDate'>
@@ -22,7 +17,7 @@ public class ${name?cap_first} extends Model<${name?cap_first}> {
         </#if>
         private ${field.type} ${field.name};
     </#list>
-    <#list fields! as field>
+    <#list entity.fields! as field>
         public ${field.type} get${field.name?cap_first}() {
             return this.${field.name};
         }
@@ -30,8 +25,8 @@ public class ${name?cap_first} extends Model<${name?cap_first}> {
             this.${field.name} = ${field.name};
         }
     </#list>
-    <#if table.associate??>
-        <#list table.associate.associateResultColumns as column>
+    <#if entity.table.associate??>
+        <#list entity.table.associate.associateResultColumns as column>
             private String ${column.aliasColumnName};
             public String get${column.aliasColumnName?cap_first}() {
                 return this.${column.aliasColumnName};
