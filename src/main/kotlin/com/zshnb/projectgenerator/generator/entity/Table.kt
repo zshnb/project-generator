@@ -11,7 +11,7 @@ data class Table(val name: String = "",
                  val permissions: List<TablePermission> = emptyList(),
                  val searchable: Boolean = false,
                  val enablePage: Boolean = false,
-                 val associate: Associate = Associate())
+                 val associate: Associate? = null)
 
 data class Column(val name: String = "",
                   val type: ColumnType = INT,
@@ -36,15 +36,15 @@ data class Column(val name: String = "",
     }
 }
 
-data class Associate(val targetTableName: String = "",
-                     val targetColumnName: String = "",
-                     val sourceColumnName: String = "",
-                     val associateResultColumns: List<AssociateResultColumn> = emptyList(),
-                     val formItemName: String = "")
+data class Associate(val targetTableName: String,
+                     val targetColumnName: String,
+                     val sourceColumnName: String,
+                     val associateResultColumns: List<AssociateResultColumn>,
+                     val formItemName: String)
 
-data class AssociateResultColumn(val originColumnName: String = "",
-                                 val aliasColumnName: String = "",
-                                 val tableFieldTitle: String = "")
+data class AssociateResultColumn(val originColumnName: String,
+                                 val aliasColumnName: String,
+                                 val tableFieldTitle: String)
 
 /**
  * 角色在表格页面上的权限
