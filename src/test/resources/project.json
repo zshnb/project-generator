@@ -27,12 +27,12 @@
           "comment": "",
           "primary": false,
           "searchable": false,
-          "enableFormItem": false
+          "enableFormItem": true
         }
       ],
       "enablePage": true,
       "associate": {
-        "targetTableName": "user",
+        "targetTableName": "test_user",
         "targetColumnName": "id",
         "sourceColumnName": "user_id",
         "associateResultColumns": [
@@ -42,11 +42,11 @@
             "tableFieldTitle": "用户名"
           }
         ],
-        "formItemName": "用户"
+        "formItemName": "name"
       }
     },
     {
-      "name": "user",
+      "name": "test_user",
       "columns": [
         {
           "name": "id",
@@ -104,5 +104,20 @@
       }
     }
   ],
-  "roles": []
+  "roles": [
+    {
+      "name": "admin",
+      "description": "管理员",
+      "menus": [
+        {
+          "name": "用户管理",
+          "icon": "",
+          "href": "/test/tablePage",
+          "tableName": "",
+          "id": 0,
+          "role": "admin"
+        }
+      ]
+    }
+  ]
 }
