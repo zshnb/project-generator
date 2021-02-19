@@ -1,6 +1,5 @@
 package com.zshnb.projectgenerator.generator.parser
 
-import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.ColumnType.*
@@ -13,11 +12,9 @@ import org.springframework.stereotype.Component
  * 从[Project]的json中解析出项目的各个部分
  * */
 @Component
-class BackendParser(private val gson: Gson,
-                    private val moshi: Moshi,
+class BackendParser(private val moshi: Moshi,
                     private val typeUtil: TypeUtil) {
     fun parseProject(json: String): Project {
-//        val project = gson.fromJson(json, Project::class.java)
         val adapter = moshi.adapter(Project::class.java)
         val project = adapter.fromJson(json)!!
         project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
