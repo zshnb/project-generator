@@ -67,7 +67,7 @@
           "enableFormItem": true
         }
       ],
-      "enablePage": false
+      "enablePage": true
     }
   ],
   "pages": [
@@ -78,6 +78,27 @@
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "require": true,
             "options": []
+          }
+        ]
+      }
+    },
+    {
+      "form": {
+        "formItems": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [
+              {
+                "title": "title",
+                "value": "value"
+              }
+            ]
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true
+
           }
         ]
       }

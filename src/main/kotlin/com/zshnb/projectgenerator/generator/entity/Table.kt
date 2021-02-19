@@ -1,5 +1,6 @@
 package com.zshnb.projectgenerator.generator.entity
 
+import com.squareup.moshi.Json
 import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 
 /**
@@ -53,13 +54,13 @@ data class AssociateResultColumn(val originColumnName: String = "",
 data class TablePermission(val role: String = "", val operations: List<String> = emptyList())
 
 enum class ColumnType(val code: Int, val description: String) {
-    INT(1, "int"),
-    TINYINT(2, "tinyint"),
-    VARCHAR(3, "varchar"),
-    DATETIME(4, "datetime"),
-    DOUBLE(5, "double"),
-    TEXT(6, "text"),
-    LOCAL_DATE(7, "date")
+    @Json(name = "int") INT(1, "int"),
+    @Json(name = "tinyint") TINYINT(2, "tinyint"),
+    @Json(name = "varchar") VARCHAR(3, "varchar"),
+    @Json(name = "datetime") DATETIME(4, "datetime"),
+    @Json(name = "double") DOUBLE(5, "double"),
+    @Json(name = "text") TEXT(6, "text"),
+    @Json(name = "date") LOCAL_DATE(7, "date")
     ;
 
     companion object {
