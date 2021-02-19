@@ -37,7 +37,7 @@ class BackendParser(private val moshi: Moshi,
                 Column("id", INT, length = 11, primary = true),
                 Column("create_at", DATETIME, length = 0),
                 Column("update_at", DATETIME, length = 0)
-            )).toList(), it.permissions, it.columns.any { column -> column.searchable }, it.enablePage)
+            )).toList(), it.permissions, it.columns.any { column -> column.searchable }, it.enablePage, it.associate)
         }
         project.roles.forEach { role ->
             role.menus.forEach {
@@ -106,13 +106,13 @@ class BackendParser(private val moshi: Moshi,
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
         entities.map {
-            Mapper(config.mapperPackagePath(), it.name, config.entityPackagePath())
+            Mapper(config.mapperPackagePath(), it.name, config.entityPackagePath(), config.dtoPackagePath(), it)
         }
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =
         entities.map {
             Controller(config.controllerPackagePath(), it.name, listOf(
                 config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
-                config.commonPackagePath(), config.requestPackagePath()))
+                config.commonPackagePath(), config.requestPackagePath()), it)
         }
 }

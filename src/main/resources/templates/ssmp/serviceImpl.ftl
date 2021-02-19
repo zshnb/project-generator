@@ -77,9 +77,14 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
         menu.getChild().forEach(this::setChildMenu);
     }
     <#else>
+    <#assign returnClass>
+        <#if entity.table.associate??>${name?capFirst}Dto
+        <#else>${name?capFirst}
+        </#if>
+    </#assign>
     @Override
-    public ListResponse<${name?capFirst}> list(List${name?capFirst}Request request) {
-        <#if entity.table.searchable>
+    public ListResponse<${returnClass}> list(List${name?capFirst}Request request) {
+        <#if entity.table.searchable && !entity.table.associate??>
             QueryWrapper<${name?capFirst}> queryWrapper = new QueryWrapper<>();
             <#list entity.fields as field>
                 <#if field.column.searchable>
@@ -94,8 +99,13 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
             IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()), queryWrapper);
             return new ListResponse<>(page.getRecords(), page.getTotal());
         <#else>
-            IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
-            return new ListResponse<>(page.getRecords(), page.getTotal());
+            <#if entity.table.associate??>
+                IPage<${name?capFirst}Dto> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()));
+                return new ListResponse<>(page.getRecords(), page.getTotal());
+            <#else>
+                IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
+                return new ListResponse<>(page.getRecords(), page.getTotal());
+            </#if>
         </#if>
     }
     </#if>

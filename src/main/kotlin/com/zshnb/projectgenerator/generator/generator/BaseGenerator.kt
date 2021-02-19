@@ -27,7 +27,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val pageRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_REQUEST_TEMPLATE)
         val pomTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.POM_TEMPLATE)
         val springbootMainTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.SPRING_BOOT_MAIN_APPLICATION)
+            configuration.getTemplate(BackendFreeMarkerFileConstant.SPRING_BOOT_MAIN_APPLICATION_TEMPLATE)
         val responseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.RESPONSE_TEMPLATE)
         val initTableTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.INIT_TABLE_TEMPLATE)
         val applicationTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.APPLICATION_TEMPLATE)
@@ -37,10 +37,11 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val menuDtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.MENU_DTO_TEMPLATE)
         val loginRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
         val staticResourceControllerTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER)
+            configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER_TEMPLATE)
         val localDateTimeMetaObjectHandlerTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER)
-        val uploadResponseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.UPLOAD_RESPONSE)
+            configuration.getTemplate(BackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE)
+        val uploadResponseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.UPLOAD_RESPONSE_TEMPLATE)
+        val dtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.DTO_TEMPLATE)
 
         ioUtil.writeTemplate(initTableTemplate,
             project,
@@ -57,6 +58,10 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "entity" to it,
                 "commonPackageName" to project.config.commonPackagePath()),
                 "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
+            if (it.table.associate != null) {
+                val dto = Dto(it, project.config.dtoPackagePath())
+                ioUtil.writeTemplate(dtoTemplate, dto, "${project.config.dtoDir()}/${it.name.capitalize()}Dto.java")
+            }
         }
 
         project.services.forEach {

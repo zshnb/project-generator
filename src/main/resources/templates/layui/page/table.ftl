@@ -98,6 +98,11 @@
                         </#if>
                     </#if>
                     </#list>
+                    <#if entity.table.associate??>
+                        <#list entity.table.associate.associateResultColumns as column>
+                        { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
+                        </#list>
+                    </#if>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
                 ]
             ],

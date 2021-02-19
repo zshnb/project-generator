@@ -120,7 +120,33 @@
             $ = layui.$,
             laydate = layui.laydate,
             upload = layui.upload
-
+        <#if entity.table.associate??>
+        <#function camelize(s)>
+        <#return s
+            ?replace('(^_+)|(_+$)', '', 'r')
+            ?replace('\\_+(\\w)?', ' $1', 'r')
+            ?replace('([A-Z])', ' $1', 'r')
+            ?capitalize
+            ?replace(' ' , '')
+            ?uncap_first>
+        </#function>
+        $.ajax({
+            type: 'post',
+            url: '/${camelize(entity.table.associate.targetTableName)}/list',
+            data: JSON.stringify({}),
+            contentType: 'application/json',
+            success: function (data) {
+                data.data.forEach(it => {
+                    if (it.id === ${r"[[${" + entity.name + "." + camelize(entity.table.associate.sourceColumnName) + "}]]"}) {
+                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + entity.table.associate.formItemName + "}"}</option>`)
+                    } else {
+                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + entity.table.associate.formItemName + "}"}</option>`)
+                    }
+                })
+                form.render('select')
+            }
+        })
+        </#if>
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({

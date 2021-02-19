@@ -5,13 +5,21 @@ import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 
 /**
  * @param searchable 表是否有支持搜索的列
+ * @param associate 关联表
+ * @param enablePage 是否开启页面
+ * @param permissions 表对应的页面上角色拥有的权限
  * */
-data class Table(val name: String,
-                 var columns: List<Column>,
+data class Table(val name: String = "",
+                 var columns: List<Column> = emptyList(),
                  val permissions: List<TablePermission> = emptyList(),
                  val searchable: Boolean = false,
-                 val enablePage: Boolean = false)
+                 val enablePage: Boolean = false,
+                 val associate: Associate? = null)
 
+/**
+ * @param searchable 知否支持搜索
+ * @param enableFormItem 是否开启表单项
+ * */
 data class Column(val name: String = "",
                   val type: ColumnType = INT,
                   val comment: String = "",
@@ -36,11 +44,34 @@ data class Column(val name: String = "",
 }
 
 /**
+ * 表示表之间的一对多关联
+ * @param targetTableName 被关联的一方表名
+ * @param targetColumnName 被关联的一方表的列名
+ * @param sourceColumnName 与一方表关联的多方表的列名
+ * @param formItemValue 在添加修改页面，下拉框里option需要获取的一方表里的列名
+ * */
+data class Associate(val targetTableName: String,
+                     val targetColumnName: String,
+                     val sourceColumnName: String,
+                     val associateResultColumns: List<AssociateResultColumn>,
+                     val formItemValue: String)
+
+/**
+ * 描述被关联的多方表被筛选出来的列以及供前端显示用的描述
+ * @param originColumnName 原本的列名
+ * @param aliasColumnName 列别名，用在sql里
+ * @param tableFieldTitle 在表格页面显示的描述
+ * */
+data class AssociateResultColumn(val originColumnName: String,
+                                 val aliasColumnName: String,
+                                 val tableFieldTitle: String)
+
+/**
  * 角色在表格页面上的权限
  * @param role 角色名
  * @param operations 可以允许的权限集合
  * */
-data class TablePermission(val role: String, val operations: List<String>)
+data class TablePermission(val role: String = "", val operations: List<String> = emptyList())
 
 enum class ColumnType(val code: Int, val description: String) {
     @Json(name = "int") INT(1, "int"),

@@ -14,7 +14,7 @@ class BackendFreeMarkerFileConstant {
         const val LIST_RESPONSE_TEMPLATE = "ssmp/listResponse.ftl"
         const val PAGE_REQUEST_TEMPLATE = "ssmp/pageRequest.ftl"
         const val POM_TEMPLATE = "ssmp/pom.ftl"
-        const val SPRING_BOOT_MAIN_APPLICATION = "ssmp/springbootMain.ftl"
+        const val SPRING_BOOT_MAIN_APPLICATION_TEMPLATE = "ssmp/springbootMain.ftl"
         const val RESPONSE_TEMPLATE = "ssmp/response.ftl"
         const val INIT_TABLE_TEMPLATE = "ssmp/initTable.ftl"
         const val APPLICATION_TEMPLATE = "ssmp/application.ftl"
@@ -22,8 +22,9 @@ class BackendFreeMarkerFileConstant {
         const val INIT_DATA_TEMPLATE = "ssmp/initData.ftl"
         const val MENU_DTO_TEMPLATE = "ssmp/menuDto.ftl"
         const val LOGIN_REQUEST_TEMPLATE = "ssmp/loginRequest.ftl"
-        const val STATIC_RESOURCE_CONTROLLER = "ssmp/staticResourceController.ftl"
-        const val LOCAL_DATE_TIME_META_OBJECT_HANDLER = "ssmp/localDateTimeMetaObjectHandler.ftl"
-        const val UPLOAD_RESPONSE = "ssmp/uploadResponse.ftl"
+        const val STATIC_RESOURCE_CONTROLLER_TEMPLATE = "ssmp/staticResourceController.ftl"
+        const val LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE = "ssmp/localDateTimeMetaObjectHandler.ftl"
+        const val UPLOAD_RESPONSE_TEMPLATE = "ssmp/uploadResponse.ftl"
+        const val DTO_TEMPLATE = "ssmp/dto.ftl"
     }
 }
