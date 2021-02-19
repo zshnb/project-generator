@@ -1,5 +1,7 @@
 package com.zshnb.projectgenerator.generator.entity
 
+import com.squareup.moshi.*
+
 /**
  * @param form 表单组件
  * @param entity 页面所代表的实体
@@ -17,39 +19,41 @@ class FormComponent(val formItems: List<FormItem>)
  * */
 data class TableField(val title: String, val field: Field)
 
-open class FormItem(val field: Field?, val formItemClassName: String, val require: Boolean)
+open class FormItem(val field: Field?,
+                    val formItemClassName: String,
+                    val require: Boolean)
 
-class InputFormItem(field: Field,
+class InputFormItem(field: Field?,
                     formItemClassName: String,
                     require: Boolean) : FormItem(field, formItemClassName, require)
 
-class PasswordFormItem(field: Field,
+class PasswordFormItem(field: Field?,
                        formItemClassName: String,
                        require: Boolean) : FormItem(field, formItemClassName, require)
 
-class DateTimeFormItem(field: Field,
+class DateTimeFormItem(field: Field?,
                        formItemClassName: String,
                        require: Boolean) : FormItem(field, formItemClassName, require)
 
-class DateFormItem(field: Field,
+class DateFormItem(field: Field?,
                    formItemClassName: String,
                    require: Boolean) : FormItem(field, formItemClassName, require)
 
-class TextAreaFormItem(field: Field,
+class TextAreaFormItem(field: Field?,
                        formItemClassName: String,
                        require: Boolean) : FormItem(field, formItemClassName, require)
 
-class SelectFormItem(field: Field,
+class SelectFormItem(field: Field?,
                      val options: List<Option> = emptyList(),
                      formItemClassName: String,
                      require: Boolean) : FormItem(field, formItemClassName, require)
 
-class RadioFormItem(field: Field,
+class RadioFormItem(field: Field?,
                     val options: List<Option> = emptyList(),
                     formItemClassName: String,
                     require: Boolean) : FormItem(field, formItemClassName, require)
 
-class FileFormItem(field: Field,
+class FileFormItem(field: Field?,
                    formItemClassName: String,
                    require: Boolean) : FormItem(field, formItemClassName, require)
 

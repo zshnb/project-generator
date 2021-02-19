@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
 	id("org.springframework.boot") version "2.4.0"
 	id("io.spring.dependency-management") version "1.0.10.RELEASE"
 	kotlin("jvm") version "1.4.10"
 	kotlin("plugin.spring") version "1.4.10"
+	kotlin("kapt") version "1.4.30"
 }
 
 group = "com.zshnb"
@@ -27,6 +29,7 @@ dependencies {
 	implementation("commons-io:commons-io:2.6")
 	implementation("cn.hutool:hutool-all:5.5.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
 }
 
 tasks.withType<Test> {
