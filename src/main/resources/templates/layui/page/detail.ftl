@@ -62,7 +62,7 @@
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-input-block">
                     <#list formItem.options as option>
-                        <input type="radio" value="${option.value}" title="${option.name}" readonly
+                        <input type="radio" value="${option.value}" title="${option.title}" readonly
                                th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">
                     </#list>
                 </div>
@@ -108,9 +108,9 @@
             success: function (data) {
                 data.data.forEach(it => {
                     if (it.id === ${r"[[${" + entity.name + "." + camelize(entity.table.associate.sourceColumnName) + "}]]"}) {
-                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + entity.table.associate.formItemName + "}"}</option>`)
+                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + entity.table.associate.formItemColumnName + "}"}</option>`)
                     } else {
-                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + entity.table.associate.formItemName + "}"}</option>`)
+                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + entity.table.associate.formItemColumnName + "}"}</option>`)
                     }
                 })
                 form.render('select')
