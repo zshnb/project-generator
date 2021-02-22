@@ -28,6 +28,7 @@ class FormItemAdapter : JsonAdapter<FormItem>() {
                             when (reader.nextName()) {
                                 "title" -> title = reader.nextString()
                                 "value" -> value = reader.nextString()
+                                else -> reader.skipValue()
                             }
                         }
                         reader.endObject()
@@ -47,7 +48,7 @@ class FormItemAdapter : JsonAdapter<FormItem>() {
             RadioFormItem::class.qualifiedName -> RadioFormItem(null, options, formItemClassName, require)
             FileFormItem::class.qualifiedName -> FileFormItem(null, formItemClassName, require)
             SelectFormItem::class.qualifiedName -> SelectFormItem(null, options, formItemClassName, require)
-            else -> throw Exception("un support form item: $formItemClassName")
+            else -> null
         }
     }
 

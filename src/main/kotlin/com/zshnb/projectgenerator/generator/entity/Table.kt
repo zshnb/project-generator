@@ -48,13 +48,13 @@ data class Column(val name: String = "",
  * @param targetTableName 被关联的一方表名
  * @param targetColumnName 被关联的一方表的列名
  * @param sourceColumnName 与一方表关联的多方表的列名
- * @param formItemValue 在添加修改页面，下拉框里option需要获取的一方表里的列名
+ * @param formItemColumnName 在添加修改页面，下拉框里option需要获取的一方表里的列名
  * */
 data class Associate(val targetTableName: String,
                      val targetColumnName: String,
                      val sourceColumnName: String,
                      val associateResultColumns: List<AssociateResultColumn>,
-                     val formItemValue: String)
+                     val formItemColumnName: String)
 
 /**
  * 描述被关联的多方表被筛选出来的列以及供前端显示用的描述
