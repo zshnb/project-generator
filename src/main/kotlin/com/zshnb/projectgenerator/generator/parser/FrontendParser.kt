@@ -17,6 +17,7 @@ class FrontendParser {
             val formItems = pages[index].form.formItems.mapIndexed { innerIndex, formItem ->
                 when (formItem) {
                     is InputFormItem -> InputFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
+                    is PasswordFormItem -> PasswordFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                     is TextAreaFormItem -> TextAreaFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                     is DateTimeFormItem -> DateTimeFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                     is FileFormItem -> FileFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
