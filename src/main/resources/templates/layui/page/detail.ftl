@@ -16,6 +16,27 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <#if entity.table.associates??>
+        <#function camelize(s)>
+            <#return s
+            ?replace('(^_+)|(_+$)', '', 'r')
+            ?replace('\\_+(\\w)?', ' $1', 'r')
+            ?replace('([A-Z])', ' $1', 'r')
+            ?capitalize
+            ?replace(' ' , '')
+            ?uncap_first>
+        </#function>
+        <#list entity.table.associates as associate>
+            <div class="layui-form-item">
+                <label class="layui-form-label">${associate.formItemDescription}</label>
+                <div class="layui-input-block">
+                    <select name="${camelize(associate.sourceColumnName)}">
+                        <option value="">请选择${associate.formItemDescription}</option>
+                    </select>
+                </div>
+            </div>
+        </#list>
+    </#if>
     <#list form.formItems as formItem>
         <#assign comment>${formItem.field.column.comment}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
@@ -34,7 +55,7 @@
                 <div class="layui-input-block">
                     <input type="password" name="${formItemName}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>
-                           placeholder="请输入${comment}" value="" class="layui-input">
+                           placeholder="请输入${comment}" value="" class="layui-input" readonly>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
@@ -90,7 +111,7 @@
         let laydate = layui.laydate,
             form = layui.form,
             $ = layui.$
-        <#if entity.table.associate??>
+        <#if entity.table.associates??>
         <#function camelize(s)>
         <#return s
             ?replace('(^_+)|(_+$)', '', 'r')
@@ -100,22 +121,24 @@
             ?replace(' ' , '')
             ?uncap_first>
         </#function>
+        <#list entity.table.associates as associate>
         $.ajax({
             type: 'post',
-            url: '/${camelize(entity.table.associate.targetTableName)}/list',
+            url: '/${camelize(associate.targetTableName)}/list',
             data: JSON.stringify({}),
             contentType: 'application/json',
             success: function (data) {
                 data.data.forEach(it => {
-                    if (it.id === ${r"[[${" + entity.name + "." + camelize(entity.table.associate.sourceColumnName) + "}]]"}) {
-                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + entity.table.associate.formItemColumnName + "}"}</option>`)
+                    if (it.id === ${r"[[${" + entity.name + "." + camelize(associate.sourceColumnName) + "}]]"}) {
+                        $('select[name=${camelize(associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + associate.formItemColumnName + "}"}</option>`)
                     } else {
-                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + entity.table.associate.formItemColumnName + "}"}</option>`)
+                        $('select[name=${camelize(associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + associate.formItemColumnName + "}"}</option>`)
                     }
                 })
                 form.render('select')
             }
         })
+        </#list>
         </#if>
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
