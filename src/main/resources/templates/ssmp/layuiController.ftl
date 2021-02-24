@@ -62,7 +62,7 @@ public class ${name?capFirst}Controller {
     }
 
     <#assign returnClass>
-        <#if entity.table.associate??>${name?capFirst}Dto
+        <#if entity.table.associates??>${name?capFirst}Dto
         <#else>${className}
         </#if>
     </#assign>
