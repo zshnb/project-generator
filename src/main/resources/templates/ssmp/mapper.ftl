@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ${name?cap_first}Mapper extends BaseMapper<${name?cap_first}> {
-    <#if entity.table.associates??>
+    <#if entity.table.associate??>
         IPage<${name?cap_first}Dto> findDtos(Page<?> page);
     </#if>
 }

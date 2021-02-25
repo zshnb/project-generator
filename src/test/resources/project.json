@@ -13,7 +13,7 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "db",
+    "jdbcDatabase": "studyPlatform",
     "type": 1
   },
   "tables": [
@@ -27,57 +27,23 @@
           "comment": "",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true,
-          "associate": true
-        },
-        {
-          "name": "school_id",
-          "type": "int",
-          "length": 11,
-          "comment": "",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true,
-          "associate": true
+          "enableFormItem": true
         }
       ],
       "enablePage": true,
-      "associates": [
-        {
-          "targetTableName": "test_user",
-          "targetColumnName": "id",
-          "sourceColumnName": "user_id",
-          "associateResultColumns": [
-            {
-              "originColumnName": "name",
-              "aliasColumnName": "userName",
-              "tableFieldTitle": "用户名"
-            }
-          ],
-          "formItemColumnName": "name",
-          "formItemDescription": "用户"
-        },
-        {
-          "targetTableName": "test_school",
-          "targetColumnName": "id",
-          "sourceColumnName": "school_id",
-          "associateResultColumns": [
-            {
-              "originColumnName": "name",
-              "aliasColumnName": "schoolName",
-              "tableFieldTitle": "学校名"
-            }
-          ],
-          "formItemColumnName": "name",
-          "formItemDescription": "学校"
-        }
-      ],
-      "permissions": [
-        {
-          "role": "admin",
-          "operations": ["add", "edit"]
-        }
-      ]
+      "associate": {
+        "targetTableName": "test_user",
+        "targetColumnName": "id",
+        "sourceColumnName": "user_id",
+        "associateResultColumns": [
+          {
+            "originColumnName": "name",
+            "aliasColumnName": "userName",
+            "tableFieldTitle": "用户名"
+          }
+        ],
+        "formItemName": "name"
+      }
     },
     {
       "name": "test_user",
@@ -87,57 +53,21 @@
           "type": "int",
           "length": 11,
           "comment": "",
-          "primary": true,
+          "primary": false,
           "searchable": false,
-          "enableFormItem": false
+          "enableFormItem": true
         },
         {
           "name": "name",
           "type": "varchar",
-          "length": 11,
-          "comment": "名称",
-          "primary": false,
-          "searchable": false,
-          "enableFormItem": true
-        }
-      ],
-      "enablePage": true,
-      "permissions": [
-        {
-          "role": "admin",
-          "operations": ["add", "edit"]
-        }
-      ]
-    },
-    {
-      "name": "test_school",
-      "columns": [
-        {
-          "name": "id",
-          "type": "int",
           "length": 11,
           "comment": "",
-          "primary": true,
-          "searchable": false,
-          "enableFormItem": false
-        },
-        {
-          "name": "name",
-          "type": "varchar",
-          "length": 11,
-          "comment": "名称",
           "primary": false,
           "searchable": false,
           "enableFormItem": true
         }
       ],
-      "enablePage": true,
-      "permissions": [
-        {
-          "role": "admin",
-          "operations": ["add", "edit"]
-        }
-      ]
+      "enablePage": true
     }
   ],
   "pages": [
@@ -156,18 +86,19 @@
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "require": true
-          }
-        ]
-      }
-    },
-    {
-      "form": {
-        "formItems": [
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [
+              {
+                "title": "title",
+                "value": "value"
+              }
+            ]
+          },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true
+
           }
         ]
       }
@@ -179,25 +110,9 @@
       "description": "管理员",
       "menus": [
         {
-          "name": "测试表管理",
+          "name": "用户管理",
           "icon": "",
-          "href": "/testTable/tablePage",
-          "tableName": "",
-          "id": 0,
-          "role": "admin"
-        },
-        {
-          "name": "测试用户管理",
-          "icon": "",
-          "href": "/testUser/tablePage",
-          "tableName": "",
-          "id": 0,
-          "role": "admin"
-        },
-        {
-          "name": "测试学校管理",
-          "icon": "",
-          "href": "/testSchool/tablePage",
+          "href": "/test/tablePage",
           "tableName": "",
           "id": 0,
           "role": "admin"

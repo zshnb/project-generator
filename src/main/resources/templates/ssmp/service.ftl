@@ -15,7 +15,7 @@ public interface I${name?cap_first}Service extends IService<${name?cap_first}> {
     ListResponse<MenuDto> list(String role);
     <#else>
     <#assign returnClass>
-        <#if entity.table.associates??>
+        <#if entity.table.associate??>
             ${name?cap_first}Dto
         <#else>
             ${name?cap_first}
