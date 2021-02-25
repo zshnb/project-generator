@@ -15,25 +15,23 @@ public class ${entity.name?cap_first}Dto {
         <#elseif field.type == 'LocalDate'>
             @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
         </#if>
+        <#if field.column.associate??>
+            <#list field.column.associate.associateResultColumns as column>
+                private String ${column.aliasColumnName};
+                public String get${column.aliasColumnName?cap_first}() {
+                return this.${column.aliasColumnName};
+                }
+                public void set${column.aliasColumnName?cap_first}(String ${column.aliasColumnName}) {
+                this.${column.aliasColumnName} = ${column.aliasColumnName};
+                }
+            </#list>
+        </#if>
         private ${field.type} ${field.name};
-    </#list>
-    <#list entity.fields! as field>
         public ${field.type} get${field.name?cap_first}() {
-            return this.${field.name};
+        return this.${field.name};
         }
         public void set${field.name?cap_first}(${field.type} ${field.name}) {
-            this.${field.name} = ${field.name};
+        this.${field.name} = ${field.name};
         }
     </#list>
-    <#if entity.table.associate??>
-        <#list entity.table.associate.associateResultColumns as column>
-            private String ${column.aliasColumnName};
-            public String get${column.aliasColumnName?cap_first}() {
-                return this.${column.aliasColumnName};
-            }
-            public void set${column.aliasColumnName?cap_first}(String ${column.aliasColumnName}) {
-                this.${column.aliasColumnName} = ${column.aliasColumnName};
-            }
-        </#list>
-    </#if>
 }

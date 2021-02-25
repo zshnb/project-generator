@@ -66,6 +66,15 @@
         let $ = layui.jquery,
             form = layui.form,
             table = layui.table
+        <#function camelize(s)>
+        <#return s
+            ?replace('(^_+)|(_+$)', '', 'r')
+            ?replace('\\_+(\\w)?', ' $1', 'r')
+            ?replace('([A-Z])', ' $1', 'r')
+            ?capitalize
+            ?replace(' ' , '')
+            ?uncap_first>
+        </#function>
 
         table.render({
             elem: '#currentTableId',
@@ -90,19 +99,18 @@
                     <#list form.formItems as formItem>
                     <#assign fieldName>${formItem.field.name}</#assign>
                     <#assign comment>${formItem.field.column.comment}</#assign>
-                    <#if formItem.field.column.enableFormItem>
+                    <#if formItem.field.column.enableFormItem && !formItem.field.column.associate??>
                         <#if formItem.class.simpleName == "FileFormItem">
                         { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
                         <#else>
                         { field: '${fieldName}', title: '${comment}', sort: true },
                         </#if>
-                    </#if>
-                    </#list>
-                    <#if entity.table.associate??>
-                        <#list entity.table.associate.associateResultColumns as column>
-                        { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
+                    <#elseif formItem.field.column.associate??>
+                        <#list formItem.field.column.associate.associateResultColumns as column>
+                            { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                         </#list>
                     </#if>
+                    </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
                 ]
             ],
