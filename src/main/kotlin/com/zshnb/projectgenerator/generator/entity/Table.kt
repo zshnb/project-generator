@@ -50,14 +50,12 @@ data class Column(val name: String = "",
  * @param targetColumnName 被关联的一方表的列名
  * @param sourceColumnName 与一方表关联的多方表的列名
  * @param formItemColumnName 在添加修改页面，下拉框里option需要获取的一方表里的列名
- * @param formItemDescription 在添加修改页面，下拉框所显示的描述
  * */
 data class Associate(val targetTableName: String,
                      val targetColumnName: String,
                      val sourceColumnName: String,
                      val associateResultColumns: List<AssociateResultColumn>,
-                     val formItemColumnName: String,
-                     val formItemDescription: String)
+                     val formItemColumnName: String)
 
 /**
  * 描述被关联的多方表被筛选出来的列以及供前端显示用的描述
