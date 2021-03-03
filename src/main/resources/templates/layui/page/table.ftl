@@ -90,7 +90,7 @@
                     <#list form.formItems as formItem>
                     <#assign fieldName>${formItem.field.name}</#assign>
                     <#assign comment>${formItem.field.column.comment}</#assign>
-                    <#if formItem.field.column.enableFormItem && !formItem.field.column.associate>
+                    <#if formItem.field.column.enableFormItem>
                         <#if formItem.class.simpleName == "FileFormItem">
                         { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
                         <#else>
@@ -98,11 +98,9 @@
                         </#if>
                     </#if>
                     </#list>
-                    <#if entity.table.associates??>
-                        <#list entity.table.associates as associate>
-                            <#list associate.associateResultColumns as column>
-                            { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
-                            </#list>
+                    <#if entity.table.associate??>
+                        <#list entity.table.associate.associateResultColumns as column>
+                        { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                         </#list>
                     </#if>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
