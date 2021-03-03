@@ -37,7 +37,8 @@ class BackendParser(private val moshi: Moshi,
                 Column("id", INT, length = 11, primary = true),
                 Column("create_at", DATETIME, length = 0),
                 Column("update_at", DATETIME, length = 0)
-            )).toList(), it.permissions, it.columns.any { column -> column.searchable }, it.enablePage, it.associate)
+            )).toList(), it.permissions, it.columns.any { column -> column.searchable },
+                it.enablePage, it.columns.any { column -> column.associate != null })
         }
         project.roles.forEach { role ->
             role.menus.forEach {

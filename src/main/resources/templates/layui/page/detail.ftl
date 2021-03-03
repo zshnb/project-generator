@@ -16,6 +16,15 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <#function camelize(s)>
+        <#return s
+        ?replace('(^_+)|(_+$)', '', 'r')
+        ?replace('\\_+(\\w)?', ' $1', 'r')
+        ?replace('([A-Z])', ' $1', 'r')
+        ?capitalize
+        ?replace(' ' , '')
+        ?uncap_first>
+    </#function>
     <#list form.formItems as formItem>
         <#assign comment>${formItem.field.column.comment}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
@@ -34,7 +43,7 @@
                 <div class="layui-input-block">
                     <input type="password" name="${formItemName}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>
-                           placeholder="请输入${comment}" value="" class="layui-input">
+                           placeholder="请输入${comment}" value="" class="layui-input" readonly>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
@@ -46,17 +55,29 @@
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "SelectFormItem">
-            <div class="layui-form-item">
-                <label class="layui-form-label">${comment}</label>
-                <div class="layui-input-block">
-                    <select name="${formItemName}" disabled>
-                        <#list formItem.options as option>
-                            <option value="${option.value}"
-                                    th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
-                        </#list>
-                    </select>
+            <#if formItem.field.column.associate??>
+                <div class="layui-form-item">
+                    <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                    <div class="layui-input-block">
+                        <select name="${camelize(formItem.field.column.associate.sourceColumnName)}"
+                                <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>
+                            <option value="">请选择${comment}</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+            <#else>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">${comment}</label>
+                    <div class="layui-input-block">
+                        <select name="${formItemName}" disabled>
+                            <#list formItem.options as option>
+                                <option value="${option.value}"
+                                        th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
+                            </#list>
+                        </select>
+                    </div>
+                </div>
+            </#if>
         <#elseif formItem.class.simpleName == "RadioFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label">${comment}</label>
@@ -90,33 +111,6 @@
         let laydate = layui.laydate,
             form = layui.form,
             $ = layui.$
-        <#if entity.table.associate??>
-        <#function camelize(s)>
-        <#return s
-            ?replace('(^_+)|(_+$)', '', 'r')
-            ?replace('\\_+(\\w)?', ' $1', 'r')
-            ?replace('([A-Z])', ' $1', 'r')
-            ?capitalize
-            ?replace(' ' , '')
-            ?uncap_first>
-        </#function>
-        $.ajax({
-            type: 'post',
-            url: '/${camelize(entity.table.associate.targetTableName)}/list',
-            data: JSON.stringify({}),
-            contentType: 'application/json',
-            success: function (data) {
-                data.data.forEach(it => {
-                    if (it.id === ${r"[[${" + entity.name + "." + camelize(entity.table.associate.sourceColumnName) + "}]]"}) {
-                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + entity.table.associate.formItemColumnName + "}"}</option>`)
-                    } else {
-                        $('select[name=${camelize(entity.table.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + entity.table.associate.formItemColumnName + "}"}</option>`)
-                    }
-                })
-                form.render('select')
-            }
-        })
-        </#if>
         <#list form.formItems as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
@@ -129,6 +123,23 @@
             elem: '#${formItem.field.name}',
             type: 'date',
             value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"}
+        })
+        <#elseif formItem.field.column.associate??>
+        $.ajax({
+            type: 'post',
+            url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
+            data: JSON.stringify({}),
+            contentType: 'application/json',
+            success: function (data) {
+                data.data.forEach(it => {
+                    if (it.id === ${r"[[${" + entity.name + "." + camelize(formItem.field.column.associate.sourceColumnName) + "}]]"}) {
+                        $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    } else {
+                        $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    }
+                })
+                form.render('select')
+            }
         })
         </#if>
         </#list>

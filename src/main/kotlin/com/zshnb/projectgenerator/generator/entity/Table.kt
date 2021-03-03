@@ -5,7 +5,7 @@ import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 
 /**
  * @param searchable 表是否有支持搜索的列
- * @param associate 关联表
+ * @param associates 关联表
  * @param enablePage 是否开启页面
  * @param permissions 表对应的页面上角色拥有的权限
  * */
@@ -14,7 +14,7 @@ data class Table(val name: String = "",
                  val permissions: List<TablePermission> = emptyList(),
                  val searchable: Boolean = false,
                  val enablePage: Boolean = false,
-                 val associate: Associate? = null)
+                 val associate: Boolean = false)
 
 /**
  * @param searchable 知否支持搜索
@@ -26,7 +26,8 @@ data class Column(val name: String = "",
                   val length: Int = 0,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
-                  val enableFormItem: Boolean = true) {
+                  val enableFormItem: Boolean = true,
+                  val associate: Associate? = null) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -74,13 +75,26 @@ data class AssociateResultColumn(val originColumnName: String,
 data class TablePermission(val role: String = "", val operations: List<String> = emptyList())
 
 enum class ColumnType(val code: Int, val description: String) {
-    @Json(name = "int") INT(1, "int"),
-    @Json(name = "tinyint") TINYINT(2, "tinyint"),
-    @Json(name = "varchar") VARCHAR(3, "varchar"),
-    @Json(name = "datetime") DATETIME(4, "datetime"),
-    @Json(name = "double") DOUBLE(5, "double"),
-    @Json(name = "text") TEXT(6, "text"),
-    @Json(name = "date") LOCAL_DATE(7, "date")
+    @Json(name = "int")
+    INT(1, "int"),
+
+    @Json(name = "tinyint")
+    TINYINT(2, "tinyint"),
+
+    @Json(name = "varchar")
+    VARCHAR(3, "varchar"),
+
+    @Json(name = "datetime")
+    DATETIME(4, "datetime"),
+
+    @Json(name = "double")
+    DOUBLE(5, "double"),
+
+    @Json(name = "text")
+    TEXT(6, "text"),
+
+    @Json(name = "date")
+    LOCAL_DATE(7, "date")
     ;
 
     companion object {
