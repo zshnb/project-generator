@@ -21,6 +21,15 @@
       "name": "test_table",
       "columns": [
         {
+          "name": "name",
+          "type": "varchar",
+          "length": 11,
+          "comment": "名称",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true
+        },
+        {
           "name": "user_id",
           "type": "int",
           "length": 11,

@@ -11,8 +11,8 @@
                         ${column.associate.targetTableName}.${associateColumn.originColumnName} as ${associateColumn.aliasColumnName}
                         <#if associateColumn_has_next>,</#if>
                     </#list>
+                    <#if entity.table.columns[column_index + 1]?? && entity.table.columns[column_index + 1].associate??>,</#if>
                 </#if>
-                <#if entity.table.columns[column_index + 1]?? && entity.table.columns[column_index + 1].associate??>,</#if>
             </#list>
             from ${entity.table.name}
             <#list entity.table.columns as column>
