@@ -21,6 +21,6 @@ public interface I${name?cap_first}Service extends IService<${name?cap_first}> {
             ${name?cap_first}
         </#if>
     </#assign>
-    ListResponse<${returnClass}> list(List${name?cap_first}Request request);
+    ListResponse<<#compress>${returnClass}</#compress>> list(List${name?cap_first}Request request);
     </#if>
 }

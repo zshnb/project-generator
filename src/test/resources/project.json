@@ -130,7 +130,16 @@
           "length": 11,
           "comment": "名称",
           "primary": false,
-          "searchable": false,
+          "searchable": true,
+          "enableFormItem": true
+        },
+        {
+          "name": "type",
+          "type": "varchar",
+          "length": 11,
+          "comment": "类型",
+          "primary": false,
+          "searchable": true,
           "enableFormItem": true
         }
       ],
@@ -176,6 +185,16 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [
+              {
+                "title": "类型1",
+                "value": "type1"
+              }
+            ]
           }
         ]
       }
