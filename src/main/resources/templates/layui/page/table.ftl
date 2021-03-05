@@ -41,7 +41,9 @@
                                             <div class="layui-input-block">
                                                 <select name="${formItem.field.name}">
                                                     <option value="">请选择${formItem.field.column.comment}</option>
-                                                    <#list formItem.options as option></#list>
+                                                    <#list formItem.options as option>
+                                                        <option value="${option.value}">${option.title}</option>
+                                                    </#list>
                                                 </select>
                                             </div>
                                         </div>

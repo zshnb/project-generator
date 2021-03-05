@@ -62,13 +62,15 @@ public class ${name?capFirst}Controller {
     }
 
     <#assign returnClass>
-        <#if entity.table.associate>${name?capFirst}Dto
-        <#else>${className}
+        <#if entity.table.associate>
+            ${name?capFirst}Dto
+        <#else>
+            ${className}
         </#if>
     </#assign>
     @PostMapping("/list")
     @ResponseBody
-    public ListResponse<${returnClass}> list(@RequestBody List${className}Request request, HttpSession session) {
+    public ListResponse<<#compress>${returnClass}</#compress>> list(@RequestBody List${className}Request request, HttpSession session) {
         User user = (User) session.getAttribute("user");
         return ${service}.list(request);
     }
