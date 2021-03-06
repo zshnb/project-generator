@@ -78,12 +78,14 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
     }
     <#else>
     <#assign returnClass>
-        <#if entity.table.associate>${name?capFirst}Dto
-        <#else>${name?capFirst}
+        <#if entity.table.associate>
+            ${name?capFirst}Dto
+        <#else>
+            ${name?capFirst}
         </#if>
     </#assign>
     @Override
-    public ListResponse<${returnClass}> list(List${name?capFirst}Request request) {
+    public ListResponse<<#compress>${returnClass}</#compress>> list(List${name?capFirst}Request request) {
         <#if entity.table.searchable && !entity.table.associate>
             QueryWrapper<${name?capFirst}> queryWrapper = new QueryWrapper<>();
             <#list entity.fields as field>
