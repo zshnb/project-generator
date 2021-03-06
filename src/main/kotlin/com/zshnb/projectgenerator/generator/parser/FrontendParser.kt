@@ -24,6 +24,7 @@ class FrontendParser {
                         is TextAreaFormItem -> TextAreaFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                         is DateTimeFormItem -> DateTimeFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                         is FileFormItem -> FileFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
+                        is ImageFormItem -> ImageFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                         is SelectFormItem -> SelectFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require)
                         is RadioFormItem -> RadioFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require)
                         is DateFormItem -> DateFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
