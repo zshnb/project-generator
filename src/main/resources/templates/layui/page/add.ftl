@@ -100,11 +100,11 @@
                     ></textarea>
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "FileFormItem">
+        <#elseif formItem.class.simpleName == "FileFormItem" || formItem.class.simpleName == "ImageFormItem">
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">${comment}</label>
                 <div class="layui-upload">
-                    <button type="button" class="layui-btn layui-btn-normal" id="upload">选择文件</button>
+                    <button type="button" class="layui-btn layui-btn-normal" id="upload-${formItem.field.name}">选择文件</button>
                     <div class="layui-upload-list">
                         <table class="layui-table">
                             <thead>
@@ -115,10 +115,10 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody id="file-list"></tbody>
+                            <tbody id="file-list-${formItem.field.name}"></tbody>
                         </table>
                     </div>
-                    <button type="button" class="layui-btn" id="upload-btn">开始上传</button>
+                    <button type="button" class="layui-btn" id="upload-btn-${formItem.field.name}">开始上传</button>
                 </div>
                 <input name="${formItemName}" type="text" hidden>
             </div>
@@ -148,16 +148,16 @@
             elem: '#${formItem.field.name}',
             type: 'date'
         })
-        <#elseif formItem.class.simpleName == "FileFormItem">
+        <#elseif formItem.class.simpleName == "FileFormItem" || formItem.class.simpleName == "ImageFormItem">
         //多文件列表示例
-        let imageList = $('#file-list')
-        let uploadListIns = upload.render({
-            elem: '#upload',
+        let imageList${formItem.field.name?cap_first} = $('#file-list-${formItem.field.name}')
+        let uploadListIns${formItem.field.name?cap_first} = upload.render({
+            elem: '#upload-${formItem.field.name}',
             url: '/upload',
             accept: 'file',
             multiple: false,
             auto: false,
-            bindAction: '#upload-btn',
+            bindAction: '#upload-btn-${formItem.field.name}',
             choose: function (obj) {
                 let files = this.files = obj.pushFile() //将每次选择的文件追加到文件队列
                 //读取本地文件
@@ -182,13 +182,13 @@
                     tr.find('.delete-btn').on('click', function () {
                         delete files[index] //删除对应的文件
                         tr.remove()
-                        uploadListIns.config.elem.next()[0].value = '' //清空 input file 值，以免删除后出现同名文件不可选
+                        uploadListIns${formItem.field.name?cap_first}.config.elem.next()[0].value = '' //清空 input file 值，以免删除后出现同名文件不可选
                     })
-                    imageList.append(tr)
+                    imageList${formItem.field.name?cap_first}.append(tr)
                 })
             },
             done: function (res, index) {
-                let tr = imageList.find(${r"`tr#upload-${index}`"}),
+                let tr = imageList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
                 tds.eq(3).html('') //清空操作
@@ -196,7 +196,7 @@
                 return delete this.files[index] //删除文件队列已经上传成功的文件
             },
             error: function () {
-                let tr = imageList.find(${r"`tr#upload-${index}`"}),
+                let tr = imageList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>')
                 tds.eq(3).find('.reload-btn').removeClass('layui-hide') //显示重传

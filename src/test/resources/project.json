@@ -141,6 +141,24 @@
           "primary": false,
           "searchable": true,
           "enableFormItem": true
+        },
+        {
+          "name": "logo",
+          "type": "varchar",
+          "length": 11,
+          "comment": "logo",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true
+        },
+        {
+          "name": "doc",
+          "type": "varchar",
+          "length": 11,
+          "comment": "文档",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true
         }
       ],
       "enablePage": true,
@@ -195,6 +213,14 @@
                 "value": "type1"
               }
             ]
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "require": false
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
+            "require": false
           }
         ]
       }
