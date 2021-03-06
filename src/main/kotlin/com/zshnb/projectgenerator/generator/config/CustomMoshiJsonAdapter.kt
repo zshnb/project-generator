@@ -5,7 +5,7 @@ import com.zshnb.projectgenerator.generator.entity.*
 import org.springframework.stereotype.Component
 
 /**
- * @see https://bladecoder.medium.com/advanced-json-parsing-techniques-using-moshi-and-kotlin-daf56a7b963d
+ * @see [https://bladecoder.medium.com/advanced-json-parsing-techniques-using-moshi-and-kotlin-daf56a7b963d]
  * */
 @Component
 class FormItemAdapter : JsonAdapter<FormItem>() {
@@ -47,6 +47,7 @@ class FormItemAdapter : JsonAdapter<FormItem>() {
             TextAreaFormItem::class.qualifiedName -> TextAreaFormItem(null, formItemClassName, require)
             RadioFormItem::class.qualifiedName -> RadioFormItem(null, options, formItemClassName, require)
             FileFormItem::class.qualifiedName -> FileFormItem(null, formItemClassName, require)
+            ImageFormItem::class.qualifiedName -> ImageFormItem(null, formItemClassName, require)
             SelectFormItem::class.qualifiedName -> SelectFormItem(null, options, formItemClassName, require)
             else -> null
         }

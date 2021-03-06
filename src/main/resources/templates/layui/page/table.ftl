@@ -76,6 +76,16 @@
             <a th:if="${r"${#lists.contains(permissions, 'delete')}"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
+        <#list form.formItems as formItem>
+            <#if formItem.class.simpleName == "FileFormItem">
+                <script type="text/html" id="${formItem.field.name}">
+                    {{#
+                        let fileName = d.${formItem.field.name}.substring(d.${formItem.field.name}.indexOf('=') + 1)
+                    }}
+                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${formItem.field.column.comment}</a>
+                </script>
+            </#if>
+        </#list>
     </div>
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
@@ -115,19 +125,21 @@
             cols: [
                 [
                     <#list form.formItems as formItem>
-                    <#assign fieldName>${formItem.field.name}</#assign>
-                    <#assign comment>${formItem.field.column.comment}</#assign>
-                    <#if formItem.field.column.enableFormItem && !formItem.field.column.associate??>
-                        <#if formItem.class.simpleName == "FileFormItem">
-                        { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
-                        <#else>
-                        { field: '${fieldName}', title: '${comment}', sort: true },
+                        <#assign fieldName>${formItem.field.name}</#assign>
+                        <#assign comment>${formItem.field.column.comment}</#assign>
+                        <#if formItem.field.column.enableFormItem && !formItem.field.column.associate??>
+                            <#if formItem.class.simpleName == "ImageFormItem">
+                            { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
+                            <#elseif formItem.class.simpleName == "FileFormItem">
+                            { field: '${fieldName}', title: '${comment}', sort: true, templet: '#${formItem.field.name}'},
+                            <#else>
+                            { field: '${fieldName}', title: '${comment}', sort: true },
+                            </#if>
+                        <#elseif formItem.field.column.associate??>
+                            <#list formItem.field.column.associate.associateResultColumns as column>
+                                { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
+                            </#list>
                         </#if>
-                    <#elseif formItem.field.column.associate??>
-                        <#list formItem.field.column.associate.associateResultColumns as column>
-                            { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
-                        </#list>
-                    </#if>
                     </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
                 ]
