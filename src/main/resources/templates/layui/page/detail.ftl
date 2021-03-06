@@ -97,11 +97,6 @@
                     </textarea>
                 </div>
             </div>
-        <#elseif formItem.class.simpleName == "FileFormItem">
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">${comment}</label>
-                <img th:src="${r"${" + name + "." + formItemName + "}"}"/>
-            </div>
         </#if>
     </#list>
 </div>
