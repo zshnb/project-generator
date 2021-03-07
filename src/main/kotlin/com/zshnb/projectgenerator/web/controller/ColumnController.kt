@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/column")
 class ColumnController {
     @Autowired
-    private lateinit var columnService: ColumnService
+    private lateinit var columnServiceImpl: ColumnServiceImpl
 
     @GetMapping("/types")
-    fun listColumnTypes(): ListResponse<String> = ListResponse.ok(columnService.listColumnType())
+    fun listColumnTypes(): ListResponse<String> = ListResponse.ok(columnServiceImpl.listColumnType())
 }

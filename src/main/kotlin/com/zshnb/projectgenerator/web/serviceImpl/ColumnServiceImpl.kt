@@ -4,6 +4,6 @@ import com.zshnb.projectgenerator.generator.entity.ColumnType
 import org.springframework.stereotype.Service
 
 @Service
-class ColumnService {
+class ColumnServiceImpl {
     fun listColumnType(): List<String> = ColumnType.values().map { it.description }
 }
