@@ -25,6 +25,7 @@ dependencies {
 	implementation("com.squareup.moshi:moshi-kotlin:1.11.0")
 	implementation("commons-io:commons-io:2.6")
 	implementation("cn.hutool:hutool-all:5.5.0")
+	implementation("mysql:mysql-connector-java:8.0.23")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

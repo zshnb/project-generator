@@ -15,7 +15,8 @@ class PageController {
         FormItemType("文本域", TextAreaFormItem::class.qualifiedName!!),
         FormItemType("日期时间选择框", DateTimeFormItem::class.qualifiedName!!),
         FormItemType("日期选择框", DateFormItem::class.qualifiedName!!),
-        FormItemType("上传文件", FileFormItem::class.qualifiedName!!)
+        FormItemType("上传文件", FileFormItem::class.qualifiedName!!),
+        FormItemType("上传图片", ImageFormItem::class.qualifiedName!!),
     )
 
     @GetMapping("/form-items")
