@@ -27,7 +27,7 @@ class TableComponent(val fields: List<TableField>)
 data class TableField(val title: String,
                       val formItemClassName: String,
                       val field: Field?,
-                      val mapping: Mapping?)
+                      val mappings: List<Mapping>?)
 
 /**
  * 表格列值与显示内容的映射

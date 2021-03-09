@@ -76,13 +76,28 @@
             <a th:if="${r"${#lists.contains(permissions, 'delete')}"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
-        <#list form.formItems as formItem>
-            <#if formItem.class.simpleName == "FileFormItem">
-                <script type="text/html" id="${formItem.field.name}">
+        <#list table.tableFields as tableField>
+            <#if tableField.formItemClassName == "FileFormItem">
+                <script type="text/html" id="${tableField.field.name}">
                     {{#
-                        let fileName = d.${formItem.field.name}.substring(d.${formItem.field.name}.indexOf('=') + 1)
+                        let fileName = d.${tableField.field.name}.substring(d.${tableField.field.name}.indexOf('=') + 1)
                     }}
-                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${formItem.field.column.comment}</a>
+                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${tableField.field.column.comment}</a>
+                </script>
+            <#elseif tableField.mappings??>
+                <script type="text/html" id="${tableField.field.name}">
+                    {{#
+                        let ${tableField.field.name}
+                        switch (d.${tableField.field.name}) {
+                            <#list tableField.mappings as mapping>
+                                case ${mapping.source}: {
+                                    ${tableField.field.name} = ${mapping.target}
+                                    break;
+                                }
+                            </#list>
+                        }
+                    }}
+                    <span>${tableField.field.name}</span>
                 </script>
             </#if>
         </#list>
@@ -124,21 +139,23 @@
             },
             cols: [
                 [
-                    <#list form.formItems as formItem>
-                        <#assign fieldName>${formItem.field.name}</#assign>
-                        <#assign comment>${formItem.field.column.comment}</#assign>
-                        <#if formItem.field.column.enableFormItem && !formItem.field.column.associate??>
-                            <#if formItem.class.simpleName == "ImageFormItem">
-                            { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
-                            <#elseif formItem.class.simpleName == "FileFormItem">
-                            { field: '${fieldName}', title: '${comment}', sort: true, templet: '#${formItem.field.name}'},
+                    <#list table.tableFields as tableField>
+                        <#assign fieldName>${tableField.field.name}</#assign>
+                        <#assign title>${tableField.title}</#assign>
+                        <#if tableField.field.column.enableFormItem && !tableField.field.column.associate??>
+                            <#if tableField.formItemClassName == "ImageFormItem">
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
+                            <#elseif tableField.formItemClassName == "FileFormItem">
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}'},
                             <#else>
-                            { field: '${fieldName}', title: '${comment}', sort: true },
+                            { field: '${fieldName}', title: '${title}', sort: true },
                             </#if>
-                        <#elseif formItem.field.column.associate??>
-                            <#list formItem.field.column.associate.associateResultColumns as column>
+                        <#elseif tableField.field.column.associate??>
+                            <#list tableField.field.column.associate.associateResultColumns as column>
                                 { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                             </#list>
+                        <#elseif tableField.mapping???>
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
                         </#if>
                     </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }
