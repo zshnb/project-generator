@@ -185,6 +185,18 @@
             "options": []
           }
         ]
+      },
+      "table": {
+        "tableFields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": ""
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": ""
+          }
+        ]
       }
     },
     {

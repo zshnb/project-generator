@@ -27,6 +27,7 @@ data class Column(val name: String = "",
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
                   val enableFormItem: Boolean = true,
+                  val enableTableField: Boolean = true,
                   val associate: Associate? = null) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
