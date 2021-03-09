@@ -31,7 +31,10 @@ class FrontendParser {
                         else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
                     }
                 }
-                Page(entity, FormComponent(formItems))
+                val tableFields = pages[index].table.fields.mapIndexed { innerIndex, tableField ->
+                    TableField(tableField.title, fields[innerIndex], tableField.mapping)
+                }
+                Page(entity, FormComponent(formItems), TableComponent(tableFields))
             }
         }
     }
