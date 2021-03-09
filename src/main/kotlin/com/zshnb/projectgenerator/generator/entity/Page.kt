@@ -25,6 +25,7 @@ class TableComponent(val fields: List<TableField>)
  * @param title 列在表格页面上显示的描述
  * */
 data class TableField(val title: String,
+                      val formItemClassName: String,
                       val field: Field?,
                       val mapping: Mapping?)
 

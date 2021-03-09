@@ -16,8 +16,9 @@ class FrontendParser {
             if (!entity.table.enablePage) {
                 null
             } else {
+                val page = pages[index]
                 val fields = entity.fields.filter { it.column.enableFormItem }
-                val formItems = pages[index].form.formItems.mapIndexed { innerIndex, formItem ->
+                val formItems = page.form.formItems.mapIndexed { innerIndex, formItem ->
                     when (formItem) {
                         is InputFormItem -> InputFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
                         is PasswordFormItem -> PasswordFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
@@ -31,8 +32,8 @@ class FrontendParser {
                         else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
                     }
                 }
-                val tableFields = pages[index].table.fields.mapIndexed { innerIndex, tableField ->
-                    TableField(tableField.title, fields[innerIndex], tableField.mapping)
+                val tableFields = page.table.fields.mapIndexed { innerIndex, tableField ->
+                    TableField(tableField.title, formItems[innerIndex].formItemClassName, fields[innerIndex], tableField.mapping)
                 }
                 Page(entity, FormComponent(formItems), TableComponent(tableFields))
             }
