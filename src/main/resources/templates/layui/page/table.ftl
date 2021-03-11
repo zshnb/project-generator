@@ -22,35 +22,33 @@
                 <legend>搜索信息</legend>
                 <div style="margin: 10px 10px 10px 10px">
                     <form class="layui-form layui-form-pane" action="">
-                        <#list form.formItems as formItem>
-                            <#if formItem.field.column.searchable>
-                                <#switch formItem.class.simpleName>
-                                    <#case "InputFormItem">
-                                        <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <#list form.formItems as formItem>
+                                <#if formItem.field.column.searchable>
+                                    <#switch formItem.class.simpleName>
+                                        <#case "InputFormItem">
                                             <div class="layui-inline">
                                                 <label class="layui-form-label">${formItem.field.column.comment}</label>
                                                 <div class="layui-input-inline">
                                                     <input type="text" name="${formItem.field.name}" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <#break>
-                                    <#case "SelectFormItem">
-                                        <div class="layui-form-item">
-                                            <label class="layui-form-label"></label>
-                                            <div class="layui-input-block">
-                                                <select name="${formItem.field.name}">
-                                                    <option value="">请选择${formItem.field.column.comment}</option>
-                                                    <#list formItem.options as option>
-                                                        <option value="${option.value}">${option.title}</option>
-                                                    </#list>
-                                                </select>
+                                            <#break>
+                                        <#case "SelectFormItem">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label"></label>
+                                                <div class="layui-input-inline">
+                                                    <select name="${formItem.field.name}">
+                                                        <option value="">请选择${formItem.field.column.comment}</option>
+                                                        <#list formItem.options as option>
+                                                            <option value="${option.value}">${option.title}</option>
+                                                        </#list>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                </#switch>
-                            </#if>
-                        </#list>
-                        <div class="layui-form-item">
+                                    </#switch>
+                                </#if>
+                            </#list>
                             <div class="layui-inline">
                                 <button type="submit" class="layui-btn layui-btn-primary" lay-submit
                                         lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
