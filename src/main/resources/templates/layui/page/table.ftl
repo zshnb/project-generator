@@ -24,11 +24,12 @@
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
                             <#list form.formItems as formItem>
+                                <#assign label>${formItem.label}</#assign>
                                 <#if formItem.field.column.searchable>
                                     <#switch formItem.class.simpleName>
                                         <#case "InputFormItem">
                                             <div class="layui-inline">
-                                                <label class="layui-form-label">${formItem.field.column.comment}</label>
+                                                <label class="layui-form-label">${label}</label>
                                                 <div class="layui-input-inline">
                                                     <input type="text" name="${formItem.field.name}" autocomplete="off" class="layui-input">
                                                 </div>
@@ -39,7 +40,7 @@
                                                 <label class="layui-form-label"></label>
                                                 <div class="layui-input-inline">
                                                     <select name="${formItem.field.name}">
-                                                        <option value="">请选择${formItem.field.column.comment}</option>
+                                                        <option value="">请选择${label}</option>
                                                         <#list formItem.options as option>
                                                             <option value="${option.value}">${option.title}</option>
                                                         </#list>
@@ -75,25 +76,23 @@
         </script>
 
         <#list table.fields as tableField>
-            <#if tableField.formItemClassName == "FileFormItem">
+            <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                 <script type="text/html" id="${tableField.field.name}">
                     {{#
                         let fileName = d.${tableField.field.name}.substring(d.${tableField.field.name}.indexOf('=') + 1)
                     }}
-                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${tableField.field.column.comment}</a>
+                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${tableField.title}</a>
                 </script>
             <#elseif tableField.mappings??>
                 <script type="text/html" id="${tableField.field.name}">
                     <#list tableField.mappings as mapping>
-                        <#if tableField.field.column.type == "Integer" || tableField.field.column.type == "DOUBLE">
+                        <#if tableField.field.type == "Integer" || tableField.field.type == "DOUBLE">
                             {{# if(d.${tableField.field.name} === ${mapping.source}){ }}
-                            <span>{{${tableField.field.name}}</span>
-                            {{# } }}
-                        <#elseif tableField.field.column.type == "String">
+                        <#elseif tableField.field.type == "String">
                             {{# if(d.${tableField.field.name} === '${mapping.source}'){ }}
-                            <span>{{${tableField.field.name}}</span>
-                            {{# } }}
                         </#if>
+                        <span>${mapping.target}}</span>
+                        {{# } }}
                     </#list>
                 </script>
             </#if>
@@ -139,11 +138,13 @@
                     <#list table.fields as tableField>
                         <#assign fieldName>${tableField.field.name}</#assign>
                         <#assign title>${tableField.title}</#assign>
-                        <#if tableField.field.column.enableFormItem && !tableField.field.column.associate??>
-                            <#if tableField.formItemClassName == "ImageFormItem">
+                        <#if tableField.field.column.enableTableField && !tableField.field.column.associate??>
+                            <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.ImageFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
-                            <#elseif tableField.formItemClassName == "FileFormItem">
+                            <#elseif tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}'},
+                            <#elseif tableField.mappings??>
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
                             <#else>
                             { field: '${fieldName}', title: '${title}', sort: true },
                             </#if>
@@ -151,8 +152,6 @@
                             <#list tableField.field.column.associate.associateResultColumns as column>
                                 { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                             </#list>
-                        <#elseif tableField.mappings??>
-                            { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
                         </#if>
                     </#list>
                     { title: '操作', toolbar: '#currentTableBar', align: 'center' }

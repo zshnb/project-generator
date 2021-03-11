@@ -91,7 +91,7 @@
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit"]
+          "operations": ["add", "edit", "delete"]
         }
       ]
     },
@@ -105,7 +105,8 @@
           "comment": "",
           "primary": true,
           "searchable": false,
-          "enableFormItem": false
+          "enableFormItem": false,
+          "enableTableField": false
         },
         {
           "name": "name",
@@ -114,14 +115,15 @@
           "comment": "名称",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         }
       ],
-      "enablePage": false,
+      "enablePage": true,
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit"]
+          "operations": ["add", "edit", "delete"]
         }
       ]
     },
@@ -135,7 +137,8 @@
           "comment": "",
           "primary": true,
           "searchable": false,
-          "enableFormItem": false
+          "enableFormItem": false,
+          "enableTableField": false
         },
         {
           "name": "name",
@@ -144,7 +147,8 @@
           "comment": "名称",
           "primary": false,
           "searchable": true,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "type",
@@ -153,7 +157,8 @@
           "comment": "类型",
           "primary": false,
           "searchable": true,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "logo",
@@ -162,7 +167,8 @@
           "comment": "logo",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "doc",
@@ -171,14 +177,15 @@
           "comment": "文档",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         }
       ],
-      "enablePage": false,
+      "enablePage": true,
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit"]
+          "operations": ["add", "edit", "delete"]
         }
       ]
     }
@@ -224,6 +231,10 @@
             "title": "用户"
           },
           {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "学校"
+          },
+          {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "title": "状态",
             "mappings": [
@@ -245,7 +256,16 @@
         "formItems": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "require": true
+            "require": true,
+            "label": "名称"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "title": "名称",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
           }
         ]
       }
@@ -255,7 +275,8 @@
         "formItems": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "require": true
+            "require": true,
+            "label": "名称"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
@@ -265,15 +286,38 @@
                 "title": "类型1",
                 "value": "type1"
               }
-            ]
+            ],
+            "label": "类型"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
-            "require": false
+            "require": false,
+            "label": "图片"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
-            "require": false
+            "require": false,
+            "label": "文档"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "类型"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "title": "图片"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
+            "title": "文档"
           }
         ]
       }
