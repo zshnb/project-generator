@@ -37,6 +37,14 @@ data class TableField(val title: String,
  * */
 data class Mapping(val source: Any, val target: Any)
 
+/**
+ * 表单项
+ * @param field 列对应实体的属性域
+ * @param label 标签
+ * @param formItemClassName 具体表单项类
+ * @param require 必填项
+ * @param
+ * */
 open class FormItem(val label: String,
                     val formItemClassName: String,
                     val require: Boolean,

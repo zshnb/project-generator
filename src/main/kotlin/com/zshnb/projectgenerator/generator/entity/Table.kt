@@ -22,7 +22,6 @@ data class Table(val name: String = "",
  * */
 data class Column(val name: String = "",
                   val type: ColumnType = INT,
-                  val comment: String = "",
                   val length: Int = 0,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
