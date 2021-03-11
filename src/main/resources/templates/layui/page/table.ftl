@@ -84,18 +84,17 @@
                 </script>
             <#elseif tableField.mappings??>
                 <script type="text/html" id="${tableField.field.name}">
-                    {{#
-                        let ${tableField.field.name}
-                        switch (d.${tableField.field.name}) {
-                            <#list tableField.mappings as mapping>
-                                case ${mapping.source}: {
-                                    ${tableField.field.name} = ${mapping.target}
-                                    break;
-                                }
-                            </#list>
-                        }
-                    }}
-                    <span>{{${tableField.field.name}}</span>
+                    <#list tableField.mappings as mapping>
+                        <#if tableField.field.column.type == "Integer" || tableField.field.column.type == "DOUBLE">
+                            {{# if(d.${tableField.field.name} === ${mapping.source}){ }}
+                            <span>{{${tableField.field.name}}</span>
+                            {{# } }}
+                        <#elseif tableField.field.column.type == "String">
+                            {{# if(d.${tableField.field.name} === '${mapping.source}'){ }}
+                            <span>{{${tableField.field.name}}</span>
+                            {{# } }}
+                        </#if>
+                    </#list>
                 </script>
             </#if>
         </#list>

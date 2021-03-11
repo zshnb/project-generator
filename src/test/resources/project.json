@@ -188,14 +188,28 @@
       "form": {
         "formItems": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true,
-            "options": []
+            "options": [],
+            "label": "名称"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "require": true,
-            "options": []
+            "options": [],
+            "label": "用户"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [],
+            "label": "学校"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [],
+            "label": "状态"
           }
         ]
       },
