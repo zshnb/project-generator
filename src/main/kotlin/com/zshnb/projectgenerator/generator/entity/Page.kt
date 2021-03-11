@@ -23,6 +23,7 @@ class TableComponent(val fields: List<TableField>)
  * 表格的列
  * @param field 列对应实体的属性域
  * @param title 列在表格页面上显示的描述
+ * @param formItemClassName 与[FormItem]的一致
  * */
 data class TableField(val title: String,
                       val formItemClassName: String,
@@ -36,46 +37,56 @@ data class TableField(val title: String,
  * */
 data class Mapping(val source: Any, val target: Any)
 
-open class FormItem(val field: Field?,
+open class FormItem(val label: String,
                     val formItemClassName: String,
-                    val require: Boolean)
+                    val require: Boolean,
+                    val field: Field?)
 
 class InputFormItem(field: Field?,
                     formItemClassName: String,
-                    require: Boolean) : FormItem(field, formItemClassName, require)
+                    require: Boolean,
+                    label: String) : FormItem(label, formItemClassName, require, field)
 
 class PasswordFormItem(field: Field?,
                        formItemClassName: String,
-                       require: Boolean) : FormItem(field, formItemClassName, require)
+                       require: Boolean,
+                       label: String) : FormItem(label, formItemClassName, require, field)
 
 class DateTimeFormItem(field: Field?,
                        formItemClassName: String,
-                       require: Boolean) : FormItem(field, formItemClassName, require)
+                       require: Boolean,
+                       label: String) : FormItem(label, formItemClassName, require, field)
 
 class DateFormItem(field: Field?,
                    formItemClassName: String,
-                   require: Boolean) : FormItem(field, formItemClassName, require)
+                   require: Boolean,
+                   label: String) : FormItem(label, formItemClassName, require, field)
 
 class TextAreaFormItem(field: Field?,
                        formItemClassName: String,
-                       require: Boolean) : FormItem(field, formItemClassName, require)
+                       require: Boolean,
+                       label: String) : FormItem(label, formItemClassName, require, field)
 
 class SelectFormItem(field: Field?,
                      val options: List<Option> = emptyList(),
                      formItemClassName: String,
-                     require: Boolean) : FormItem(field, formItemClassName, require)
+                     require: Boolean,
+                     label: String) : FormItem(label, formItemClassName, require, field)
 
 class RadioFormItem(field: Field?,
                     val options: List<Option> = emptyList(),
                     formItemClassName: String,
-                    require: Boolean) : FormItem(field, formItemClassName, require)
+                    require: Boolean,
+                    label: String) : FormItem(label, formItemClassName, require, field)
 
 class FileFormItem(field: Field?,
                    formItemClassName: String,
-                   require: Boolean) : FormItem(field, formItemClassName, require)
+                   require: Boolean,
+                   label: String) : FormItem(label, formItemClassName, require, field)
 
 class ImageFormItem(field: Field?,
                     formItemClassName: String,
-                    require: Boolean) : FormItem(field, formItemClassName, require)
+                    require: Boolean,
+                    label: String) : FormItem(label, formItemClassName, require, field)
 
 data class Option(val title: String, val value: String)
