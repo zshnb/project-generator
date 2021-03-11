@@ -76,7 +76,7 @@
             <a th:if="${r"${#lists.contains(permissions, 'delete')}"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
-        <#list table.tableFields as tableField>
+        <#list table.fields as tableField>
             <#if tableField.formItemClassName == "FileFormItem">
                 <script type="text/html" id="${tableField.field.name}">
                     {{#
@@ -97,7 +97,7 @@
                             </#list>
                         }
                     }}
-                    <span>${tableField.field.name}</span>
+                    <span>{{${tableField.field.name}}</span>
                 </script>
             </#if>
         </#list>
@@ -139,7 +139,7 @@
             },
             cols: [
                 [
-                    <#list table.tableFields as tableField>
+                    <#list table.fields as tableField>
                         <#assign fieldName>${tableField.field.name}</#assign>
                         <#assign title>${tableField.title}</#assign>
                         <#if tableField.field.column.enableFormItem && !tableField.field.column.associate??>
@@ -154,7 +154,7 @@
                             <#list tableField.field.column.associate.associateResultColumns as column>
                                 { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                             </#list>
-                        <#elseif tableField.mapping???>
+                        <#elseif tableField.mappings??>
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
                         </#if>
                     </#list>

@@ -5,8 +5,8 @@ package com.zshnb.projectgenerator.generator.entity
  * @param entity 页面所代表的实体
  * */
 class Page(val entity: Entity?,
-           val form: FormComponent,
-           val table: TableComponent) {
+           val form: FormComponent?,
+           val table: TableComponent?) {
 }
 
 /**

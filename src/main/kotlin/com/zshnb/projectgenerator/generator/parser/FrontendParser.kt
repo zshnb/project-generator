@@ -15,7 +15,7 @@ class FrontendParser {
         return project.entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
             val page = pages[index]
             val enableFormItemFields = entity.fields.filter { it.column.enableFormItem }
-            val formItems = page.form.formItems.mapIndexed { innerIndex, formItem ->
+            val formItems = page.form!!.formItems.mapIndexed { innerIndex, formItem ->
                 when (formItem) {
                     is InputFormItem -> InputFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require)
                     is PasswordFormItem -> PasswordFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require)
@@ -30,7 +30,7 @@ class FrontendParser {
                 }
             }
             val enableTableFieldFields = entity.fields.filter { it.column.enableTableField }
-            val tableFields = page.table.fields.mapIndexed { innerIndex, tableField ->
+            val tableFields = page.table!!.fields.mapIndexed { innerIndex, tableField ->
                 TableField(tableField.title, tableField.formItemClassName,
                     enableTableFieldFields[innerIndex], tableField.mappings)
             }

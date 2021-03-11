@@ -27,7 +27,8 @@
           "comment": "名称",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "user_id",
@@ -37,6 +38,7 @@
           "primary": false,
           "searchable": false,
           "enableFormItem": true,
+          "enableTableField": true,
           "associate": {
             "targetTableName": "test_user",
             "targetColumnName": "id",
@@ -59,6 +61,7 @@
           "primary": false,
           "searchable": false,
           "enableFormItem": true,
+          "enableTableField": true,
           "associate": {
             "targetTableName": "test_school",
             "targetColumnName": "id",
@@ -72,6 +75,16 @@
             ],
             "formItemColumnName": "name"
           }
+        },
+        {
+          "name": "status",
+          "type": "int",
+          "length": 11,
+          "comment": "名称",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
         }
       ],
       "enablePage": true,
@@ -104,7 +117,7 @@
           "enableFormItem": true
         }
       ],
-      "enablePage": true,
+      "enablePage": false,
       "permissions": [
         {
           "role": "admin",
@@ -161,7 +174,7 @@
           "enableFormItem": true
         }
       ],
-      "enablePage": true,
+      "enablePage": false,
       "permissions": [
         {
           "role": "admin",
@@ -187,14 +200,28 @@
         ]
       },
       "table": {
-        "tableFields": [
+        "fields": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
-            "title": ""
+            "title": "名称"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
-            "title": ""
+            "title": "用户"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "状态",
+            "mappings": [
+              {
+                "source": 1,
+                "target": "未审核"
+              },
+              {
+                "source": 2,
+                "target": "已审核"
+              }
+            ]
           }
         ]
       }
