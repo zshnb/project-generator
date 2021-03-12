@@ -41,9 +41,11 @@
                                                 <div class="layui-input-inline">
                                                     <select name="${formItem.field.name}">
                                                         <option value="">请选择${label}</option>
-                                                        <#list formItem.options as option>
-                                                            <option value="${option.value}">${option.title}</option>
-                                                        </#list>
+                                                        <#if !formItem.field.column.associate??>
+                                                            <#list formItem.options as option>
+                                                                <option value="${option.value}">${option.title}</option>
+                                                            </#list>
+                                                        </#if>
                                                     </select>
                                                 </div>
                                             </div>
@@ -114,6 +116,22 @@
             ?replace(' ' , '')
             ?uncap_first>
         </#function>
+        <#list form.formItems as formItem>
+        <#if formItem.field.column.associate??>
+        $.ajax({
+            type: 'post',
+            url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
+            data: JSON.stringify({}),
+            contentType: 'application/json',
+            success: function (data) {
+                data.data.forEach(it => {
+                    $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                })
+                form.render('select')
+            }
+        })
+        </#if>
+        </#list>
 
         table.render({
             elem: '#currentTableId',
