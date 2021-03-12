@@ -13,9 +13,9 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "db",
-    "type": 1
+    "jdbcDatabase": "db"
   },
+  "type": 1,
   "tables": [
     {
       "name": "test_table",

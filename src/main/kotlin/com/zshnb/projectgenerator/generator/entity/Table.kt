@@ -9,7 +9,7 @@ import com.zshnb.projectgenerator.generator.entity.ColumnType.*
  * @param enablePage 是否开启页面
  * @param permissions 表对应的页面上角色拥有的权限
  * */
-data class Table(val name: String = "",
+data class Table(val name: String,
                  var columns: List<Column> = emptyList(),
                  val permissions: List<TablePermission> = emptyList(),
                  val searchable: Boolean = false,
@@ -20,9 +20,9 @@ data class Table(val name: String = "",
  * @param searchable 知否支持搜索
  * @param enableFormItem 是否开启表单项
  * */
-data class Column(val name: String = "",
-                  val type: ColumnType = INT,
-                  val length: Int = 0,
+data class Column(val name: String,
+                  val type: ColumnType,
+                  val length: Int,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
                   val enableFormItem: Boolean = true,
