@@ -55,7 +55,8 @@ data class Associate(val targetTableName: String,
                      val targetColumnName: String,
                      val sourceColumnName: String,
                      val associateResultColumns: List<AssociateResultColumn>,
-                     val formItemColumnName: String)
+                     val formItemColumnName: String,
+                     val targetTableComponentField: TableField?)
 
 /**
  * 描述被关联的多方表被筛选出来的列以及供前端显示用的描述

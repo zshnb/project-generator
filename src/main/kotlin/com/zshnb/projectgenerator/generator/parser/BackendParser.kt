@@ -33,11 +33,12 @@ class BackendParser(private val moshi: Moshi,
             ))
         }
         project.tables = project.tables.map {
-            Table(it.name, (it.columns.toSet() + setOf(
+            val columns = (it.columns.toSet() + setOf(
                 Column("id", INT, length = 11, primary = true),
                 Column("create_at", DATETIME, length = 0),
                 Column("update_at", DATETIME, length = 0)
-            )).toList(), it.permissions, it.columns.any { column -> column.searchable },
+            )).toList()
+            Table(it.name, columns, it.permissions, it.columns.any { column -> column.searchable },
                 it.enablePage, it.columns.any { column -> column.associate != null })
         }
         project.roles.forEach { role ->
