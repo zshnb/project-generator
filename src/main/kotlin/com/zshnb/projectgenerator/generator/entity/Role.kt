@@ -15,6 +15,7 @@ data class Menu(
     val icon: String = "",
     val href: String,
     var role: String,
+    val bind: Boolean = true,
     val child: List<Menu> = emptyList()
 )
 

@@ -123,7 +123,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
             .map { getChildMenus(it) }
             .flatten()
             .map {
-                Menu(initMenuId++, it.parentId, it.name, it.icon, it.href, it.role, it.child).apply {
+                Menu(initMenuId++, it.parentId, it.name, it.icon, it.href, it.role, it.bind, it.child).apply {
                     child.forEach { childMenu ->
                         childMenu.parentId = id
                         childMenu.role = role
