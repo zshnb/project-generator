@@ -13,8 +13,9 @@ data class Menu(
     var parentId: Int = 0,
     val name: String = "",
     val icon: String = "",
-    val href: String = "",
-    var role: String = "",
+    val href: String,
+    var role: String,
+    val bind: Boolean = true,
     val child: List<Menu> = emptyList()
 )
 

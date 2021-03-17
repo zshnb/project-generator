@@ -50,10 +50,13 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 FileUtils.copyURLToFile(url, destination)
             }
         }
+        val unBindMenus = project.roles.flatMap { it.menus }
+            .filter { it.parentId == 0 && !it.bind }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),
             "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
-                project.config.commonPackagePath(), project.config.requestPackagePath())
+                project.config.commonPackagePath(), project.config.requestPackagePath()),
+            "unBindMenus" to unBindMenus
         ), "${project.config.controllerDir()}/IndexController.java")
 
         project.controllers.forEach {
