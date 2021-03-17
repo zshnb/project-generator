@@ -236,7 +236,6 @@
           "icon": "",
           "href": "/testTable/tablePage",
           "tableName": "",
-          "id": 0,
           "role": "admin"
         },
         {
@@ -244,7 +243,6 @@
           "icon": "",
           "href": "/testUser/tablePage",
           "tableName": "",
-          "id": 0,
           "role": "admin"
         },
         {
@@ -252,7 +250,14 @@
           "icon": "",
           "href": "/testSchool/tablePage",
           "tableName": "",
-          "id": 0,
+          "role": "admin"
+        },
+        {
+          "name": "测试学校管理",
+          "icon": "",
+          "href": "bind",
+          "bind": false,
+          "tableName": "",
           "role": "admin"
         }
       ]

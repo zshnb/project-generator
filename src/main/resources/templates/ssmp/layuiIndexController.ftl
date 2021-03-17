@@ -55,4 +55,11 @@ public class IndexController {
         session.setAttribute("user", user);
         return Response.ok();
     }
+
+    <#list unBindMenus as menu>
+    @GetMapping("/${menu.href}Page")
+    public String ${menu.href}Page() {
+        return "${menu.href}";
+    }
+    </#list>
 }
