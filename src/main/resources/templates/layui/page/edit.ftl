@@ -72,7 +72,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">${comment}</label>
                     <div class="layui-input-block">
-                        <select name="${formItemName}" disabled>
+                        <select name="${formItemName}">
                             <#list formItem.options as option>
                                 <option value="${option.value}"
                                         th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
