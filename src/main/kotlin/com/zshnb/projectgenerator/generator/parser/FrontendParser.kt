@@ -29,7 +29,7 @@ class FrontendParser {
                     else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
                 }
             }
-            val enableTableFieldFields = entity.fields.filter { it.column.enableTableField }
+            val enableTableFieldFields = entity.fields.filter { it.column.enableTableField || it.column.associate != null }
             val tableFields = page.table!!.fields.mapIndexed { innerIndex, tableField ->
                 TableField(tableField.title, tableField.formItemClassName,
                     enableTableFieldFields[innerIndex], tableField.mappings)
