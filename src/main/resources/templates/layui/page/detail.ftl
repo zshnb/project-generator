@@ -25,7 +25,7 @@
         ?replace(' ' , '')
         ?uncap_first>
     </#function>
-    <#list form.formItems as formItem>
+    <#list form.items as formItem>
         <#assign label>${formItem.label}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
         <#assign name>${entity.name}</#assign>
@@ -61,7 +61,7 @@
                     <div class="layui-input-block">
                         <select name="${camelize(formItem.field.column.associate.sourceColumnName)}" disabled
                                 <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>
-                            <option value="">请选择${comment}</option>
+                            <option value="">请选择${label}</option>
                         </select>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
         let laydate = layui.laydate,
             form = layui.form,
             $ = layui.$
-        <#list form.formItems as formItem>
+        <#list form.items as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',

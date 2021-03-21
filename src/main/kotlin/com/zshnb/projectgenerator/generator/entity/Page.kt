@@ -12,7 +12,7 @@ class Page(val entity: Entity?,
 /**
  * 表单组件
  * */
-class FormComponent(val formItems: List<FormItem>)
+class FormComponent(val items: List<FormItem>)
 
 /**
  * 表格组建

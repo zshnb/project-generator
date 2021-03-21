@@ -9,7 +9,7 @@ package com.zshnb.projectgenerator.generator.entity
 data class Role(val name: String, val description: String, val menus: List<Menu>)
 
 data class Menu(
-    val id: Int,
+    val id: Int = 0,
     var parentId: Int = 0,
     val name: String,
     val icon: String = "",

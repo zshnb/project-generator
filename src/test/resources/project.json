@@ -193,7 +193,7 @@
   "pages": [
     {
       "form": {
-        "formItems": [
+        "items": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true,
@@ -253,7 +253,7 @@
     },
     {
       "form": {
-        "formItems": [
+        "items": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true,
@@ -272,7 +272,7 @@
     },
     {
       "form": {
-        "formItems": [
+        "items": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true,
@@ -332,21 +332,18 @@
           "name": "测试表管理",
           "icon": "",
           "href": "/testTable/tablePage",
-          "tableName": "",
           "role": "admin"
         },
         {
           "name": "测试用户管理",
           "icon": "",
           "href": "/testUser/tablePage",
-          "tableName": "",
           "role": "admin"
         },
         {
           "name": "测试学校管理",
           "icon": "",
           "href": "/testSchool/tablePage",
-          "tableName": "",
           "role": "admin"
         },
         {
@@ -354,7 +351,6 @@
           "icon": "",
           "href": "bind",
           "bind": false,
-          "tableName": "",
           "role": "admin"
         }
       ]

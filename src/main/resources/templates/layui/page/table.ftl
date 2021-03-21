@@ -23,7 +23,7 @@
                 <div style="margin: 10px 10px 10px 10px">
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
-                            <#list form.formItems as formItem>
+                            <#list form.items as formItem>
                                 <#assign label>${formItem.label}</#assign>
                                 <#if formItem.field.column.searchable>
                                     <#switch formItem.class.simpleName>
@@ -116,7 +116,7 @@
             ?replace(' ' , '')
             ?uncap_first>
         </#function>
-        <#list form.formItems as formItem>
+        <#list form.items as formItem>
         <#if formItem.field.column.associate??>
         $.ajax({
             type: 'post',
