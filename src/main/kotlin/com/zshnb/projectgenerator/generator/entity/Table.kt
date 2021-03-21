@@ -1,11 +1,10 @@
 package com.zshnb.projectgenerator.generator.entity
 
 import com.squareup.moshi.Json
-import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 
 /**
  * @param searchable 表是否有支持搜索的列
- * @param associates 关联表
+ * @param associate 关联表
  * @param enablePage 是否开启页面
  * @param permissions 表对应的页面上角色拥有的权限
  * */
@@ -55,8 +54,7 @@ data class Associate(val targetTableName: String,
                      val targetColumnName: String,
                      val sourceColumnName: String,
                      val associateResultColumns: List<AssociateResultColumn>,
-                     val formItemColumnName: String,
-                     val targetTableComponentField: TableField?)
+                     val formItemColumnName: String)
 
 /**
  * 描述被关联的多方表被筛选出来的列以及供前端显示用的描述

@@ -37,7 +37,7 @@
                                             <#break>
                                         <#case "SelectFormItem">
                                             <div class="layui-inline">
-                                                <label class="layui-form-label"></label>
+                                                <label class="layui-form-label">${label}</label>
                                                 <div class="layui-input-inline">
                                                     <select name="${formItem.field.name}">
                                                         <option value="">请选择${label}</option>

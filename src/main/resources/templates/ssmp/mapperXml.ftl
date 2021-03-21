@@ -20,6 +20,30 @@
                     inner join ${column.associate.targetTableName} on ${column.associate.targetTableName}.${column.associate.targetColumnName} = ${entity.table.name}.${column.associate.sourceColumnName}
                 </#if>
             </#list>
+            <#if entity.table.searchable>
+                <where>
+                    <#list entity.fields?filter(f -> f.column.searchable) as field>
+                        <#switch field.type>
+                            <#case "String">
+                                <#assign defaultValue>''</#assign>
+                            <#case "Integer">
+                            <#assign defaultValue>0</#assign>
+                        </#switch>
+                        <#if field.column.associate??>
+                            <#assign associateFieldParam>
+                                ${field.column.associate.targetTableName}${field.column.associate.targetColumnName?capFirst}
+                            </#assign>
+                            <if test="<#compress>${associateFieldParam}</#compress> != ${defaultValue}">
+                                and ${field.column.associate.targetTableName}.${field.column.associate.targetColumnName} = ${r'#{'}<#compress>${associateFieldParam}</#compress>${r'}'}
+                            </if>
+                        <#else>
+                            <if test="<#compress>${field.column.name}</#compress> != ${defaultValue}">
+                                and ${field.column.name} = ${r'#{'}${field.column.name}${r'}'}
+                            </if>
+                        </#if>
+                    </#list>
+                </where>
+            </#if>
         </select>
     </#if>
 </mapper>
