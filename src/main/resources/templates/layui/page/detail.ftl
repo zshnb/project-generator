@@ -60,7 +60,7 @@
                     <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                     <div class="layui-input-block">
                         <select name="${camelize(formItem.field.column.associate.sourceColumnName)}" disabled
-                                <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>
+                                <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>>
                             <option value="">请选择${label}</option>
                         </select>
                     </div>

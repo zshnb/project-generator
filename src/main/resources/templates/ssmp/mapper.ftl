@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface ${name?cap_first}Mapper extends BaseMapper<${name?cap_first}> {
     <#if entity.table.associate>
         <#assign params>
+            ,
             <#list entity.fields?filter(f -> f.column.searchable) as field>
                 <#if field.column.associate??>
                     <#assign paramName>${field.column.associate.targetTableName}${field.column.associate.targetColumnName?cap_first}</#assign>
@@ -22,6 +23,6 @@ public interface ${name?cap_first}Mapper extends BaseMapper<${name?cap_first}> {
                 <#if field_has_next>,</#if>
             </#list>
         </#assign>
-        IPage<${name?cap_first}Dto> findDtos(Page<?> page, ${params});
+        IPage<${name?cap_first}Dto> findDtos(Page<?> page${params});
     </#if>
 }

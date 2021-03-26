@@ -117,7 +117,7 @@
             ?uncap_first>
         </#function>
         <#list form.items as formItem>
-        <#if formItem.field.column.associate??>
+        <#if formItem.field.column.associate?? && formItem.field.column.searchable>
         $.ajax({
             type: 'post',
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
