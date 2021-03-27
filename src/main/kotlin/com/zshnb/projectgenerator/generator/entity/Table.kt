@@ -1,15 +1,14 @@
 package com.zshnb.projectgenerator.generator.entity
 
 import com.squareup.moshi.Json
-import com.zshnb.projectgenerator.generator.entity.ColumnType.*
 
 /**
  * @param searchable 表是否有支持搜索的列
- * @param associates 关联表
+ * @param associate 关联表
  * @param enablePage 是否开启页面
  * @param permissions 表对应的页面上角色拥有的权限
  * */
-data class Table(val name: String = "",
+data class Table(val name: String,
                  var columns: List<Column> = emptyList(),
                  val permissions: List<TablePermission> = emptyList(),
                  val searchable: Boolean = false,
@@ -20,13 +19,13 @@ data class Table(val name: String = "",
  * @param searchable 知否支持搜索
  * @param enableFormItem 是否开启表单项
  * */
-data class Column(val name: String = "",
-                  val type: ColumnType = INT,
-                  val comment: String = "",
-                  val length: Int = 0,
+data class Column(val name: String,
+                  val type: ColumnType,
+                  val length: Int,
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
                   val enableFormItem: Boolean = true,
+                  val enableTableField: Boolean = true,
                   val associate: Associate? = null) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

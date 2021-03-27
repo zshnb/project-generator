@@ -1,9 +1,7 @@
 package com.zshnb.projectgenerator.generator.entity
 
-import com.zshnb.projectgenerator.generator.entity.ProjectType.LAY_UI
-
-data class Project(val config: Config = Config(),
-                   val type: Int = LAY_UI.code,
+data class Project(val config: Config,
+                   val type: Int,
                    var tables: List<Table> = emptyList(),
                    var controllers: List<Controller> = emptyList(),
                    var entities: List<Entity> = emptyList(),

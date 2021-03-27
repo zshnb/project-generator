@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component
 class FormItemAdapter : JsonAdapter<FormItem>() {
     override fun fromJson(reader: JsonReader): FormItem? {
         reader.beginObject()
+        var label = ""
         var formItemClassName = ""
         var require = false
         val options = mutableListOf<Option>()
@@ -18,6 +19,7 @@ class FormItemAdapter : JsonAdapter<FormItem>() {
             when (reader.nextName()) {
                 "formItemClassName" -> formItemClassName = reader.nextString()
                 "require" -> require = reader.nextBoolean()
+                "label" -> label = reader.nextString()
                 "options" -> {
                     reader.beginArray()
                     while (reader.hasNext()) {
@@ -40,15 +42,15 @@ class FormItemAdapter : JsonAdapter<FormItem>() {
         }
         reader.endObject()
         return when (formItemClassName) {
-            InputFormItem::class.qualifiedName -> InputFormItem(null, formItemClassName, require)
-            PasswordFormItem::class.qualifiedName -> PasswordFormItem(null, formItemClassName, require)
-            DateTimeFormItem::class.qualifiedName -> DateTimeFormItem(null, formItemClassName, require)
-            DateFormItem::class.qualifiedName -> DateFormItem(null, formItemClassName, require)
-            TextAreaFormItem::class.qualifiedName -> TextAreaFormItem(null, formItemClassName, require)
-            RadioFormItem::class.qualifiedName -> RadioFormItem(null, options, formItemClassName, require)
-            FileFormItem::class.qualifiedName -> FileFormItem(null, formItemClassName, require)
-            ImageFormItem::class.qualifiedName -> ImageFormItem(null, formItemClassName, require)
-            SelectFormItem::class.qualifiedName -> SelectFormItem(null, options, formItemClassName, require)
+            InputFormItem::class.qualifiedName -> InputFormItem(null, formItemClassName, require, label)
+            PasswordFormItem::class.qualifiedName -> PasswordFormItem(null, formItemClassName, require, label)
+            DateTimeFormItem::class.qualifiedName -> DateTimeFormItem(null, formItemClassName, require, label)
+            DateFormItem::class.qualifiedName -> DateFormItem(null, formItemClassName, require, label)
+            TextAreaFormItem::class.qualifiedName -> TextAreaFormItem(null, formItemClassName, require, label)
+            RadioFormItem::class.qualifiedName -> RadioFormItem(null, options, formItemClassName, require, label)
+            FileFormItem::class.qualifiedName -> FileFormItem(null, formItemClassName, require, label)
+            ImageFormItem::class.qualifiedName -> ImageFormItem(null, formItemClassName, require, label)
+            SelectFormItem::class.qualifiedName -> SelectFormItem(null, options, formItemClassName, require, label)
             else -> null
         }
     }

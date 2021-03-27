@@ -25,13 +25,13 @@
         ?replace(' ' , '')
         ?uncap_first>
     </#function>
-    <#list form.formItems as formItem>
-        <#assign comment>${formItem.field.column.comment}</#assign>
+    <#list form.items as formItem>
+        <#assign label>${formItem.label}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
         <#assign name>${entity.name}</#assign>
         <#if formItem.class.simpleName == "InputFormItem">
             <div class="layui-form-item">
-                <label class="layui-form-label">${comment}</label>
+                <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
                     <input type="text" th:value="${r"${" + name + "." + formItemName + "}"}"
                            class="layui-input" readonly>
@@ -39,16 +39,16 @@
             </div>
         <#elseif formItem.class.simpleName == "PasswordFormItem">
             <div class="layui-form-item">
-                <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                 <div class="layui-input-block">
                     <input type="password" name="${formItemName}"
-                           <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>
-                           placeholder="请输入${comment}" value="" class="layui-input" readonly>
+                           <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
+                           placeholder="请输入${label}" value="" class="layui-input" readonly>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "DateTimeFormItem" || formItem.class.simpleName == "DateFormItem">
             <div class="layui-form-item">
-                <label class="layui-form-label">${comment}</label>
+                <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
                     <input type="text" id="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
                            value="" class="layui-input" readonly>
@@ -57,17 +57,17 @@
         <#elseif formItem.class.simpleName == "SelectFormItem">
             <#if formItem.field.column.associate??>
                 <div class="layui-form-item">
-                    <label class="layui-form-label <#if formItem.require>required</#if>">${comment}</label>
+                    <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                     <div class="layui-input-block">
                         <select name="${camelize(formItem.field.column.associate.sourceColumnName)}" disabled
-                                <#if formItem.require>lay-verify="required" lay-reqtext="${comment}不能为空"</#if>>
-                            <option value="">请选择${comment}</option>
+                                <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>>
+                            <option value="">请选择${label}</option>
                         </select>
                     </div>
                 </div>
             <#else>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">${comment}</label>
+                    <label class="layui-form-label">${label}</label>
                     <div class="layui-input-block">
                         <select name="${formItemName}" disabled>
                             <#list formItem.options as option>
@@ -80,7 +80,7 @@
             </#if>
         <#elseif formItem.class.simpleName == "RadioFormItem">
             <div class="layui-form-item">
-                <label class="layui-form-label">${comment}</label>
+                <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
                     <#list formItem.options as option>
                         <input type="radio" value="${option.value}" title="${option.title}" readonly
@@ -90,7 +90,7 @@
             </div>
         <#elseif formItem.class.simpleName == "TextAreaFormItem">
             <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">${comment}</label>
+                <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
                     <textarea placeholder="请输入内容" class="layui-textarea" readonly
                               th:text="${r"${" + name + "." + formItemName + "}"}">
@@ -106,7 +106,7 @@
         let laydate = layui.laydate,
             form = layui.form,
             $ = layui.$
-        <#list form.formItems as formItem>
+        <#list form.items as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',

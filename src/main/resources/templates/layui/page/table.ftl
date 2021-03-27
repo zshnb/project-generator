@@ -23,12 +23,13 @@
                 <div style="margin: 10px 10px 10px 10px">
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
-                            <#list form.formItems as formItem>
+                            <#list form.items as formItem>
+                                <#assign label>${formItem.label}</#assign>
                                 <#if formItem.field.column.searchable>
                                     <#switch formItem.class.simpleName>
                                         <#case "InputFormItem">
                                             <div class="layui-inline">
-                                                <label class="layui-form-label">${formItem.field.column.comment}</label>
+                                                <label class="layui-form-label">${label}</label>
                                                 <div class="layui-input-inline">
                                                     <input type="text" name="${formItem.field.name}" autocomplete="off" class="layui-input">
                                                 </div>
@@ -36,13 +37,15 @@
                                             <#break>
                                         <#case "SelectFormItem">
                                             <div class="layui-inline">
-                                                <label class="layui-form-label"></label>
+                                                <label class="layui-form-label">${label}</label>
                                                 <div class="layui-input-inline">
                                                     <select name="${formItem.field.name}">
-                                                        <option value="">请选择${formItem.field.column.comment}</option>
-                                                        <#list formItem.options as option>
-                                                            <option value="${option.value}">${option.title}</option>
-                                                        </#list>
+                                                        <option value="">请选择${label}</option>
+                                                        <#if !formItem.field.column.associate??>
+                                                            <#list formItem.options as option>
+                                                                <option value="${option.value}">${option.title}</option>
+                                                            </#list>
+                                                        </#if>
                                                     </select>
                                                 </div>
                                             </div>
@@ -74,13 +77,25 @@
             <a th:if="${r"${#lists.contains(permissions, 'delete')}"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
-        <#list form.formItems as formItem>
-            <#if formItem.class.simpleName == "FileFormItem">
-                <script type="text/html" id="${formItem.field.name}">
+        <#list table.fields as tableField>
+            <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
+                <script type="text/html" id="${tableField.field.name}">
                     {{#
-                        let fileName = d.${formItem.field.name}.substring(d.${formItem.field.name}.indexOf('=') + 1)
+                        let fileName = d.${tableField.field.name}.substring(d.${tableField.field.name}.indexOf('=') + 1)
                     }}
-                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${formItem.field.column.comment}</a>
+                    <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${tableField.title}</a>
+                </script>
+            <#elseif tableField.mappings??>
+                <script type="text/html" id="${tableField.field.name}">
+                    <#list tableField.mappings as mapping>
+                        <#if tableField.field.type == "Integer" || tableField.field.type == "DOUBLE">
+                            {{# if(d.${tableField.field.name} === ${mapping.source}){ }}
+                        <#elseif tableField.field.type == "String">
+                            {{# if(d.${tableField.field.name} === '${mapping.source}'){ }}
+                        </#if>
+                        <span>${mapping.target}}</span>
+                        {{# } }}
+                    </#list>
                 </script>
             </#if>
         </#list>
@@ -101,6 +116,22 @@
             ?replace(' ' , '')
             ?uncap_first>
         </#function>
+        <#list form.items as formItem>
+        <#if formItem.field.column.associate?? && formItem.field.column.searchable>
+        $.ajax({
+            type: 'post',
+            url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
+            data: JSON.stringify({}),
+            contentType: 'application/json',
+            success: function (data) {
+                data.data.forEach(it => {
+                    $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                })
+                form.render('select')
+            }
+        })
+        </#if>
+        </#list>
 
         table.render({
             elem: '#currentTableId',
@@ -122,19 +153,21 @@
             },
             cols: [
                 [
-                    <#list form.formItems as formItem>
-                        <#assign fieldName>${formItem.field.name}</#assign>
-                        <#assign comment>${formItem.field.column.comment}</#assign>
-                        <#if formItem.field.column.enableFormItem && !formItem.field.column.associate??>
-                            <#if formItem.class.simpleName == "ImageFormItem">
-                            { field: '${fieldName}', title: '${comment}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
-                            <#elseif formItem.class.simpleName == "FileFormItem">
-                            { field: '${fieldName}', title: '${comment}', sort: true, templet: '#${formItem.field.name}'},
+                    <#list table.fields as tableField>
+                        <#assign fieldName>${tableField.field.name}</#assign>
+                        <#assign title>${tableField.title}</#assign>
+                        <#if tableField.field.column.enableTableField && !tableField.field.column.associate??>
+                            <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.ImageFormItem">
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
+                            <#elseif tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}'},
+                            <#elseif tableField.mappings??>
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
                             <#else>
-                            { field: '${fieldName}', title: '${comment}', sort: true },
+                            { field: '${fieldName}', title: '${title}', sort: true },
                             </#if>
-                        <#elseif formItem.field.column.associate??>
-                            <#list formItem.field.column.associate.associateResultColumns as column>
+                        <#elseif tableField.field.column.associate??>
+                            <#list tableField.field.column.associate.associateResultColumns as column>
                                 { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                             </#list>
                         </#if>

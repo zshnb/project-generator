@@ -13,9 +13,9 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "db",
-    "type": 1
+    "jdbcDatabase": "db"
   },
+  "type": 1,
   "tables": [
     {
       "name": "test_table",
@@ -27,7 +27,8 @@
           "comment": "名称",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "user_id",
@@ -35,8 +36,9 @@
           "length": 11,
           "comment": "",
           "primary": false,
-          "searchable": false,
+          "searchable": true,
           "enableFormItem": true,
+          "enableTableField": true,
           "associate": {
             "targetTableName": "test_user",
             "targetColumnName": "id",
@@ -59,6 +61,7 @@
           "primary": false,
           "searchable": false,
           "enableFormItem": true,
+          "enableTableField": true,
           "associate": {
             "targetTableName": "test_school",
             "targetColumnName": "id",
@@ -72,13 +75,23 @@
             ],
             "formItemColumnName": "name"
           }
+        },
+        {
+          "name": "status",
+          "type": "int",
+          "length": 11,
+          "comment": "名称",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
         }
       ],
       "enablePage": true,
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit"]
+          "operations": ["add", "edit", "delete"]
         }
       ]
     },
@@ -92,7 +105,8 @@
           "comment": "",
           "primary": true,
           "searchable": false,
-          "enableFormItem": false
+          "enableFormItem": false,
+          "enableTableField": false
         },
         {
           "name": "name",
@@ -101,14 +115,15 @@
           "comment": "名称",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         }
       ],
       "enablePage": true,
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit"]
+          "operations": ["add", "edit", "delete"]
         }
       ]
     },
@@ -122,7 +137,8 @@
           "comment": "",
           "primary": true,
           "searchable": false,
-          "enableFormItem": false
+          "enableFormItem": false,
+          "enableTableField": false
         },
         {
           "name": "name",
@@ -131,7 +147,8 @@
           "comment": "名称",
           "primary": false,
           "searchable": true,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "type",
@@ -140,7 +157,8 @@
           "comment": "类型",
           "primary": false,
           "searchable": true,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "logo",
@@ -149,7 +167,8 @@
           "comment": "logo",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         },
         {
           "name": "doc",
@@ -158,14 +177,15 @@
           "comment": "文档",
           "primary": false,
           "searchable": false,
-          "enableFormItem": true
+          "enableFormItem": true,
+          "enableTableField": true
         }
       ],
       "enablePage": true,
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit"]
+          "operations": ["add", "edit", "delete"]
         }
       ]
     }
@@ -173,36 +193,90 @@
   "pages": [
     {
       "form": {
-        "formItems": [
+        "items": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true,
-            "options": []
+            "options": [],
+            "label": "名称"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "require": true,
-            "options": []
+            "options": [],
+            "label": "用户"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [],
+            "label": "学校"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [],
+            "label": "状态"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "用户"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "学校"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "状态",
+            "mappings": [
+              {
+                "source": 1,
+                "target": "未审核"
+              },
+              {
+                "source": 2,
+                "target": "已审核"
+              }
+            ]
           }
         ]
       }
     },
     {
       "form": {
-        "formItems": [
+        "items": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "require": true
+            "require": true,
+            "label": "名称"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "title": "名称",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
           }
         ]
       }
     },
     {
       "form": {
-        "formItems": [
+        "items": [
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
-            "require": true
+            "require": true,
+            "label": "名称"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
@@ -212,15 +286,38 @@
                 "title": "类型1",
                 "value": "type1"
               }
-            ]
+            ],
+            "label": "类型"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
-            "require": false
+            "require": false,
+            "label": "图片"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
-            "require": false
+            "require": false,
+            "label": "文档"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "类型"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "title": "图片"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
+            "title": "文档"
           }
         ]
       }
@@ -235,21 +332,18 @@
           "name": "测试表管理",
           "icon": "",
           "href": "/testTable/tablePage",
-          "tableName": "",
           "role": "admin"
         },
         {
           "name": "测试用户管理",
           "icon": "",
           "href": "/testUser/tablePage",
-          "tableName": "",
           "role": "admin"
         },
         {
           "name": "测试学校管理",
           "icon": "",
           "href": "/testSchool/tablePage",
-          "tableName": "",
           "role": "admin"
         },
         {
@@ -257,7 +351,6 @@
           "icon": "",
           "href": "bind",
           "bind": false,
-          "tableName": "",
           "role": "admin"
         }
       ]

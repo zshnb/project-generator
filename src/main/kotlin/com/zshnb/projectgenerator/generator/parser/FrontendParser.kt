@@ -12,27 +12,29 @@ class FrontendParser {
     * */
     fun parsePages(project: Project): List<Page> {
         val pages = project.pages
-        return project.entities.mapIndexedNotNull { index, entity ->
-            if (!entity.table.enablePage) {
-                null
-            } else {
-                val fields = entity.fields.filter { it.column.enableFormItem }
-                val formItems = pages[index].form.formItems.mapIndexed { innerIndex, formItem ->
-                    when (formItem) {
-                        is InputFormItem -> InputFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        is PasswordFormItem -> PasswordFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        is TextAreaFormItem -> TextAreaFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        is DateTimeFormItem -> DateTimeFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        is FileFormItem -> FileFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        is ImageFormItem -> ImageFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        is SelectFormItem -> SelectFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require)
-                        is RadioFormItem -> RadioFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require)
-                        is DateFormItem -> DateFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require)
-                        else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
-                    }
+        return project.entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
+            val page = pages[index]
+            val enableFormItemFields = entity.fields.filter { it.column.enableFormItem }
+            val formItems = page.form!!.items.mapIndexed { innerIndex, formItem ->
+                when (formItem) {
+                    is InputFormItem -> InputFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    is PasswordFormItem -> PasswordFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    is TextAreaFormItem -> TextAreaFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    is DateTimeFormItem -> DateTimeFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    is FileFormItem -> FileFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    is ImageFormItem -> ImageFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    is SelectFormItem -> SelectFormItem(enableFormItemFields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require, formItem.label)
+                    is RadioFormItem -> RadioFormItem(enableFormItemFields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require, formItem.label)
+                    is DateFormItem -> DateFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+                    else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
                 }
-                Page(entity, FormComponent(formItems))
             }
+            val enableTableFieldFields = entity.fields.filter { it.column.enableTableField || it.column.associate != null }
+            val tableFields = page.table!!.fields.mapIndexed { innerIndex, tableField ->
+                TableField(tableField.title, tableField.formItemClassName,
+                    enableTableFieldFields[innerIndex], tableField.mappings)
+            }
+            Page(entity, FormComponent(formItems), TableComponent(tableFields))
         }
     }
 }

@@ -86,8 +86,22 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
     </#assign>
     @Override
     public ListResponse<<#compress>${returnClass}</#compress>> list(List${name?capFirst}Request request) {
-        <#if entity.table.searchable && !entity.table.associate>
-            QueryWrapper<${name?capFirst}> queryWrapper = new QueryWrapper<>();
+        <#if entity.table.searchable>
+            <#if entity.table.associate>
+                <#assign params>
+<#--                    <#list entity.fields?filter(f -> f.column.searchable) as field>-->
+<#--                        ${field.name}-->
+<#--                    </#list>-->
+                    <#list entity.fields?filter(f -> f.column.searchable) as field>
+                        <#assign getField>request.get${field.name?capFirst}()</#assign>
+                        ${getField}
+                        <#if field_has_next>,</#if>
+                    </#list>
+                </#assign>
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()), ${params});
+                return new ListResponse<>(page.getRecords(), page.getTotal());
+            <#else>
+            QueryWrapper<${returnClass}> queryWrapper = new QueryWrapper<>();
             <#list entity.fields as field>
                 <#if field.column.searchable>
                     <#assign getField>request.get${field.name?capFirst}()</#assign>
@@ -98,14 +112,15 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
                     </#if>
                 </#if>
             </#list>
-            IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()), queryWrapper);
+            IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize()), queryWrapper);
             return new ListResponse<>(page.getRecords(), page.getTotal());
+            </#if>
         <#else>
             <#if entity.table.associate>
-                IPage<${name?capFirst}Dto> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()));
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()));
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             <#else>
-                IPage<${name?capFirst}> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
+                IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             </#if>
         </#if>
