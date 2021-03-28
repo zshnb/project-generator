@@ -122,7 +122,7 @@
                     </div>
                     <button type="button" class="layui-btn" id="upload-btn-${formItem.field.name}">开始上传</button>
                 </div>
-                <input name="${formItemName}" type="text" hidden>
+                <input name="${formItemName}" type="text" hidden th:value="${r"${" + name + "." + formItemName + "}"}">
             </div>
         </#if>
     </#list>
