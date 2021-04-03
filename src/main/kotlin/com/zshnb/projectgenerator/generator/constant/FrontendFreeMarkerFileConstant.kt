@@ -6,5 +6,6 @@ class FrontendFreeMarkerFileConstant {
         const val LAY_UI_EDIT_PAGE = "layui/page/edit.ftl"
         const val LAY_UI_DETAIL_PAGE = "layui/page/detail.ftl"
         const val LAY_UI_TABLE_PAGE = "layui/page/table.ftl"
+        const val LAY_UI_EMPTY_PAGE = "layui/page/emptyPage.ftl"
     }
 }

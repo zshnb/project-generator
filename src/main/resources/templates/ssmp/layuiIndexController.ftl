@@ -57,9 +57,9 @@ public class IndexController {
     }
 
     <#list unBindMenus as menu>
-    @GetMapping("/${menu.href}Page")
-    public String ${menu.href}Page() {
-        return "${menu.href}";
+    @GetMapping("${menu.href}")
+    public String ${menu.href?substring(1)}() {
+        return "page/${menu.href?substring(1)}";
     }
     </#list>
 }

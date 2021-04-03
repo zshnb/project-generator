@@ -349,7 +349,7 @@
         {
           "name": "测试学校管理",
           "icon": "",
-          "href": "bind",
+          "href": "/bindPage",
           "bind": false,
           "role": "admin"
         }

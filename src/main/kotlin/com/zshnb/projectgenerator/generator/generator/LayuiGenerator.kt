@@ -26,6 +26,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
         val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EDIT_PAGE)
         val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_DETAIL_PAGE)
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
+        val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EMPTY_PAGE)
 
         val project = backendParser.parseProject(json)
         val pages = frontendParser.parsePages(project)
@@ -52,6 +53,10 @@ class LayuiGenerator(private val backendParser: BackendParser,
         }
         val unBindMenus = project.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
+        unBindMenus.forEach {
+            ioUtil.writeTemplate(emptyPageTemplate, it,
+                "${PathConstant.layUIPageDirPath(project.config)}/${it.href.substring(1)}")
+        }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),
             "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
