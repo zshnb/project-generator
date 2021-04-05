@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ${name?cap_first} extends Model<${name?cap_first}> {

@@ -21,7 +21,7 @@ data class Table(val name: String,
  * */
 data class Column(val name: String,
                   val type: ColumnType,
-                  val length: Int,
+                  val length: String = "0",
                   val primary: Boolean = false,
                   val searchable: Boolean = false,
                   val enableFormItem: Boolean = true,
@@ -93,21 +93,9 @@ enum class ColumnType(val code: Int, val description: String) {
     TEXT(6, "text"),
 
     @Json(name = "date")
-    LOCAL_DATE(7, "date")
-    ;
+    LOCAL_DATE(7, "date"),
 
-    companion object {
-        fun fromDescription(description: String): ColumnType {
-            return when (description) {
-                "int" -> INT
-                "tinyint" -> TINYINT
-                "varchar" -> VARCHAR
-                "datetime" -> DATETIME
-                "double" -> DOUBLE
-                "text" -> TEXT
-                "date" -> LOCAL_DATE
-                else -> throw Exception()
-            }
-        }
-    }
+    @Json(name = "decimal")
+    DECIMAL(8, "decimal")
+    ;
 }

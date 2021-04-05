@@ -21,22 +21,22 @@ class BackendParser(private val moshi: Moshi,
         val userTable = project.tables.find { it.name == "user" }
         if (userTable != null) {
             userTable.columns = (userTable.columns.toSet() + setOf(
-                Column("username", VARCHAR, length = 255),
-                Column("password", VARCHAR, length = 255),
-                Column("role", VARCHAR, length = 255)
+                Column("username", VARCHAR, length = "255"),
+                Column("password", VARCHAR, length = "255"),
+                Column("role", VARCHAR, length = "255")
             )).toList()
         } else {
             project.tables = project.tables + Table("user", listOf(
-                Column("username", VARCHAR, length = 255),
-                Column("password", VARCHAR, length = 255),
-                Column("role", VARCHAR, length = 255)
+                Column("username", VARCHAR, length = "255"),
+                Column("password", VARCHAR, length = "255"),
+                Column("role", VARCHAR, length = "255")
             ))
         }
         project.tables = project.tables.map {
             val columns = (it.columns.toSet() + setOf(
-                Column("id", INT, length = 11, primary = true),
-                Column("create_at", DATETIME, length = 0),
-                Column("update_at", DATETIME, length = 0)
+                Column("id", INT, length = "11", primary = true),
+                Column("create_at", DATETIME),
+                Column("update_at", DATETIME)
             )).toList()
             Table(it.name, columns, it.permissions, it.columns.any { column -> column.searchable },
                 it.enablePage, it.columns.any { column -> column.associate != null })
@@ -75,25 +75,25 @@ class BackendParser(private val moshi: Moshi,
      * */
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
-            Column("id", INT, length = 11, primary = true),
-            Column("name", VARCHAR, length = 255),
-            Column("description", VARCHAR, length = 255)
+            Column("id", INT, length = "11", primary = true),
+            Column("name", VARCHAR, length = "255"),
+            Column("description", VARCHAR, length = "255")
         )
         val roleTable = Table("role", roleColumns)
         val menuColumns = listOf(
-            Column("id", INT, length = 11, primary = true),
-            Column("parent_id", INT, length = 11),
-            Column("name", VARCHAR, length = 255),
-            Column("icon", VARCHAR, length = 255),
-            Column("role", VARCHAR, length = 255),
-            Column("href", VARCHAR, length = 255))
+            Column("id", INT, length = "11", primary = true),
+            Column("parent_id", INT, length = "11"),
+            Column("name", VARCHAR, length = "255"),
+            Column("icon", VARCHAR, length = "255"),
+            Column("role", VARCHAR, length = "255"),
+            Column("href", VARCHAR, length = "255"))
         val menuTable = Table("menu", menuColumns)
 
         val permissionColumns = listOf(
-            Column("id", INT, length = 11, primary = true),
-            Column("role", VARCHAR, length = 255),
-            Column("model", VARCHAR, length = 255),
-            Column("operation", VARCHAR, length = 255)
+            Column("id", INT, length = "11", primary = true),
+            Column("role", VARCHAR, length = "255"),
+            Column("model", VARCHAR, length = "255"),
+            Column("operation", VARCHAR, length = "255")
         )
         val permissionTable = Table("permission", permissionColumns)
         return listOf(roleTable, menuTable, permissionTable)

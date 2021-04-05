@@ -89,9 +89,6 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
         <#if entity.table.searchable>
             <#if entity.table.associate>
                 <#assign params>
-<#--                    <#list entity.fields?filter(f -> f.column.searchable) as field>-->
-<#--                        ${field.name}-->
-<#--                    </#list>-->
                     <#list entity.fields?filter(f -> f.column.searchable) as field>
                         <#assign getField>request.get${field.name?capFirst}()</#assign>
                         ${getField}
