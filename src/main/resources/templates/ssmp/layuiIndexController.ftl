@@ -42,6 +42,11 @@ public class IndexController {
         return "login";
     }
 
+    @GetMapping("/registerPage")
+    public String registerPage() {
+        return "register";
+    }
+
     @PostMapping("/login")
     @ResponseBody
     public Response<String> login(HttpSession session, @RequestBody LoginRequest request) {

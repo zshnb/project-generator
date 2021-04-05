@@ -35,7 +35,7 @@
         <div class="layui-form login-form">
             <form class="layui-form" action="">
                 <div class="layui-form-item logo-title">
-                    <h1>登录页面</h1>
+                    <h1>注册页面</h1>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="username"></label>
@@ -51,10 +51,9 @@
                     </select>
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 录</button>
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="register">注 册</button>
                 </div>
             </form>
-            <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid register-btn">注 册</button>
         </div>
     </div>
 </div>
@@ -87,14 +86,14 @@
         });
 
         // 进行登录操作
-        form.on('submit(login)', function (data) {
+        form.on('submit(register)', function (data) {
             $.ajax({
-                url: '/login',
+                url: '/user/add',
                 type: 'post',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',
                 success: function () {
-                    window.location.href = 'http://localhost:8081'
+                    window.location.href = 'http://localhost:8081/loginPage'
                 },
                 error: function (data) {
                     layer.msg('用户名或密码错误')
@@ -102,10 +101,6 @@
             });
             return false;
         });
-
-        $('.register-btn').click(function () {
-            window.location.href = 'http://localhost:8081/registerPage'
-        })
     });
 </script>
 </body>
