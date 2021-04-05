@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<#function camelize(s)>
+    <#return s
+    ?replace('(^_+)|(_+$)', '', 'r')
+    ?replace('\\_+(\\w)?', ' $1', 'r')
+    ?replace('([A-Z])', ' $1', 'r')
+    ?capitalize
+    ?replace(' ' , '')
+    ?uncapFirst>
+</#function>
 <mapper namespace="${packageName}.${name?capFirst}Mapper">
     <#if entity.table.associate>
         <select id="findDtos" resultType="${dtoPackageName}.${name?capFirst}Dto">
@@ -31,14 +40,14 @@
                         </#switch>
                         <#if field.column.associate??>
                             <#assign associateFieldParam>
-                                ${field.column.associate.targetTableName}${field.column.associate.targetColumnName?capFirst}
+                                ${camelize(field.column.associate.targetTableName)}${camelize(field.column.associate.targetColumnName)?capFirst}
                             </#assign>
                             <if test="<#compress>${associateFieldParam}</#compress> != ${defaultValue}">
                                 and ${field.column.associate.targetTableName}.${field.column.associate.targetColumnName} = ${r'#{'}<#compress>${associateFieldParam}</#compress>${r'}'}
                             </if>
                         <#else>
                             <if test="<#compress>${field.column.name}</#compress> != ${defaultValue}">
-                                and ${field.column.name} = ${r'#{'}${field.column.name}${r'}'}
+                                and ${field.column.name} = ${r'#{'}${field.name}${r'}'}
                             </if>
                         </#if>
                     </#list>
