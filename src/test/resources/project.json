@@ -59,7 +59,7 @@
           "length": "11",
           "comment": "",
           "primary": false,
-          "searchable": false,
+          "searchable": true,
           "enableFormItem": true,
           "enableTableField": true,
           "associate": {
@@ -127,6 +127,29 @@
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
+        },
+        {
+          "name": "school_id",
+          "type": "int",
+          "length": "11",
+          "comment": "",
+          "primary": false,
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "test_school",
+            "targetColumnName": "id",
+            "sourceColumnName": "school_id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "name",
+                "aliasColumnName": "schoolName",
+                "tableFieldTitle": "学校名"
+              }
+            ],
+            "formItemColumnName": "name"
+          }
         }
       ],
       "enablePage": true,
