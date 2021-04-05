@@ -17,5 +17,6 @@ enum class FieldType(val code: Int, val description: String) {
     LOCAL_DATE_TIME(3, "LocalDateTime"),
     DOUBLE(4, "Double"),
     Boolean(5, "Boolean"),
-    LOCAL_DATE(6, "LocalDate")
+    LOCAL_DATE(6, "LocalDate"),
+    BIG_DECIMAL(7, "BigDecimal")
 }
