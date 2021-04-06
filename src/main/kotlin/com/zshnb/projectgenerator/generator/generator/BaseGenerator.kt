@@ -132,13 +132,10 @@ open class BaseGenerator(private val backendParser: BackendParser,
             }.toList()
 
         val permissions = project.entities.map { entity ->
-            val model = entity.name
             entity.table.permissions.map {
-                it.operations.map { op ->
-                    Permission(op, it.role, model)
-                }
+                Permission(it.operation, it.role, entity.name)
             }
-        }.flatten().flatten()
+        }.flatten()
 
         ioUtil.writeTemplate(initDataTemplate, mapOf("roles" to roles, "menus" to menus, "permissions" to permissions),
             "${PathConstant.resourcesDirPath(project.config)}/initData.sql")

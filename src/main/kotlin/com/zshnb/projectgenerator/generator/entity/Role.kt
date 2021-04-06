@@ -19,13 +19,12 @@ data class Menu(
     val child: List<Menu> = emptyList()
 )
 
+data class Operation(val description: String,
+                     val value: String)
+
 /**
  * @param operation 增删改等操作
  * @param role 拥有权限的角色
  * @param model 前端概念中的页面
  * */
-data class Permission(val operation: String, val role: String, val model: String) {
-    override fun toString(): String {
-        return "Permission(operation='$operation', role='$role', model='$model')"
-    }
-}
+data class Permission(val operation: Operation, val role: String, val model: String?)

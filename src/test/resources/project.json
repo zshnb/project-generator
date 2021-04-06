@@ -91,7 +91,24 @@
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit", "delete"]
+          "operation": {
+            "description": "添加",
+            "value": "add"
+          }
+        },
+        {
+          "role": "admin",
+          "operation": {
+            "description": "修改",
+            "value": "edit"
+          }
+        },
+        {
+          "role": "admin",
+          "operation": {
+            "description": "删除",
+            "value": "delete"
+          }
         }
       ]
     },
@@ -156,7 +173,24 @@
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit", "delete"]
+          "operation": {
+            "description": "添加",
+            "value": "add"
+          }
+        },
+        {
+          "role": "admin",
+          "operation": {
+            "description": "修改",
+            "value": "edit"
+          }
+        },
+        {
+          "role": "admin",
+          "operation": {
+            "description": "删除",
+            "value": "delete"
+          }
         }
       ]
     },
@@ -218,7 +252,24 @@
       "permissions": [
         {
           "role": "admin",
-          "operations": ["add", "edit", "delete"]
+          "operation": {
+            "description": "添加",
+            "value": "add"
+          }
+        },
+        {
+          "role": "admin",
+          "operation": {
+            "description": "修改",
+            "value": "edit"
+          }
+        },
+        {
+          "role": "admin",
+          "operation": {
+            "description": "删除",
+            "value": "delete"
+          }
         }
       ]
     }

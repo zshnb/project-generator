@@ -72,9 +72,9 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a th:if="${r"${#lists.contains(permissions, 'detail')}"}" class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看</a>
-            <a th:if="${r"${#lists.contains(permissions, 'edit')}"}" class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a th:if="${r"${#lists.contains(permissions, 'delete')}"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <#list table.operations as operation>
+                <a th:if="${r"${#lists.contains(permissions, '" + operation.value + "')"}" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="${operation.value}">${operation.description}</a>
+            </#list>
         </script>
 
         <#list table.fields as tableField>
@@ -93,7 +93,7 @@
                         <#elseif tableField.field.type == "String">
                             {{# if(d.${tableField.field.name} === '${mapping.source}'){ }}
                         </#if>
-                        <span>${mapping.target}}</span>
+                        <span>${mapping.target}</span>
                         {{# } }}
                     </#list>
                 </script>

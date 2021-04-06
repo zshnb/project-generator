@@ -5,8 +5,8 @@ package com.zshnb.projectgenerator.generator.entity
  * @param entity 页面所代表的实体
  * */
 class Page(val entity: Entity?,
-           val form: FormComponent?,
-           val table: TableComponent?) {
+           val form: FormComponent,
+           val table: TableComponent) {
 }
 
 /**
@@ -17,7 +17,7 @@ class FormComponent(val items: List<FormItem>)
 /**
  * 表格组建
  * */
-class TableComponent(val fields: List<TableField>)
+class TableComponent(val fields: List<TableField>, val operations: List<Operation>?)
 
 /**
  * 表格的列
