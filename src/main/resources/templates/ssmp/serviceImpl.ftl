@@ -85,13 +85,10 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
         </#if>
     </#assign>
     @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> list(List${name?capFirst}Request request) {
+    public ListResponse<<#compress>${returnClass}</#compress>> page(List${name?capFirst}Request request) {
         <#if entity.table.searchable>
             <#if entity.table.associate>
                 <#assign params>
-<#--                    <#list entity.fields?filter(f -> f.column.searchable) as field>-->
-<#--                        ${field.name}-->
-<#--                    </#list>-->
                     <#list entity.fields?filter(f -> f.column.searchable) as field>
                         <#assign getField>request.get${field.name?capFirst}()</#assign>
                         ${getField}
@@ -125,6 +122,9 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
             </#if>
         </#if>
     }
+    @Override
+    public ListResponse<<#compress>${returnClass}</#compress>> listAll() {
+        return new ListResponse<>(list(), 0L));
+    }
     </#if>
-
 }
