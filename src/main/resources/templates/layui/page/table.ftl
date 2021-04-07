@@ -137,7 +137,7 @@
             elem: '#currentTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [],
-            url: '/${entity.name}/list',
+            url: '/${entity.name}/page',
             method: 'post',
             contentType: 'application/json',
             parseData: function (res) {

@@ -68,11 +68,17 @@ public class ${name?capFirst}Controller {
             ${className}
         </#if>
     </#assign>
-    @PostMapping("/list")
+    @PostMapping("/page")
     @ResponseBody
-    public ListResponse<<#compress>${returnClass}</#compress>> list(@RequestBody List${className}Request request, HttpSession session) {
+    public ListResponse<<#compress>${returnClass}</#compress>> page(@RequestBody List${className}Request request, HttpSession session) {
         User user = (User) session.getAttribute("user");
         return ${service}.list(request);
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public ListResponse<<#compress>${returnClass}</#compress>> list() {
+        return ${service}.listAll();
     }
 
     @GetMapping("/tablePage")
