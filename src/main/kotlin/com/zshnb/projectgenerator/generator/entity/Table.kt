@@ -10,7 +10,7 @@ import com.squareup.moshi.Json
  * */
 data class Table(val name: String,
                  var columns: List<Column> = emptyList(),
-                 val permissions: List<TablePermission> = emptyList(),
+                 val permissions: List<Permission> = emptyList(),
                  val searchable: Boolean = false,
                  val enablePage: Boolean = false,
                  val associate: Boolean = false)

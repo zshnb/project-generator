@@ -132,10 +132,9 @@ open class BaseGenerator(private val backendParser: BackendParser,
             }.toList()
 
         val permissions = project.entities.map { entity ->
-            val model = entity.name
             entity.table.permissions.map {
                 it.operations.map { op ->
-                    Permission(op, it.role, model)
+                    Triple(op.value, it.role, entity.name)
                 }
             }
         }.flatten().flatten()

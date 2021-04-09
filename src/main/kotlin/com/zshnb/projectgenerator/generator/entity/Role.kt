@@ -8,6 +8,13 @@ package com.zshnb.projectgenerator.generator.entity
  * */
 data class Role(val name: String, val description: String, val menus: List<Menu>)
 
+/**
+ * 菜单表
+ * @param name 名称
+ * @param href 路径
+ * @param bind 是否与实体绑定，绑定会根据实体名称生成菜单，否则使用用户填写的路径，并对应生成空页面
+ * @param child 子菜单
+ * */
 data class Menu(
     val id: Int = 0,
     var parentId: Int = 0,
@@ -20,12 +27,34 @@ data class Menu(
 )
 
 /**
- * @param operation 增删改等操作
+ * 操作
+ * @param description 描述，用来显示按钮
+ * @param value 值，存储进数据库以及前端判断用
+ * */
+data class Operation(val description: String,
+                     val value: String) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Operation
+
+        if (description != other.description) return false
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = description.hashCode()
+        result = 31 * result + value.hashCode()
+        return result
+    }
+}
+
+/**
+ * @param operation 操作
  * @param role 拥有权限的角色
  * @param model 前端概念中的页面
  * */
-data class Permission(val operation: String, val role: String, val model: String) {
-    override fun toString(): String {
-        return "Permission(operation='$operation', role='$role', model='$model')"
-    }
-}
+data class Permission(val operations: List<Operation>, val role: String, val model: String?)
