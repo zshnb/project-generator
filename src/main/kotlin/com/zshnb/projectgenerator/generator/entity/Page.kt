@@ -15,7 +15,9 @@ class Page(val entity: Entity?,
 class FormComponent(val items: List<FormItem>)
 
 /**
- * 表格组建
+ * 表格组件
+ * @param fields 列
+ * @param operations 操作列所有动作按钮
  * */
 class TableComponent(val fields: List<TableField>, val operations: List<Operation>?)
 

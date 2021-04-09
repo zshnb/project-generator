@@ -55,7 +55,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
             .filter { it.parentId == 0 && !it.bind }
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.href.substring(1)}")
+                "${PathConstant.layUIPageDirPath(project.config)}${it.href}.html")
         }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),

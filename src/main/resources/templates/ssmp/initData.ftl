@@ -6,7 +6,7 @@
 </#list>
 
 <#list permissions as permission>
-    insert into permission(operation, role, model) values('${permission.operation.value}', '${permission.role}', '${permission.model}');
+    insert into permission(operation, role, model) values('${permission.first}', '${permission.second}', '${permission.third}');
 </#list>
 
 <#list roles as role>

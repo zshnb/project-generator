@@ -34,7 +34,9 @@ class FrontendParser {
                 TableField(tableField.title, tableField.formItemClassName,
                     enableTableFieldFields[innerIndex], tableField.mappings)
             }
-            Page(entity, FormComponent(formItems), TableComponent(tableFields, entity.table.permissions.map { it.operation }))
+            val operations = entity.table.permissions.map { it.operations }
+                .flatten().toSet().toList()
+            Page(entity, FormComponent(formItems), TableComponent(tableFields, operations))
         }
     }
 }
