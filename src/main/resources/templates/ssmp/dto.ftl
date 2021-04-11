@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.math.BigDecimal;
 
 public class ${entity.name?cap_first}Dto {
 

@@ -64,8 +64,9 @@
         </#if>
 
         <script type="text/html" id="toolbarDemo">
-            <div class="layui-btn-container" th:if="${r"${#lists.contains(permissions, 'add')}"}">
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
+            <div class="layui-btn-container">
+                <button th:if="${r"${#lists.contains(permissions, 'add')}"}"
+                        class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
             </div>
         </script>
 

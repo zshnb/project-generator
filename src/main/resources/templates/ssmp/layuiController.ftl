@@ -72,14 +72,16 @@ public class ${name?capFirst}Controller {
     @ResponseBody
     public ListResponse<<#compress>${returnClass}</#compress>> page(@RequestBody List${className}Request request, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        return ${service}.list(request);
+        return ${service}.page(request);
     }
 
+    <#if !entity.table.associate>
     @GetMapping("/list")
     @ResponseBody
     public ListResponse<<#compress>${returnClass}</#compress>> list() {
         return ${service}.listAll();
     }
+    </#if>
 
     @GetMapping("/tablePage")
     public String tablePage(HttpSession httpSession, Model model) {

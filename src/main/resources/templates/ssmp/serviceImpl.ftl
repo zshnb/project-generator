@@ -122,9 +122,11 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
             </#if>
         </#if>
     }
-    @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> listAll() {
-        return new ListResponse<>(list(), 0L));
-    }
+        <#if !entity.table.associate>
+        @Override
+        public ListResponse<<#compress>${returnClass}</#compress>> listAll() {
+            return new ListResponse<>(list(), 0L);
+        }
+        </#if>
     </#if>
 }
