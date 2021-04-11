@@ -66,13 +66,6 @@ data class AssociateResultColumn(val originColumnName: String,
                                  val aliasColumnName: String,
                                  val tableFieldTitle: String)
 
-/**
- * 角色在表格页面上的权限
- * @param role 角色名
- * @param operations 可以允许的权限集合
- * */
-data class TablePermission(val role: String = "", val operations: List<String> = emptyList())
-
 enum class ColumnType(val code: Int, val description: String) {
     @Json(name = "int")
     INT(1, "int"),

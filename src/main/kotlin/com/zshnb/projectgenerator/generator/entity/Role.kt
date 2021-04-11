@@ -1,5 +1,7 @@
 package com.zshnb.projectgenerator.generator.entity
 
+import com.squareup.moshi.Json
+
 /**
  * 角色表
  * @param name 角色名
@@ -32,7 +34,8 @@ data class Menu(
  * @param value 值，存储进数据库以及前端判断用
  * */
 data class Operation(val description: String,
-                     val value: String) {
+                     val value: String,
+                     val position: OperationPosition) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -41,6 +44,7 @@ data class Operation(val description: String,
 
         if (description != other.description) return false
         if (value != other.value) return false
+        if (position != other.position) return false
 
         return true
     }
@@ -48,12 +52,25 @@ data class Operation(val description: String,
     override fun hashCode(): Int {
         var result = description.hashCode()
         result = 31 * result + value.hashCode()
+        result = 31 * result + position.hashCode()
         return result
     }
 }
 
+enum class OperationPosition(val code: Int, val description: String) {
+    @Json(name = "toolbar")
+    TOOLBAR(0, "toolbar"),
+    @Json(name = "toolColumn")
+    TOOL_COLUMN(1, "toolColumn")
+    ;
+
+    override fun toString(): String {
+        return description
+    }
+}
+
 /**
- * @param operation 操作
+ * @param operations 操作
  * @param role 拥有权限的角色
  * @param model 前端概念中的页面
  * */
