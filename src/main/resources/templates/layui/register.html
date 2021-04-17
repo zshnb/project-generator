@@ -74,9 +74,7 @@
         });
         $.ajax({
             url: '/role/list',
-            type: 'post',
-            data: JSON.stringify({}),
-            contentType: 'application/json',
+            type: 'get',
             success: function (data) {
                 data.data.forEach(role => {
                     $('select[name=role]').append(`<option value="${role.name}">${role.description}</option>`)

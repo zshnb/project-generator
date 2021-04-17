@@ -66,7 +66,7 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <#list table.operations?filter(o -> o.position == "toolbar") as operation>
-                    <button th:if="${r"${#lists.contains(permissions, '" + operation.value + "')"}"
+                    <button th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
                             class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="${operation.value}">${operation.description}</button>
                 </#list>
             </div>
@@ -76,8 +76,8 @@
 
         <script type="text/html" id="currentTableBar">
             <#list table.operations?filter(o -> o.position == "toolColumn") as operation>
-                <a th:if="${r"${#lists.contains(permissions, '" + operation.value + "')"}"
-                   class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="${operation.value}">${operation.description}</a>
+                <a th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
+                   class="layui-btn layui-btn-xs layui-btn-normal data-count-delete" lay-event="${operation.value}">${operation.description}</a>
             </#list>
         </script>
 
