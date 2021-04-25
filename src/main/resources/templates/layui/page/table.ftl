@@ -85,7 +85,7 @@
             <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                 <script type="text/html" id="${tableField.field.name}">
                     {{#
-                        let fileName = d.${tableField.field.name}.substring(d.${tableField.field.name}.indexOf('=') + 1)
+                        let fileName = d.${tableField.field.name}
                     }}
                     <a class="layui-btn layui-btn-xs" href="/download?fileName={{fileName}}" download="{{fileName}}">下载${tableField.title}</a>
                 </script>

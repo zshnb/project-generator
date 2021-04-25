@@ -51,6 +51,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 FileUtils.copyURLToFile(url, destination)
             }
         }
+        // fixme 有bug，前端没有覆盖修改的菜单项
         val unBindMenus = project.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
         unBindMenus.forEach {
