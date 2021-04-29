@@ -123,10 +123,8 @@
         <#list form.items as formItem>
         <#if formItem.field.column.associate?? && formItem.field.column.searchable>
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
-            data: JSON.stringify({}),
-            contentType: 'application/json',
             success: function (data) {
                 data.data.forEach(it => {
                     $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
@@ -162,7 +160,7 @@
                         <#assign title>${tableField.title}</#assign>
                         <#if tableField.field.column.enableTableField && !tableField.field.column.associate??>
                             <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.ImageFormItem">
-                            { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="{{d.${fieldName}}}"/></div>'},
+                            { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="/download?fileName={{d.${fieldName}}}"/></div>'},
                             <#elseif tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}'},
                             <#elseif tableField.mappings??>

@@ -7,9 +7,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 
 public class ${entity.name?cap_first}Dto {
-
-    private static final long serialVersionUID = 1L;
-
     <#list entity.fields! as field>
         <#if field.type == 'LocalDateTime'>
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")

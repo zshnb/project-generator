@@ -12,9 +12,6 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ${name?cap_first} extends Model<${name?cap_first}> {
-
-    private static final long serialVersionUID = 1L;
-
     <#list fields! as field>
         <#if field.column.primary>
             @TableId(value = "${field.name}", type = IdType.AUTO)

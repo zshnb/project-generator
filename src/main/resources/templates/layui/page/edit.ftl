@@ -208,10 +208,8 @@
         })
         <#elseif formItem.field.column.associate??>
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
-            data: JSON.stringify({}),
-            contentType: 'application/json',
             success: function (data) {
                 data.data.forEach(it => {
                     if (it.id === ${r"[[${" + entity.name + "." + camelize(formItem.field.column.associate.sourceColumnName) + "}]]"}) {

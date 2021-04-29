@@ -204,10 +204,8 @@
         })
         <#elseif formItem.field.column.associate??>
         $.ajax({
-            type: 'post',
+            type: 'get',
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
-            data: JSON.stringify({}),
-            contentType: 'application/json',
             success: function (data) {
                 data.data.forEach(it => {
                     $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
