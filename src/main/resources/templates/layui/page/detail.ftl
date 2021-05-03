@@ -41,7 +41,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                 <div class="layui-input-block">
-                    <input type="password" name="${formItemName}"
+                    <input type="password" name="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
                            placeholder="请输入${label}" value="" class="layui-input" readonly>
                 </div>

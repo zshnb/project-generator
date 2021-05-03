@@ -29,7 +29,7 @@
         .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
     </style>
 </head>
-<body>
+<body th:style="'background:url(' + @{/images/background.jpg} + ');'">
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
@@ -38,12 +38,12 @@
                     <h1>注册页面</h1>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-icon layui-icon-username" for="username"></label>
-                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名" autocomplete="off" class="layui-input" lay-reqtext="用户名不能为空">
+                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名"
+                           autocomplete="off" class="layui-input" lay-reqtext="用户名不能为空">
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-icon layui-icon-password" for="password"></label>
-                    <input type="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" lay-reqtext="密码不能为空">
+                    <input type="password" name="password" lay-verify="required|password" placeholder="密码"
+                           autocomplete="off" class="layui-input" lay-reqtext="密码不能为空">
                 </div>
                 <div class="layui-form-item">
                     <select name="role" lay-filter="role" lay-verify="required" lay-reqtext="请选择角色">
