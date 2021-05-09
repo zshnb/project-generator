@@ -73,22 +73,22 @@ enum class ColumnType(val code: Int, val description: String) {
     @Json(name = "tinyint")
     TINYINT(2, "tinyint"),
 
-    @Json(name = "varchar")
-    VARCHAR(3, "varchar"),
-
-    @Json(name = "datetime")
-    DATETIME(4, "datetime"),
-
     @Json(name = "double")
     DOUBLE(5, "double"),
+
+    @Json(name = "decimal")
+    DECIMAL(8, "decimal"),
+
+    @Json(name = "varchar")
+    VARCHAR(3, "varchar"),
 
     @Json(name = "text")
     TEXT(6, "text"),
 
-    @Json(name = "date")
-    LOCAL_DATE(7, "date"),
+    @Json(name = "datetime")
+    DATETIME(4, "datetime"),
 
-    @Json(name = "decimal")
-    DECIMAL(8, "decimal")
+    @Json(name = "date")
+    LOCAL_DATE(7, "date")
     ;
 }

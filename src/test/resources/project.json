@@ -244,6 +244,23 @@
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
+        },
+        {
+          "name": "not_exist",
+          "type": "varchar",
+          "length": "255",
+          "comment": "不存在",
+          "primary": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "not_exist_table",
+            "targetColumnName": "id",
+            "sourceColumnName": "not_exist",
+            "associateResultColumns": [],
+            "formItemColumnName": "name"
+          }
         }
       ],
       "enablePage": true,

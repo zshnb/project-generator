@@ -13,7 +13,7 @@
     <#if entity.table.associate>
         <select id="findDtos" resultType="${dtoPackageName}.${name?capFirst}Dto">
             select
-                ${entity.table.name}.*,
+                ${entity.table.name}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
             <#list entity.table.columns as column>
                 <#if column.associate??>
                     <#list column.associate.associateResultColumns as associateColumn>
