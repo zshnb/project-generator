@@ -259,7 +259,6 @@
                 return false
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    let data = obj.data
                     $.ajax({
                         url: `/${entity.name}/${r"${data.id}"}`,
                         type: 'delete'
