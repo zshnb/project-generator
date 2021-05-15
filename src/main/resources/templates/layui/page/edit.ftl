@@ -128,7 +128,7 @@
     </#list>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认修改</button>
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save-btn">确认修改</button>
         </div>
     </div>
 </div>
@@ -225,7 +225,7 @@
         </#list>
 
         //监听提交
-        form.on('submit(saveBtn)', function (data) {
+        form.on('submit(save-btn)', function (data) {
             $.ajax({
                 url: '/${entity.name}/update',
                 type: 'put',

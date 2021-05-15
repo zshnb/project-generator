@@ -14,20 +14,15 @@
         <select id="findDtos" resultType="${dtoPackageName}.${name?capFirst}Dto">
             select
                 ${entity.table.name}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
-            <#list entity.table.columns as column>
-                <#if column.associate??>
-                    <#list column.associate.associateResultColumns as associateColumn>
-                        ${column.associate.targetTableName}.${associateColumn.originColumnName} as ${associateColumn.aliasColumnName}
-                        <#if associateColumn_has_next>,</#if>
-                    </#list>
-                    <#if entity.table.columns[column_index + 1]?? && entity.table.columns[column_index + 1].associate??>,</#if>
-                </#if>
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                <#list column.associate.associateResultColumns as associateColumn>
+                    ${column.associate.targetTableName}.${associateColumn.originColumnName} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
+                </#list>
+                <#if column_has_next>,</#if>
             </#list>
             from ${entity.table.name}
-            <#list entity.table.columns as column>
-                <#if column.associate??>
-                    inner join ${column.associate.targetTableName} on ${column.associate.targetTableName}.${column.associate.targetColumnName} = ${entity.table.name}.${column.associate.sourceColumnName}
-                </#if>
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                inner join ${column.associate.targetTableName} on ${column.associate.targetTableName}.${column.associate.targetColumnName} = ${entity.table.name}.${column.associate.sourceColumnName}
             </#list>
             <#if entity.table.searchable>
                 <where>
@@ -35,8 +30,10 @@
                         <#switch field.type>
                             <#case "String">
                                 <#assign defaultValue>''</#assign>
+                                <#break>
                             <#case "Integer">
-                            <#assign defaultValue>0</#assign>
+                                <#assign defaultValue>0</#assign>
+                                <#break>
                         </#switch>
                         <#if field.column.associate??>
                             <#assign associateFieldParam>
