@@ -75,13 +75,11 @@ public class ${name?capFirst}Controller {
         return ${service}.page(request);
     }
 
-    <#if !entity.table.associate>
     @GetMapping("/list")
     @ResponseBody
     public ListResponse<<#compress>${returnClass}</#compress>> list() {
         return ${service}.listAll();
     }
-    </#if>
 
     @GetMapping("/tablePage")
     public String tablePage(HttpSession httpSession, Model model) {

@@ -54,6 +54,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
         // fixme 有bug，前端没有覆盖修改的菜单项
         val unBindMenus = project.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
+            .distinctBy { it.name }
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, it,
                 "${PathConstant.layUIPageDirPath(project.config)}${it.href}.html")

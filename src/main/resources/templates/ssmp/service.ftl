@@ -22,8 +22,6 @@ public interface I${name?cap_first}Service extends IService<${name?cap_first}> {
         </#if>
     </#assign>
     ListResponse<<#compress>${returnClass}</#compress>> page(List${name?cap_first}Request request);
-        <#if !entity.table.associate>
-        ListResponse<<#compress>${returnClass}</#compress>> listAll();
-        </#if>
+    ListResponse<<#compress>${returnClass}</#compress>> listAll();
     </#if>
 }
