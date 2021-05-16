@@ -3,8 +3,8 @@ package com.zshnb.projectgenerator.generator.entity
 import com.squareup.moshi.Json
 
 /**
- * @param searchable 表是否有支持搜索的列
- * @param associate 关联表
+ * @param searchable 是否有支持搜索的列
+ * @param associate 是否存在关联列
  * @param enablePage 是否开启页面
  * @param permissions 表对应的页面上角色拥有的权限
  * */
@@ -16,8 +16,10 @@ data class Table(val name: String,
                  val associate: Boolean = false)
 
 /**
- * @param searchable 知否支持搜索
+ * @param searchable 是否支持搜索
  * @param enableFormItem 是否开启表单项
+ * @param associate 关联列
+ * @param repeatable 是否允许重复
  * */
 data class Column(val name: String,
                   val type: ColumnType,
@@ -27,7 +29,8 @@ data class Column(val name: String,
                   val searchable: Boolean = false,
                   val enableFormItem: Boolean = true,
                   val enableTableField: Boolean = true,
-                  val associate: Associate? = null) {
+                  val associate: Associate? = null,
+                  val repeatable: Boolean = true) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
