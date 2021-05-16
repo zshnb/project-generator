@@ -30,7 +30,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         </#list>
         ${className} mayExist = getOne(queryWrapper);
         if (mayExist != null) {
-            throw new InvalidArgumentException("已存在");
+            throw new InvalidArgumentException("记录已重复存在");
         }
         </#if>
         save(${name});
@@ -47,7 +47,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         </#list>
         ${className} mayExist = getOne(queryWrapper);
         if (mayExist != null) {
-            throw new InvalidArgumentException("已存在");
+            throw new InvalidArgumentException("记录已重复存在");
         }
         </#if>
         updateById(${name});
