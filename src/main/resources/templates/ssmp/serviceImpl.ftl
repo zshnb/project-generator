@@ -123,7 +123,7 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
         </#if>
     }
     @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> listAll() {
+    public ListResponse<${name?capFirst}> listAll() {
         return new ListResponse<>(list(), 0L);
     }
     </#if>
