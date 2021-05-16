@@ -226,6 +226,9 @@
                 success: function () {
                     let iframeIndex = parent.layer.getFrameIndex(window.name)
                     parent.layer.close(iframeIndex)
+                },
+                error: function(error) {
+                    layer.msg(error.responseJSON.message)
                 }
             })
             return false

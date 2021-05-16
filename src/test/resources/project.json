@@ -25,7 +25,6 @@
           "type": "varchar",
           "length": "11",
           "nullable": false,
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
@@ -34,7 +33,6 @@
           "name": "user_id",
           "type": "int",
           "length": "11",
-          "primary": false,
           "searchable": true,
           "enableFormItem": true,
           "enableTableField": true,
@@ -56,7 +54,6 @@
           "name": "school_id",
           "type": "int",
           "length": "11",
-          "primary": false,
           "searchable": true,
           "enableFormItem": true,
           "enableTableField": true,
@@ -79,7 +76,6 @@
           "type": "int",
           "length": "11",
           "nullable": false,
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
@@ -125,7 +121,6 @@
           "name": "name",
           "type": "varchar",
           "length": "11",
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
@@ -134,7 +129,6 @@
           "name": "count",
           "type": "decimal",
           "length": "10,2",
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
@@ -143,7 +137,6 @@
           "name": "not_exist",
           "type": "varchar",
           "length": "255",
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true,
@@ -159,7 +152,6 @@
           "name": "school_id",
           "type": "int",
           "length": "11",
-          "primary": false,
           "searchable": true,
           "enableFormItem": true,
           "enableTableField": true,
@@ -218,7 +210,7 @@
           "name": "name",
           "type": "varchar",
           "length": "11",
-          "primary": false,
+          "repeatable": false,
           "searchable": true,
           "enableFormItem": true,
           "enableTableField": true
@@ -227,7 +219,6 @@
           "name": "type",
           "type": "varchar",
           "length": "11",
-          "primary": false,
           "searchable": true,
           "enableFormItem": true,
           "enableTableField": true
@@ -236,7 +227,6 @@
           "name": "logo",
           "type": "varchar",
           "length": "11",
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
@@ -245,10 +235,64 @@
           "name": "doc",
           "type": "varchar",
           "length": "11",
-          "primary": false,
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "length": "11",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "username",
+          "type": "varchar",
+          "length": "255",
+          "repeatable": false,
+          "searchable": true
+        },
+        {
+          "name": "password",
+          "type": "varchar",
+          "length": "255"
+        },
+        {
+          "name": "role",
+          "type": "varchar",
+          "length": "255",
+          "enableFormItem": false,
+          "enableTableField": false
         }
       ],
       "enablePage": true,
@@ -407,6 +451,34 @@
           }
         ]
       }
+    },
+    {
+      "form": {
+        "items": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "label": "用户名"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.PasswordFormItem",
+            "require": true,
+            "label": "密码"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "用户名"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.PasswordFormItem",
+            "title": "密码"
+          }
+        ]
+      }
     }
   ],
   "roles": [
@@ -433,7 +505,7 @@
           "role": "admin"
         },
         {
-          "name": "测试学校管理",
+          "name": "测试不绑定表菜单",
           "icon": "",
           "href": "/bindPage",
           "bind": false,

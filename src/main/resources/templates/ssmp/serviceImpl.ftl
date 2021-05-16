@@ -1,6 +1,7 @@
 package ${implPackageName};
 
 <#assign name>${entity.name}</#assign>
+<#assign className>${name?capFirst}</#assign>
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -9,30 +10,52 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import ${packageName}.I${name?capFirst}Service;
+import ${packageName}.I${className}Service;
 <#list dependencies as d>
 import ${d}.*;
 </#list>
 
 @Service
-public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Mapper, ${name?capFirst}> implements I${name?capFirst}Service {
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements I${className}Service {
     @Autowired
-    private ${name?capFirst}Mapper ${name}Mapper;
+    private ${className}Mapper ${name}Mapper;
 
     @Override
-    public ${name?capFirst} add(${name?capFirst} ${name}) {
+    public ${className} add(${className} ${name}) {
+        <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
+        <#list entity.fields?filter(f -> !f.column.repeatable) as field>
+            <#assign getField>${name}.get${field.name?capFirst}()</#assign>
+            queryWrapper.eq("${field.column.name}", ${getField});
+        </#list>
+        ${className} mayExist = getOne(queryWrapper);
+        if (mayExist != null) {
+            throw new InvalidArgumentException("已存在");
+        }
+        </#if>
         save(${name});
         return getById(${name}.getId());
     }
 
     @Override
-    public ${name?capFirst} update(${name?capFirst} ${name}) {
+    public ${className} update(${className} ${name}) {
+        <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
+        <#list entity.fields?filter(f -> !f.column.repeatable) as field>
+            <#assign getField>${name}.get${field.name?capFirst}()</#assign>
+            queryWrapper.eq("${field.column.name}", ${getField});
+        </#list>
+        ${className} mayExist = getOne(queryWrapper);
+        if (mayExist != null) {
+            throw new InvalidArgumentException("已存在");
+        }
+        </#if>
         updateById(${name});
         return getById(${name}.getId());
     }
 
     @Override
-    public ${name?capFirst} detail(int id) {
+    public ${className} detail(int id) {
         return getById(id);
     }
 
@@ -79,13 +102,13 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
     <#else>
     <#assign returnClass>
         <#if entity.table.associate>
-            ${name?capFirst}Dto
+            ${className}Dto
         <#else>
-            ${name?capFirst}
+            ${className}
         </#if>
     </#assign>
     @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> page(List${name?capFirst}Request request) {
+    public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request) {
         <#if entity.table.searchable>
             <#if entity.table.associate>
                 <#assign params>
@@ -98,7 +121,7 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
                 IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()), ${params});
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             <#else>
-            QueryWrapper<${returnClass}> queryWrapper = new QueryWrapper<>();
+            QueryWrapper<<#compress>${returnClass}</#compress>> queryWrapper = new QueryWrapper<>();
             <#list entity.fields as field>
                 <#if field.column.searchable>
                     <#assign getField>request.get${field.name?capFirst}()</#assign>
@@ -123,7 +146,7 @@ public class ${name?capFirst}ServiceImpl extends ServiceImpl<${name?capFirst}Map
         </#if>
     }
     @Override
-    public ListResponse<${name?capFirst}> listAll() {
+    public ListResponse<${className}> listAll() {
         return new ListResponse<>(list(), 0L);
     }
     </#if>

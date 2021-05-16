@@ -18,20 +18,6 @@ class BackendParser(private val moshi: Moshi,
         val adapter = moshi.adapter(Project::class.java)
         val project = adapter.fromJson(json)!!
         project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
-        val userTable = project.tables.find { it.name == "user" }
-        if (userTable != null) {
-            userTable.columns = (userTable.columns.toSet() + setOf(
-                Column("username", VARCHAR, length = "255"),
-                Column("password", VARCHAR, length = "255"),
-                Column("role", VARCHAR, length = "255")
-            )).toList()
-        } else {
-            project.tables = project.tables + Table("user", listOf(
-                Column("username", VARCHAR, length = "255"),
-                Column("password", VARCHAR, length = "255"),
-                Column("role", VARCHAR, length = "255")
-            ))
-        }
         project.tables = project.tables.map {
             val columns = (it.columns.toSet() + setOf(
                 Column("id", INT, length = "11", primary = true),
@@ -103,7 +89,7 @@ class BackendParser(private val moshi: Moshi,
         entities.map {
             Service(config.servicePackagePath(), it, config.serviceImplPackagePath(), listOf(
                 config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(),
-                    config.mapperPackagePath(), config.dtoPackagePath()))
+                    config.mapperPackagePath(), config.dtoPackagePath(), config.exceptionPackagePath()))
         }
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
