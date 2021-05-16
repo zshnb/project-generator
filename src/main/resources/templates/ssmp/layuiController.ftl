@@ -77,7 +77,7 @@ public class ${name?capFirst}Controller {
 
     @GetMapping("/list")
     @ResponseBody
-    public ListResponse<<#compress>${returnClass}</#compress>> list() {
+    public ListResponse<${name?capFirst}> list() {
         return ${service}.listAll();
     }
 

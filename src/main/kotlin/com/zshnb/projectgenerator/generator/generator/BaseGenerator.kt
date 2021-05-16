@@ -42,6 +42,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
             configuration.getTemplate(BackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE)
         val uploadResponseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.UPLOAD_RESPONSE_TEMPLATE)
         val dtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.DTO_TEMPLATE)
+        val invalidArgumentException = configuration.getTemplate(BackendFreeMarkerFileConstant.INVALID_ARGUMENT_EXCEPTION_TEMPLATE)
+        val globalExceptionController = configuration.getTemplate(BackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
 
         ioUtil.writeTemplate(initTableTemplate,
             project,
@@ -116,6 +118,14 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(uploadResponseTemplate, project.config.commonPackagePath().packageName(),
             "${project.config.commonDir()}/UploadResponse.java")
 
+        ioUtil.writeTemplate(invalidArgumentException, project.config.exceptionPackagePath().packageName(),
+            "${project.config.exceptionDir()}/InvalidArgumentException.java")
+
+        ioUtil.writeTemplate(globalExceptionController, mapOf(
+            "packageName" to project.config.commonPackagePath(),
+            "dependencies" to listOf(project.config.exceptionPackagePath(), project.config.commonPackagePath())),
+            "${project.config.commonDir()}/GlobalExceptionController.java")
+
         var initMenuId = 1
         val roles = project.roles
         val menus = roles.asSequence().map { it.menus }
@@ -162,16 +172,20 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val commonDir = File(config.commonDir())
         val configDir = File(config.configDir())
         val dtoDir = File(config.dtoDir())
+        val exceptionDir = File(config.exceptionDir())
+        val rootDir = File(config.rootDir())
 
-        entityDir.mkdirs()
-        serviceDir.mkdirs()
-        serviceImplDir.mkdirs()
-        mapperDir.mkdirs()
-        controllerDir.mkdirs()
+        rootDir.mkdirs()
+        entityDir.mkdir()
+        serviceDir.mkdir()
+        serviceImplDir.mkdir()
+        mapperDir.mkdir()
+        controllerDir.mkdir()
         mapperXmlDir.mkdirs()
-        requestDir.mkdirs()
-        commonDir.mkdirs()
-        configDir.mkdirs()
-        dtoDir.mkdirs()
+        requestDir.mkdir()
+        commonDir.mkdir()
+        configDir.mkdir()
+        dtoDir.mkdir()
+        exceptionDir.mkdir()
     }
 }

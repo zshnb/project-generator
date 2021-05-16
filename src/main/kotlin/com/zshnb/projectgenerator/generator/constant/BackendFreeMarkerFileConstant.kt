@@ -26,5 +26,7 @@ class BackendFreeMarkerFileConstant {
         const val LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE = "ssmp/localDateTimeMetaObjectHandler.ftl"
         const val UPLOAD_RESPONSE_TEMPLATE = "ssmp/uploadResponse.ftl"
         const val DTO_TEMPLATE = "ssmp/dto.ftl"
+        const val INVALID_ARGUMENT_EXCEPTION_TEMPLATE = "ssmp/InvalidArgumentException.ftl"
+        const val GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE = "ssmp/GlobalExceptionController.ftl"
     }
 }
