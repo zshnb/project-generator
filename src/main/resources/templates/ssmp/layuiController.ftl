@@ -18,12 +18,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
-
+<#assign className>${name?capFirst}</#assign>
 @Controller
 @RequestMapping("/${name}")
-public class ${name?capFirst}Controller {
+public class ${className}Controller {
     <#assign service>${name}Service</#assign>
-    <#assign className>${name?capFirst}</#assign>
     @Autowired
     private ${className}ServiceImpl ${service};
 

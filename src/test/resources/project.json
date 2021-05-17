@@ -238,6 +238,27 @@
           "searchable": false,
           "enableFormItem": true,
           "enableTableField": true
+        },
+        {
+          "name": "user_id",
+          "type": "int",
+          "length": "11",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "user",
+            "targetColumnName": "id",
+            "sourceColumnName": "user_id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "username",
+                "aliasColumnName": "userUsername",
+                "tableFieldTitle": "用户"
+              }
+            ],
+            "formItemColumnName": "username"
+          }
         }
       ],
       "enablePage": true,
