@@ -25,7 +25,7 @@ class BackendParser(private val moshi: Moshi,
                 Column("update_at", DATETIME)
             )).toList()
             Table(it.name, columns, it.permissions, it.columns.any { column -> column.searchable },
-                it.enablePage, it.columns.any { column -> column.associate != null })
+                it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles)
         }
         project.roles.forEach { role ->
             role.menus.forEach {

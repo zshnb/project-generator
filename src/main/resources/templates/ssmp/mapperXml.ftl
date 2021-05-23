@@ -49,6 +49,21 @@
                         </#if>
                     </#list>
                 </where>
+                <#if (entity.table.bindRoles?size > 0)>
+                    <#list entity.table.bindRoles as role>
+                        <if test="user.role == '${role}'">
+                            and ${entity.table.name}.user_id = ${r"#{user.id}"}
+                        </if>
+                    </#list>
+                </#if>
+            <#else>
+                <#if (entity.table.bindRoles?size > 0)>
+                    <#list entity.table.bindRoles as role>
+                        <if test="user.role == '${role}'">
+                            where ${entity.table.name}.user_id = ${r"#{user.id}"}
+                        </if>
+                    </#list>
+                </#if>
             </#if>
         </select>
     </#if>

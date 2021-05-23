@@ -71,7 +71,7 @@ public class ${className}Controller {
     @ResponseBody
     public ListResponse<<#compress>${returnClass}</#compress>> page(@RequestBody List${className}Request request, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        return ${service}.page(request);
+        return ${service}.page(request<#if (entity.table.bindRoles?size > 0)>, user</#if>);
     }
 
     @GetMapping("/list")
