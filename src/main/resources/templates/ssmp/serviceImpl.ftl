@@ -108,7 +108,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         </#if>
     </#assign>
     @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request) {
+    public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request<#if (entity.table.bindRoles?size > 0)>, User user</#if>) {
         <#if entity.table.searchable>
             <#if entity.table.associate>
                 <#assign params>
@@ -118,7 +118,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                         <#if field_has_next>,</#if>
                     </#list>
                 </#assign>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()), ${params});
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()), ${params}<#if (entity.table.bindRoles?size > 0)>, user</#if>);
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             <#else>
             QueryWrapper<<#compress>${returnClass}</#compress>> queryWrapper = new QueryWrapper<>();
@@ -132,15 +132,31 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                     </#if>
                 </#if>
             </#list>
+            <#if (entity.table.bindRoles?size > 0)>
+                List<String> roles = new ArrayList<String>() {{
+                <#list entity.table.bindRoles as role>
+                    add("${role}");
+                </#list>
+                queryWrapper.eq(roles.contains(user.getRole()), "user_id", user.getId())
+            }};
+            </#if>
             IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize()), queryWrapper);
             return new ListResponse<>(page.getRecords(), page.getTotal());
             </#if>
         <#else>
             <#if entity.table.associate>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()));
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize())<#if (entity.table.bindRoles?size > 0)>, user</#if>);
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             <#else>
-                IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize()));
+                <#if (entity.table.bindRoles?size > 0)>
+                List<String> roles = new ArrayList<String>() {{
+                    <#list entity.table.bindRoles as role>
+                        add("${role}");
+                    </#list>
+                }};
+                </#if>
+                IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize())<#if (entity.table.bindRoles?size > 0)>,
+                    new QueryWrapper<>().eq(roles.contains(user.getRole()), "user_id", user.getId())</#if>);
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             </#if>
         </#if>

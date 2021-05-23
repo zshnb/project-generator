@@ -17,7 +17,7 @@
 <body>
 <div class="layui-form layuimini-form">
     <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.sourceColumnName == "user_id")?size > 0)>
-        <input type="text" name="userId" th:value="${r"${session.user.id}"}"/>
+        <input type="text" name="userId" th:value="${r"${session.user.id}"}" hidden/>
     </#if>
     <#function camelize(s)>
         <#return s

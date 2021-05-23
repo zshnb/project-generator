@@ -13,7 +13,8 @@ data class Table(val name: String,
                  val permissions: List<Permission> = emptyList(),
                  val searchable: Boolean = false,
                  val enablePage: Boolean = false,
-                 val associate: Boolean = false)
+                 val associate: Boolean = false,
+                 val bindRoles: List<String> = emptyList())
 
 /**
  * @param searchable 是否支持搜索
