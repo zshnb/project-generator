@@ -261,10 +261,12 @@
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
                         url: `/${entity.name}/${r"${data.id}"}`,
-                        type: 'delete'
+                        type: 'delete',
+                        success: function () {
+                            layer.close(index)
+                            table.reload('currentTableId')
+                        }
                     })
-                    layer.close(index)
-                    table.reload('currentTableId')
                 })
                 return false
             }

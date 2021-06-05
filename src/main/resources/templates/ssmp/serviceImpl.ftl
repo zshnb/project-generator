@@ -40,10 +40,11 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     @Override
     public ${className} update(${className} ${name}) {
         <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        ${className} exist = getById(${name}.getId());
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
         <#list entity.fields?filter(f -> !f.column.repeatable) as field>
-            <#assign getField>${name}.get${field.name?capFirst}()</#assign>
-            queryWrapper.eq("${field.column.name}", ${getField});
+            <#assign getField>get${field.name?capFirst}()</#assign>
+            queryWrapper.eq(!exist.${getField}.equals(${name}.${getField}), "${field.column.name}", ${name}.${getField});
         </#list>
         ${className} mayExist = getOne(queryWrapper);
         if (mayExist != null) {
@@ -126,9 +127,9 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                 <#if field.column.searchable>
                     <#assign getField>request.get${field.name?capFirst}()</#assign>
                     <#if field.type == "String">
-                        queryWrapper.eq(!${getField}.isEmpty(), "${field.column.name}", ${getField});
+                        queryWrapper.like(!${getField}.isEmpty(), "${field.column.name}", ${getField});
                     <#elseIf field.type == "Integer">
-                        queryWrapper.eq(${getField} != 0, "${field.column.name}", ${getField});
+                        queryWrapper.like(${getField} != 0, "${field.column.name}", ${getField});
                     </#if>
                 </#if>
             </#list>

@@ -9,7 +9,7 @@ import com.squareup.moshi.Json
  * @param permissions 表对应的页面上角色拥有的权限
  * */
 data class Table(val name: String,
-                 var columns: List<Column> = emptyList(),
+                 val columns: List<Column> = emptyList(),
                  val permissions: List<Permission> = emptyList(),
                  val searchable: Boolean = false,
                  val enablePage: Boolean = false,

@@ -211,7 +211,7 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it." + formItem.field.column.associate.targetColumnName + "}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                 })
                 form.render('select')
             }
