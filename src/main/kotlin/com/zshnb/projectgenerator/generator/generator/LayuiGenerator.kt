@@ -36,11 +36,10 @@ class LayuiGenerator(private val backendParser: BackendParser,
 
         resources.forEach {
             val url = it.url
-            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", it.url.path)) {
-                val filePath = url.path.substring(url.path.indexOf("layui") + 5)
+            val filePath = url.path.substring(url.path.indexOf("layui") + 5)
+            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", url.path)) {
                 File("${PathConstant.resourcesDirPath(project.config)}/static/$filePath")
             } else {
-                val filePath = url.path.substring(url.path.indexOf("layui") + 5)
                 if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
                     File("${PathConstant.resourcesDirPath(project.config)}/templates/$filePath")
                 } else {
@@ -51,7 +50,6 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 FileUtils.copyURLToFile(url, destination)
             }
         }
-        // fixme 有bug，前端没有覆盖修改的菜单项
         val unBindMenus = project.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
             .distinctBy { it.name }
