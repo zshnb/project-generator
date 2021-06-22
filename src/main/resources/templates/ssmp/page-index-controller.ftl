@@ -47,6 +47,9 @@ public class IndexController {
         return "register";
     }
 
+    /**
+        登录接口
+    */
     @PostMapping("/login")
     @ResponseBody
     public Response<String> login(HttpSession session, @RequestBody LoginRequest request) {

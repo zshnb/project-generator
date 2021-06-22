@@ -9,6 +9,7 @@ import com.squareup.moshi.Json
  * @param permissions 表对应的页面上角色拥有的权限
  * */
 data class Table(val name: String,
+                 val comment: String,
                  val columns: List<Column> = emptyList(),
                  val permissions: List<Permission> = emptyList(),
                  val searchable: Boolean = false,
@@ -21,9 +22,11 @@ data class Table(val name: String,
  * @param enableFormItem 是否开启表单项
  * @param associate 关联列
  * @param repeatable 是否允许重复
+ * @param nullable 列可空
  * */
 data class Column(val name: String,
                   val type: ColumnType,
+                  val comment: String,
                   val length: String = "0",
                   val primary: Boolean = false,
                   val nullable: Boolean = true,

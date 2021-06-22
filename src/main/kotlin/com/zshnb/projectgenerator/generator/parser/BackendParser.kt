@@ -20,11 +20,11 @@ class BackendParser(private val moshi: Moshi,
         project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
         project.tables = project.tables.map {
             val columns = (it.columns.toSet() + setOf(
-                Column("id", INT, length = "11", primary = true),
-                Column("create_at", DATETIME),
-                Column("update_at", DATETIME)
+                Column("id", INT, length = "11", primary = true, comment = "id主键"),
+                Column("create_at", DATETIME, comment = "创建时间"),
+                Column("update_at", DATETIME, comment = "更新时间")
             )).toList()
-            Table(it.name, columns, it.permissions, it.columns.any { column -> column.searchable },
+            Table(it.name, it.comment, columns, it.permissions, it.columns.any { column -> column.searchable },
                 it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles)
         }
         project.roles.forEach { role ->
@@ -61,27 +61,24 @@ class BackendParser(private val moshi: Moshi,
      * */
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
-            Column("id", INT, length = "11", primary = true),
-            Column("name", VARCHAR, length = "255"),
-            Column("description", VARCHAR, length = "255")
+            Column("name", VARCHAR, length = "255", comment = "名称"),
+            Column("description", VARCHAR, length = "255", comment = "描述")
         )
-        val roleTable = Table("role", roleColumns)
+        val roleTable = Table("role", "角色", roleColumns)
         val menuColumns = listOf(
-            Column("id", INT, length = "11", primary = true),
-            Column("parent_id", INT, length = "11"),
-            Column("name", VARCHAR, length = "255"),
-            Column("icon", VARCHAR, length = "255"),
-            Column("role", VARCHAR, length = "255"),
-            Column("href", VARCHAR, length = "255"))
-        val menuTable = Table("menu", menuColumns)
+            Column("parent_id", INT, length = "11", comment = "父id"),
+            Column("name", VARCHAR, length = "255", comment = "名称"),
+            Column("icon", VARCHAR, length = "255", comment = "图标"),
+            Column("role", VARCHAR, length = "255", comment = "所属角色"),
+            Column("href", VARCHAR, length = "255", comment = "地址"))
+        val menuTable = Table("menu", "菜单", menuColumns)
 
         val permissionColumns = listOf(
-            Column("id", INT, length = "11", primary = true),
-            Column("role", VARCHAR, length = "255"),
-            Column("model", VARCHAR, length = "255"),
-            Column("operation", VARCHAR, length = "255")
+            Column("role", VARCHAR, length = "255", comment = "角色"),
+            Column("model", VARCHAR, length = "255", comment = "实体"),
+            Column("operation", VARCHAR, length = "255", comment = "操作")
         )
-        val permissionTable = Table("permission", permissionColumns)
+        val permissionTable = Table("permission", "权限", permissionColumns)
         return listOf(roleTable, menuTable, permissionTable)
     }
 

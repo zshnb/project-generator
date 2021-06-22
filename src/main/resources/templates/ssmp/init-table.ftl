@@ -10,9 +10,9 @@ create table `${table.name}` (
             <#assign defaultValue>0</#assign>
             <#break>
     </#switch>
-    `${column.name}` ${column.type.description}<#if column.length != "0">(${column.length})</#if><#if !column.nullable> DEFAULT ${defaultValue}</#if><#if column.primary> AUTO_INCREMENT PRIMARY KEY</#if><#if column_has_next>,</#if>
+    `${column.name}` ${column.type.description}<#if column.length != "0">(${column.length})</#if><#if !column.nullable> DEFAULT ${defaultValue}</#if><#if column.primary> AUTO_INCREMENT PRIMARY KEY</#if> COMMENT '${column.comment}'<#if column_has_next>,</#if>
 </#list>
-);
+)COMMENT='${table.comment}';
 
 </#list>
 

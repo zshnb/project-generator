@@ -39,6 +39,9 @@ public class ${className}Controller {
         return menuService.list(role);
     }
     <#else>
+    /**
+        添加${entity.table.comment}
+    */
     @PostMapping("/add")
     @ResponseBody
     public Response<${className}> add(@RequestBody ${className} request) {
@@ -46,6 +49,9 @@ public class ${className}Controller {
         return Response.ok(${name});
     }
 
+    /**
+        更新${entity.table.comment}
+    */
     @PutMapping("/update")
     @ResponseBody
     public Response<${className}> update(@RequestBody ${className} old) {
@@ -53,6 +59,9 @@ public class ${className}Controller {
         return Response.ok(${name});
     }
 
+    /**
+        删除${entity.table.comment}
+    */
     @DeleteMapping("/{id}")
     @ResponseBody
     public Response<String> delete(@PathVariable int id) {
@@ -60,6 +69,9 @@ public class ${className}Controller {
         return Response.ok();
     }
 
+    /**
+        分页列出${entity.table.comment}
+    */
     <#assign returnClass>
         <#if entity.table.associate>
             ${name?capFirst}Dto
@@ -74,12 +86,18 @@ public class ${className}Controller {
         return ${service}.page(request<#if (entity.table.bindRoles?size > 0)>, user</#if>);
     }
 
+    /**
+        列出${entity.table.comment}
+    */
     @GetMapping("/list")
     @ResponseBody
     public ListResponse<${name?capFirst}> list() {
         return ${service}.listAll();
     }
 
+    /**
+        跳转${entity.table.comment}表格页面
+    */
     @GetMapping("/tablePage")
     public String tablePage(HttpSession httpSession, Model model) {
         String role = ((User) httpSession.getAttribute("user")).getRole();
@@ -90,17 +108,27 @@ public class ${className}Controller {
         return "page/${name}/table";
     }
 
+    /**
+        跳转${entity.table.comment}添加页面
+    */
     @GetMapping("/addPage")
     public String addPage () {
         return "page/${name}/add";
     }
 
+    /**
+        跳转${entity.table.comment}编辑页面
+    */
     @GetMapping("/editPage/{id}")
     public String editPage(@PathVariable int id, Model model) {
         ${className} ${name} = ${service}.getById(id);
         model.addAttribute("${name}", ${name});
         return "page/${name}/edit";
     }
+
+    /**
+        跳转${entity.table.comment}详情页面
+    */
     @GetMapping("/detailPage/{id}")
     public String detailPage(@PathVariable int id, Model model) {
         ${className} ${name} = ${service}.getById(id);
