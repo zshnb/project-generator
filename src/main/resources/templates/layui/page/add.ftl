@@ -144,12 +144,14 @@
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
-            type: 'datetime'
+            type: 'datetime',
+            trigger: 'click'
         })
         <#elseif formItem.class.simpleName == "DateFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
-            type: 'date'
+            type: 'date',
+            trigger: 'click'
         })
         <#elseif formItem.class.simpleName == "FileFormItem" || formItem.class.simpleName == "ImageFormItem">
         //多文件列表示例

@@ -144,13 +144,15 @@
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
-            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
+            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"},
+            trigger: 'click'
         })
         <#elseif formItem.class.simpleName == "DateFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'date',
-            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"}
+            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"},
+            trigger: 'click'
         })
         <#elseif formItem.class.simpleName == "FileFormItem" || formItem.class.simpleName == "ImageFormItem">
         //多文件列表示例

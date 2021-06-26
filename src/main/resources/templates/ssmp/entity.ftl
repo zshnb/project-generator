@@ -16,6 +16,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 */
 public class ${name?cap_first} extends Model<${name?cap_first}> {
     <#list fields! as field>
+        /**
+            ${field.column.comment}
+        */
         <#if field.column.primary>
             @TableId(value = "${field.name}", type = IdType.AUTO)
         <#elseif field.type == 'LocalDateTime'>
@@ -28,9 +31,6 @@ public class ${name?cap_first} extends Model<${name?cap_first}> {
         <#elseif field.name == 'updateAt'>
             @TableField(fill = FieldFill.INSERT_UPDATE)
         </#if>
-        /**
-            ${field.column.comment}
-        */
         private ${field.type} ${field.name};
     </#list>
     <#list fields! as field>
