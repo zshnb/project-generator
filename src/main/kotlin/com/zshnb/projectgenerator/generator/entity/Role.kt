@@ -32,6 +32,7 @@ data class Menu(
  * 操作
  * @param description 描述，用来显示按钮
  * @param value 值，存储进数据库以及前端判断用
+ * @param position 位于页面上的操作栏还是单元格
  * */
 data class Operation(val description: String,
                      val value: String,

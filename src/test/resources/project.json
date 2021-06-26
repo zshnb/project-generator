@@ -19,9 +19,11 @@
   "tables": [
     {
       "name": "test_table",
+      "comment": "测试表",
       "columns": [
         {
           "name": "name",
+          "comment": "姓名",
           "type": "varchar",
           "length": "11",
           "nullable": false,
@@ -32,6 +34,7 @@
         {
           "name": "user_id",
           "type": "int",
+          "comment": "test_user外键",
           "length": "11",
           "searchable": true,
           "enableFormItem": true,
@@ -53,6 +56,7 @@
         {
           "name": "school_id",
           "type": "int",
+          "comment": "test_school外键",
           "length": "11",
           "searchable": true,
           "enableFormItem": true,
@@ -73,6 +77,7 @@
         },
         {
           "name": "status",
+          "comment": "状态",
           "type": "int",
           "length": "11",
           "nullable": false,
@@ -107,18 +112,11 @@
     },
     {
       "name": "test_user",
+      "comment": "测试用户",
       "columns": [
         {
-          "name": "id",
-          "type": "int",
-          "length": "11",
-          "primary": true,
-          "searchable": false,
-          "enableFormItem": false,
-          "enableTableField": false
-        },
-        {
           "name": "name",
+          "comment": "姓名",
           "type": "varchar",
           "length": "11",
           "searchable": false,
@@ -127,6 +125,7 @@
         },
         {
           "name": "count",
+          "comment": "数量",
           "type": "decimal",
           "length": "10,2",
           "searchable": false,
@@ -135,6 +134,7 @@
         },
         {
           "name": "not_exist",
+          "comment": "不存在",
           "type": "varchar",
           "length": "255",
           "searchable": false,
@@ -151,6 +151,7 @@
         {
           "name": "school_id",
           "type": "int",
+          "comment": "test_school外键",
           "length": "11",
           "searchable": true,
           "enableFormItem": true,
@@ -196,18 +197,11 @@
     },
     {
       "name": "test_school",
+      "comment": "测试学校",
       "columns": [
         {
-          "name": "id",
-          "type": "int",
-          "length": "11",
-          "primary": true,
-          "searchable": false,
-          "enableFormItem": false,
-          "enableTableField": false
-        },
-        {
           "name": "name",
+          "comment": "姓名",
           "type": "varchar",
           "length": "11",
           "repeatable": false,
@@ -217,6 +211,7 @@
         },
         {
           "name": "type",
+          "comment": "类型",
           "type": "varchar",
           "length": "11",
           "searchable": true,
@@ -225,6 +220,7 @@
         },
         {
           "name": "logo",
+          "comment": "logo",
           "type": "varchar",
           "length": "11",
           "searchable": false,
@@ -233,6 +229,7 @@
         },
         {
           "name": "doc",
+          "comment": "文档",
           "type": "varchar",
           "length": "11",
           "searchable": false,
@@ -241,6 +238,7 @@
         },
         {
           "name": "user_id",
+          "comment": "test_user外键",
           "type": "int",
           "length": "11",
           "enableFormItem": true,
@@ -287,17 +285,11 @@
     },
     {
       "name": "user",
+      "comment": "用户",
       "columns": [
         {
-          "name": "id",
-          "type": "int",
-          "length": "11",
-          "primary": true,
-          "enableFormItem": false,
-          "enableTableField": false
-        },
-        {
           "name": "username",
+          "comment": "用户名",
           "type": "varchar",
           "length": "255",
           "repeatable": false,
@@ -305,11 +297,13 @@
         },
         {
           "name": "password",
+          "comment": "密码",
           "type": "varchar",
           "length": "255"
         },
         {
           "name": "role",
+          "comment": "角色",
           "type": "varchar",
           "length": "255",
           "enableFormItem": false,

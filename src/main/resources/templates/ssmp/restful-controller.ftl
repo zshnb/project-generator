@@ -28,29 +28,44 @@ public class ${name?capFirst}Controller {
         return menuService.list(request);
     }
     <#else>
+    /**
+        添加${entity.table.comment}
+    */
     @PostMapping("/add")
     public Response<${className}> add(@RequestBody ${className} request) {
         ${className} ${name} = ${service}.add(request);
         return Response.ok(${name});
     }
 
+    /**
+        更新${entity.table.comment}
+    */
     @PutMapping("/update")
     public Response<${className}> update(@RequestBody ${className} old) {
         ${className} ${name} = ${service}.update(old);
         return Response.ok(${name});
     }
 
+    /**
+        获取${entity.table.comment}
+    */
     @GetMapping("/{id}")
     public Response<${className}> detail(@PathVariable int id) {
         return Response.ok(${service}.detail(id));
     }
 
+    /**
+        删除${entity.table.comment}
+    */
     @DeleteMapping("/{id}")
     public Response<String> delete(@PathVariable int id) {
         ${service}.delete(id);
         return Response.ok();
     }
 
+    /**
+        列出${entity.table.comment}
+    */
     @PostMapping("/list")
     public ListResponse<${className}> list(@RequestBody List${className}Request request) {
         return ${service}.list(request);
