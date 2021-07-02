@@ -48,15 +48,15 @@ public class StaticResourceController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", String.format("attachment;fileName=%s",
-        new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
+            new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
         headers.add("Cache-Control", "no-cache,no-store,must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
 
         return ResponseEntity.ok()
-        .headers(headers)
-        .contentLength(file.length())
-        .contentType(MediaType.parseMediaType("application/octet-stream"))
-        .body(resource);
+            .headers(headers)
+            .contentLength(file.length())
+            .contentType(MediaType.parseMediaType("application/octet-stream"))
+            .body(resource);
     }
 }

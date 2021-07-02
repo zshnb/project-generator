@@ -129,7 +129,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                     <#if field.type == "String">
                         queryWrapper.like(!${getField}.isEmpty(), "${field.column.name}", ${getField});
                     <#elseIf field.type == "Integer">
-                        queryWrapper.like(${getField} != 0, "${field.column.name}", ${getField});
+                        queryWrapper.eq(${getField} != 0, "${field.column.name}", ${getField});
                     </#if>
                 </#if>
             </#list>
