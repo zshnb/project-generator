@@ -44,10 +44,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
         <#list entity.fields?filter(f -> !f.column.repeatable) as field>
             <#assign getField>get${field.name?capFirst}()</#assign>
-            queryWrapper.eq(!exist.${getField}.equals(${name}.${getField}), "${field.column.name}", ${name}.${getField});
+            queryWrapper.eq("${field.column.name}", ${name}.${getField});
         </#list>
         ${className} mayExist = getOne(queryWrapper);
-        if (mayExist != null) {
+        if (mayExist != null && !exist.getId().equals(mayExist.getId())) {
             throw new InvalidArgumentException("记录已重复存在");
         }
         </#if>
