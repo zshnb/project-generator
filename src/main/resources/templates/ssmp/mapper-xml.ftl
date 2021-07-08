@@ -34,6 +34,10 @@
                             <#case "Integer">
                                 <#assign defaultValue>0</#assign>
                                 <#break>
+                            <#case "LocalDate">
+                            <#case "LocalDateTime">
+                                <#assign defaultValue>null</#assign>
+                                <#break>
                         </#switch>
                         <#if field.column.associate??>
                             <#assign associateFieldParam>

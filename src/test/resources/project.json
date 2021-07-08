@@ -228,6 +228,22 @@
           "enableTableField": true
         },
         {
+          "name": "date",
+          "comment": "date",
+          "type": "date",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "datetime",
+          "comment": "datetime",
+          "type": "datetime",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
           "name": "doc",
           "comment": "文档",
           "type": "varchar",
@@ -440,6 +456,16 @@
             "label": "图片"
           },
           {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "require": false,
+            "label": "日期"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": false,
+            "label": "日期时间"
+          },
+          {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
             "require": false,
             "label": "文档"
@@ -459,6 +485,14 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
             "title": "图片"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "title": "日期"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "title": "日期时间"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
