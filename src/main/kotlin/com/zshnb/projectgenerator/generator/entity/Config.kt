@@ -13,5 +13,6 @@ data class Config(val artifactId: String,
                   val jdbcPort: Int,
                   val jdbcUser: String,
                   val jdbcPassword: String,
-                  val jdbcDatabase: String
+                  val jdbcDatabase: String,
+                  val database: Database = Database.MYSQL
 )
