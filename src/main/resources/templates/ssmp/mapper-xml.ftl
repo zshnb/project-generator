@@ -34,17 +34,21 @@
                             <#case "Integer">
                                 <#assign defaultValue>0</#assign>
                                 <#break>
+                            <#case "LocalDate">
+                            <#case "LocalDateTime">
+                                <#assign defaultValue>null</#assign>
+                                <#break>
                         </#switch>
                         <#if field.column.associate??>
                             <#assign associateFieldParam>
-                                ${camelize(field.column.associate.targetTableName)}${camelize(field.column.associate.targetColumnName)?capFirst}
+                                ${camelize(field.column.associate.sourceColumnName)}
                             </#assign>
-                            <if test="<#compress>${associateFieldParam}</#compress> != ${defaultValue}">
-                                and ${field.column.associate.targetTableName}.${field.column.associate.targetColumnName} = ${r'#{'}<#compress>${associateFieldParam}</#compress>${r'}'}
+                            <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
+                                and ${field.column.associate.targetTableName}.${field.column.associate.targetColumnName} = ${r'#{request.'}<#compress>${associateFieldParam}</#compress>${r'}'}
                             </if>
                         <#else>
-                            <if test="<#compress>${field.column.name}</#compress> != ${defaultValue}">
-                                and ${field.column.name} = ${r'#{'}${field.name}${r'}'}
+                            <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
+                                and ${field.column.name} = ${r'#{request.'}${field.name}${r'}'}
                             </if>
                         </#if>
                     </#list>

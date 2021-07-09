@@ -91,7 +91,8 @@ class BackendParser(private val moshi: Moshi,
 
     private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
         entities.map {
-            Mapper(config.mapperPackagePath(), it.name, config.entityPackagePath(), config.dtoPackagePath(), it)
+            Mapper(config.mapperPackagePath(), it.name,
+                config.entityPackagePath(), config.dtoPackagePath(), config.requestPackagePath(), it)
         }
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =

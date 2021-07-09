@@ -49,6 +49,17 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <#break>
+                                        <#case "DateFormItem">
+                                        <#case "DateTimeFormItem">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">${label}</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="${formItem.field.name}" id="${formItem.field.name}"
+                                                           placeholder="请输入${label}" value="" class="layui-input"/>
+                                                </div>
+                                            </div>
+                                            <#break>
                                     </#switch>
                                 </#if>
                             </#list>
@@ -107,9 +118,10 @@
 </div>
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:inline="javascript">
-    layui.use(['form', 'table'], function () {
+    layui.use(['form', 'table', 'laydate'], function () {
         let $ = layui.jquery,
             form = layui.form,
+            laydate = layui.laydate,
             table = layui.table
         <#function camelize(s)>
         <#return s
@@ -131,6 +143,18 @@
                 })
                 form.render('select')
             }
+        })
+        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'datetime',
+            trigger: 'click'
+        })
+        <#elseif formItem.class.simpleName == "DateFormItem">
+        laydate.render({
+            elem: '#${formItem.field.name}',
+            type: 'date',
+            trigger: 'click'
         })
         </#if>
         </#list>

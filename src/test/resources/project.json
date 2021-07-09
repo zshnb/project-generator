@@ -81,8 +81,8 @@
           "type": "int",
           "length": "11",
           "nullable": false,
-          "searchable": false,
-          "enableFormItem": true,
+          "searchable": true,
+          "enableFormItem": false,
           "enableTableField": true
         }
       ],
@@ -228,6 +228,22 @@
           "enableTableField": true
         },
         {
+          "name": "date",
+          "comment": "date",
+          "type": "date",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "datetime",
+          "comment": "datetime",
+          "type": "datetime",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
           "name": "doc",
           "comment": "文档",
           "type": "varchar",
@@ -356,12 +372,6 @@
             "require": true,
             "options": [],
             "label": "学校"
-          },
-          {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
-            "require": true,
-            "options": [],
-            "label": "状态"
           }
         ]
       },
@@ -384,11 +394,11 @@
             "title": "状态",
             "mappings": [
               {
-                "source": 1,
+                "source": 0,
                 "target": "未审核"
               },
               {
-                "source": 2,
+                "source": 1,
                 "target": "已审核"
               }
             ]
@@ -402,15 +412,39 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "require": true,
-            "label": "名称"
+            "label": "姓名"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "label": "数量"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "label": "不存在"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "label": "学校"
           }
         ]
       },
       "table": {
         "fields": [
           {
-            "title": "名称",
+            "title": "姓名",
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+          },
+          {
+            "title": "数量",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+          },
+          {
+            "title": "不存在",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+          },
+          {
+            "title": "学校",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem"
           }
         ]
       }
@@ -440,6 +474,16 @@
             "label": "图片"
           },
           {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "require": false,
+            "label": "日期"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": false,
+            "label": "日期时间"
+          },
+          {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
             "require": false,
             "label": "文档"
@@ -459,6 +503,14 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
             "title": "图片"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "title": "日期"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "title": "日期时间"
           },
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",

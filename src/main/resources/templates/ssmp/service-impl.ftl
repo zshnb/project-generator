@@ -112,14 +112,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request<#if (entity.table.bindRoles?size > 0)>, User user</#if>) {
         <#if entity.table.searchable>
             <#if entity.table.associate>
-                <#assign params>
-                    <#list entity.fields?filter(f -> f.column.searchable) as field>
-                        <#assign getField>request.get${field.name?capFirst}()</#assign>
-                        ${getField}
-                        <#if field_has_next>,</#if>
-                    </#list>
-                </#assign>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize()), ${params}<#if (entity.table.bindRoles?size > 0)>, user</#if>);
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize())<#if entity.table.searchable>, request</#if><#if (entity.table.bindRoles?size > 0)>, user</#if>);
                 return new ListResponse<>(page.getRecords(), page.getTotal());
             <#else>
             QueryWrapper<<#compress>${returnClass}</#compress>> queryWrapper = new QueryWrapper<>();

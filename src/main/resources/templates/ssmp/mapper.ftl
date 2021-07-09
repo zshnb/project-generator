@@ -7,9 +7,14 @@ import ${entityPackageName}.${name?cap_first};
 <#if (entity.table.bindRoles?size > 0)>
 import ${entityPackageName}.User;
 </#if>
+<#if entity.table.searchable>
+    import ${requestPackageName}.*;
+</#if>
 import ${dtoPackageName}.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 <#function camelize(s)>
     <#return s
     ?replace('(^_+)|(_+$)', '', 'r')
@@ -22,17 +27,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ${name?cap_first}Mapper extends BaseMapper<${name?cap_first}> {
     <#if entity.table.associate>
-        <#assign params>
-            <#list entity.fields?filter(f -> f.column.searchable) as field>
-                <#if field.column.associate??>
-                    <#assign paramName>${camelize(field.column.associate.targetTableName)}${camelize(field.column.associate.targetColumnName)?cap_first}</#assign>
-                    @Param("${paramName}") ${field.type} ${paramName}
-                <#else>
-                    @Param("${field.column.name}") ${field.type} ${field.column.name}
-                </#if>
-                <#if field_has_next>,</#if>
-            </#list>
-        </#assign>
-        IPage<${name?cap_first}Dto> findDtos(Page<?> page<#if params != "">, </#if>${params}<#if (entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
+        IPage<${name?cap_first}Dto> findDtos(Page<?> page<#if entity.table.searchable>, @Param("request")List${name?cap_first}Request request</#if><#if (entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
     </#if>
 }
