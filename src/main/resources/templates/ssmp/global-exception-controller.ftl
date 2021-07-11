@@ -17,7 +17,7 @@ public class GlobalExceptionController extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(InvalidArgumentException.class)
 	public ResponseEntity<Object> handleInvalidArgumentException(InvalidArgumentException e,
-	                                                              WebRequest webRequest) {
+	                                                             WebRequest webRequest) {
 		return handleExceptionInternal(e, Response.error(e.getMessage()),
 			HttpHeaders.EMPTY, BAD_REQUEST, webRequest);
 	}
