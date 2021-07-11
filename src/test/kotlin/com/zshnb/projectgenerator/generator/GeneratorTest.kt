@@ -15,9 +15,17 @@ class GeneratorTest {
     private lateinit var layuiGenerator: LayuiGenerator
 
     @Test
-    fun generate() {
+    fun generateMysql() {
         FileUtils.deleteDirectory(File("temp"))
-        val resource = ClassPathResource("project.json")
+        val resource = ClassPathResource("mysql-project.json")
+        val json = FileUtils.readLines(resource.file, StandardCharsets.UTF_8).joinToString(separator = "")
+        layuiGenerator.generateProject(json)
+    }
+
+    @Test
+    fun generateSqlserver() {
+        FileUtils.deleteDirectory(File("temp"))
+        val resource = ClassPathResource("sqlserver-project.json")
         val json = FileUtils.readLines(resource.file, StandardCharsets.UTF_8).joinToString(separator = "")
         layuiGenerator.generateProject(json)
     }

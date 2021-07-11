@@ -1,6 +1,20 @@
+<#assign autoIncrementStatement>
+    <#if config.database == "MYSQL">
+        AUTO_INCREMENT
+    <#elseif config.database == "SQLSERVER">
+        IDENTITY(1,1)
+    </#if>
+</#assign>
 <#list tables as table>
-create table ${table.name} (
-<#list  table.columns as column>
+    <#assign tableName>
+        <#if config.database == "MYSQL">
+            `${table.name}`
+        <#elseif config.database == "SQLSERVER">
+            [${table.name}]
+        </#if>
+    </#assign>
+create table <#compress>${tableName}</#compress> (
+<#list table.columns as column>
     <#switch column.type>
         <#case "TEXT">
         <#case "VARCHAR">
@@ -10,9 +24,22 @@ create table ${table.name} (
             <#assign defaultValue>0</#assign>
             <#break>
     </#switch>
-    ${column.name} ${column.type.description}<#if column.length != "0">(${column.length})</#if><#if !column.nullable> DEFAULT ${defaultValue}</#if><#if column.primary> AUTO_INCREMENT PRIMARY KEY</#if> COMMENT '${column.comment}'<#if column_has_next>,</#if>
+    <#assign columnName>
+        <#if config.database == "MYSQL">
+            `${column.name}`
+        <#elseif config.database == "SQLSERVER">
+            [${column.name}]
+        </#if>
+    </#assign>
+        <#compress>${columnName}</#compress> ${column.type.description}<#rt>
+        <#if column.length != "0"><#compress>(${column.length})</#compress></#if><#t>
+        <#if !column.nullable><#compress>DEFAULT ${defaultValue}</#compress></#if><#t>
+        <#if column.primary><#compress>${autoIncrementStatement}</#compress> PRIMARY KEY </#if><#t>
+        <#if config.database == "MYSQL"><#compress>COMMENT '${column.comment}'</#compress></#if><#t>
+        <#if column_has_next><#compress>,</#compress></#if><#t>
+
 </#list>
-)COMMENT='${table.comment}';
+)<#if config.database == "MYSQL">COMMENT='${table.comment}'</#if>;
 
 </#list>
 

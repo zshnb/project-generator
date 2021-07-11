@@ -1,7 +1,7 @@
-package ${implPackageName};
+package ${service.implPackageName};
 
-<#assign name>${entity.name}</#assign>
-<#assign className>${name?capFirst}</#assign>
+<#assign name>${service.entity.name}</#assign>
+<#assign className>${service.entity.name?capFirst}</#assign>
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,11 +10,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import ${packageName}.I${className}Service;
-<#list dependencies as d>
+import ${service.packageName}.I${className}Service;
+<#list service.dependencies as d>
 import ${d}.*;
 </#list>
-
+<#function literalize(str)>
+    <#if config.database == "MYSQL">
+        <#return '`${str}`'>
+    <#elseIf config.database == "SQLSERVER">
+        <#return '[${str}]'>
+    </#if>
+</#function>
 @Service
 public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements I${className}Service {
     @Autowired
@@ -22,9 +28,9 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     @Override
     public ${className} add(${className} ${name}) {
-        <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        <#if (service.entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
-        <#list entity.fields?filter(f -> !f.column.repeatable) as field>
+        <#list service.entity.fields?filter(f -> !f.column.repeatable) as field>
             <#assign getField>${name}.get${field.name?capFirst}()</#assign>
             queryWrapper.eq("${field.column.name}", ${getField});
         </#list>
@@ -39,10 +45,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     @Override
     public ${className} update(${className} ${name}) {
-        <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        <#if (service.entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
         ${className} exist = getById(${name}.getId());
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
-        <#list entity.fields?filter(f -> !f.column.repeatable) as field>
+        <#list service.entity.fields?filter(f -> !f.column.repeatable) as field>
             <#assign getField>get${field.name?capFirst}()</#assign>
             queryWrapper.eq("${field.column.name}", ${name}.${getField});
         </#list>
@@ -102,56 +108,70 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     }
     <#else>
     <#assign returnClass>
-        <#if entity.table.associate>
+        <#if service.entity.table.associate>
             ${className}Dto
         <#else>
             ${className}
         </#if>
     </#assign>
     @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request<#if (entity.table.bindRoles?size > 0)>, User user</#if>) {
-        <#if entity.table.searchable>
-            <#if entity.table.associate>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize())<#if entity.table.searchable>, request</#if><#if (entity.table.bindRoles?size > 0)>, user</#if>);
-                return new ListResponse<>(page.getRecords(), page.getTotal());
+    public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request<#if (service.entity.table.bindRoles?size > 0)>, User user</#if>) {
+        <#assign pageParam>
+            <#if config.database == "MYSQL">
+                new Page<>(request.getPageNumber(), request.getPageSize())
+            <#elseIf config.database == "SQLSERVER">
+                new Page<>(request.getPageNumber(), request.getPageSize(), false)
+            </#if>
+        </#assign>
+        <#assign returnTotal>
+            <#if config.database == "MYSQL">
+                page.getTotal()
+            <#elseIf config.database == "SQLSERVER">
+                ${name}Mapper.count(<#if service.entity.table.searchable>request</#if><#if (service.entity.table.bindRoles?size > 0)>, user</#if>)
+            </#if>
+        </#assign>
+        <#if service.entity.table.searchable>
+            <#if service.entity.table.associate>
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(<#compress>${pageParam}</#compress><#if service.entity.table.searchable>, request</#if><#if (service.entity.table.bindRoles?size > 0)>, user</#if>);
+                return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
             <#else>
             QueryWrapper<<#compress>${returnClass}</#compress>> queryWrapper = new QueryWrapper<>();
-            <#list entity.fields as field>
+            <#list service.entity.fields as field>
                 <#if field.column.searchable>
                     <#assign getField>request.get${field.name?capFirst}()</#assign>
                     <#if field.type == "String">
-                        queryWrapper.like(!${getField}.isEmpty(), "${field.column.name}", ${getField});
+                        queryWrapper.like(!${getField}.isEmpty(), "${literalize(field.column.name)}", ${getField});
                     <#elseIf field.type == "Integer">
-                        queryWrapper.eq(${getField} != 0, "${field.column.name}", ${getField});
+                        queryWrapper.eq(${getField} != 0, "${literalize(field.column.name)}", ${getField});
                     </#if>
                 </#if>
             </#list>
-            <#if (entity.table.bindRoles?size > 0)>
+            <#if (service.entity.table.bindRoles?size > 0)>
                 List<String> roles = new ArrayList<String>() {{
-                <#list entity.table.bindRoles as role>
+                <#list service.entity.table.bindRoles as role>
                     add("${role}");
                 </#list>
                 queryWrapper.eq(roles.contains(user.getRole()), "user_id", user.getId())
             }};
             </#if>
-            IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize()), queryWrapper);
-            return new ListResponse<>(page.getRecords(), page.getTotal());
+            IPage<<#compress>${returnClass}</#compress>> page = page(<#compress>${pageParam}</#compress>, queryWrapper);
+            return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
             </#if>
         <#else>
-            <#if entity.table.associate>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(request.getPageNumber(), request.getPageSize())<#if (entity.table.bindRoles?size > 0)>, user</#if>);
-                return new ListResponse<>(page.getRecords(), page.getTotal());
+            <#if service.entity.table.associate>
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(<#compress>${pageParam}</#compress><#if (service.entity.table.bindRoles?size > 0)>, user</#if>);
+                return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
             <#else>
-                <#if (entity.table.bindRoles?size > 0)>
+                <#if (service.entity.table.bindRoles?size > 0)>
                 List<String> roles = new ArrayList<String>() {{
-                    <#list entity.table.bindRoles as role>
+                    <#list service.entity.table.bindRoles as role>
                         add("${role}");
                     </#list>
                 }};
                 </#if>
-                IPage<<#compress>${returnClass}</#compress>> page = page(new Page<>(request.getPageNumber(), request.getPageSize())<#if (entity.table.bindRoles?size > 0)>,
+                IPage<<#compress>${returnClass}</#compress>> page = page(<#compress>${pageParam}</#compress><#if (service.entity.table.bindRoles?size > 0)>,
                     new QueryWrapper<>().eq(roles.contains(user.getRole()), "user_id", user.getId())</#if>);
-                return new ListResponse<>(page.getRecords(), page.getTotal());
+                return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
             </#if>
         </#if>
     }

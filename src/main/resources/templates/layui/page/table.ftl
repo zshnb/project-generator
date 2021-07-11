@@ -103,7 +103,7 @@
             <#elseif tableField.mappings??>
                 <script type="text/html" id="${tableField.field.name}">
                     <#list tableField.mappings as mapping>
-                        <#if tableField.field.type == "Integer" || tableField.field.type == "DOUBLE">
+                        <#if tableField.field.type == "Integer" || tableField.field.type == "Double">
                             {{# if(d.${tableField.field.name} === ${mapping.source}){ }}
                         <#elseif tableField.field.type == "String">
                             {{# if(d.${tableField.field.name} === '${mapping.source}'){ }}

@@ -54,7 +54,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ), "${project.config.controllerDir()}/StaticResourceController.java")
 
         project.entities.forEach {
-            ioUtil.writeTemplate(entityTemplate, it, "${project.config.entityDir()}/${it.name.capitalize()}.java")
+            ioUtil.writeTemplate(entityTemplate, mapOf("entity" to it, "config" to project.config),
+                "${project.config.entityDir()}/${it.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to project.config.requestPackagePath(),
                 "entity" to it,
@@ -72,14 +73,18 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "${project.config.serviceDir()}/I${it.entity.name.capitalize()}Service.java")
 
             ioUtil.writeTemplate(serviceImplTemplate,
-                it,
+                mapOf("service" to it, "config" to project.config),
                 "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
         }
 
         project.mappers.forEach {
-            ioUtil.writeTemplate(mapperTemplate, it, "${project.config.mapperDir()}/${it.name.capitalize()}Mapper.java")
+            ioUtil.writeTemplate(mapperTemplate,
+                mapOf("mapper" to it, "config" to project.config)
+                , "${project.config.mapperDir()}/${it.name.capitalize()}Mapper.java")
 
-            ioUtil.writeTemplate(mapperXmlTemplate, it, "${project.config.xmlDir()}/${it.name.capitalize()}Mapper.xml")
+            ioUtil.writeTemplate(mapperXmlTemplate,
+                mapOf("mapper" to it, "config" to project.config)
+                , "${project.config.xmlDir()}/${it.name.capitalize()}Mapper.xml")
         }
 
         ioUtil.writeTemplate(pageRequestTemplate, project.config.commonPackagePath().packageName(),
@@ -102,7 +107,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
             project.config,
             "${PathConstant.resourcesDirPath(project.config)}/application.yml")
 
-        ioUtil.writeTemplate(mybatisPlusConfigTemplate, project.config.configPackagePath().packageName(),
+        ioUtil.writeTemplate(mybatisPlusConfigTemplate,
+            mapOf("config" to project.config, "packageName" to project.config.configPackagePath()),
             "${project.config.configDir()}/MybatisPlusConfig.java")
 
         ioUtil.writeTemplate(menuDtoTemplate, project.config.dtoPackagePath().packageName(),
@@ -149,7 +155,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
             }
         }.flatten().flatten()
 
-        ioUtil.writeTemplate(initDataTemplate, mapOf("roles" to roles, "menus" to menus, "permissions" to permissions),
+        ioUtil.writeTemplate(initDataTemplate,
+            mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to project.config),
             "${PathConstant.resourcesDirPath(project.config)}/initData.sql")
     }
 
