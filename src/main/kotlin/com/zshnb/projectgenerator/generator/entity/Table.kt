@@ -100,3 +100,10 @@ enum class ColumnType(val code: Int, val description: String) {
     LOCAL_DATE(7, "date")
     ;
 }
+
+enum class Database {
+    @Json(name = "mysql")
+    MYSQL,
+    @Json(name = "sqlserver")
+    SQLSERVER
+}

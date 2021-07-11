@@ -1,16 +1,18 @@
-package ${packageName};
-
+package ${mapper.packageName};
+<#assign name>
+    ${mapper.name?cap_first}<#t>
+</#assign>
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import ${entityPackageName}.${name?cap_first};
-<#if (entity.table.bindRoles?size > 0)>
-import ${entityPackageName}.User;
+import ${mapper.entityPackageName}.${name};
+<#if (mapper.entity.table.bindRoles?size > 0)>
+import ${mapper.entityPackageName}.User;
 </#if>
-<#if entity.table.searchable>
-    import ${requestPackageName}.*;
+<#if mapper.entity.table.searchable>
+    import ${mapper.requestPackageName}.*;
 </#if>
-import ${dtoPackageName}.*;
+import ${mapper.dtoPackageName}.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
@@ -25,8 +27,11 @@ import java.time.LocalDate;
     ?uncap_first>
 </#function>
 @Repository
-public interface ${name?cap_first}Mapper extends BaseMapper<${name?cap_first}> {
-    <#if entity.table.associate>
-        IPage<${name?cap_first}Dto> findDtos(Page<?> page<#if entity.table.searchable>, @Param("request")List${name?cap_first}Request request</#if><#if (entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
+public interface ${name}Mapper extends BaseMapper<${name}> {
+    <#if mapper.entity.table.associate>
+        IPage<${name}Dto> findDtos(Page<?> page<#if mapper.entity.table.searchable>, @Param("request")List${name}Request request</#if><#if (mapper.entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
+    </#if>
+    <#if config.database == "SQLSERVER">
+        int count(<#if mapper.entity.table.searchable>@Param("request")List${name}Request request</#if><#if (mapper.entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
     </#if>
 }

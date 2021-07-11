@@ -1,0 +1,603 @@
+{
+  "config": {
+    "groupId": "com.temp",
+    "artifactId": "temp",
+    "version": "1.0",
+    "rootPackageName": "com.temp.temp",
+    "entityPackageName": "entity",
+    "servicePackageName": "service",
+    "serviceImplPackageName": "serviceImpl",
+    "mapperPackageName": "mapper",
+    "controllerPackageName": "controller",
+    "jdbcHost": "localhost",
+    "jdbcPort": 1433,
+    "jdbcUser": "sa",
+    "jdbcPassword": "root",
+    "jdbcDatabase": "db",
+    "database": "sqlserver"
+  },
+  "type": 1,
+  "tables": [
+    {
+      "name": "test_table",
+      "comment": "测试表",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "姓名",
+          "type": "varchar",
+          "length": "11",
+          "nullable": false,
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "user_id",
+          "type": "int",
+          "comment": "test_user外键",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "test_user",
+            "targetColumnName": "id",
+            "sourceColumnName": "user_id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "name",
+                "aliasColumnName": "userName",
+                "tableFieldTitle": "用户名"
+              }
+            ],
+            "formItemColumnName": "name"
+          }
+        },
+        {
+          "name": "school_id",
+          "type": "int",
+          "comment": "test_school外键",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "test_school",
+            "targetColumnName": "id",
+            "sourceColumnName": "school_id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "name",
+                "aliasColumnName": "schoolName",
+                "tableFieldTitle": "学校名"
+              }
+            ],
+            "formItemColumnName": "name"
+          }
+        },
+        {
+          "name": "status",
+          "comment": "状态",
+          "type": "int",
+          "nullable": false,
+          "searchable": true,
+          "enableFormItem": false,
+          "enableTableField": true
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "test_user",
+      "comment": "测试用户",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "姓名",
+          "type": "varchar",
+          "length": "11",
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "count",
+          "comment": "数量",
+          "type": "decimal",
+          "length": "10,2",
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "not_exist",
+          "comment": "不存在",
+          "type": "varchar",
+          "length": "255",
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "not_exist_table",
+            "targetColumnName": "id",
+            "sourceColumnName": "not_exist",
+            "associateResultColumns": [],
+            "formItemColumnName": "name"
+          }
+        },
+        {
+          "name": "school_id",
+          "type": "int",
+          "comment": "test_school外键",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "test_school",
+            "targetColumnName": "id",
+            "sourceColumnName": "school_id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "name",
+                "aliasColumnName": "schoolName",
+                "tableFieldTitle": "学校名"
+              }
+            ],
+            "formItemColumnName": "name"
+          }
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "test_school",
+      "comment": "测试学校",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "姓名",
+          "type": "varchar",
+          "length": "11",
+          "repeatable": false,
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "type",
+          "comment": "类型",
+          "type": "varchar",
+          "length": "11",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "logo",
+          "comment": "logo",
+          "type": "varchar",
+          "length": "11",
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "date",
+          "comment": "date",
+          "type": "date",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "datetime",
+          "comment": "datetime",
+          "type": "datetime",
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "doc",
+          "comment": "文档",
+          "type": "varchar",
+          "length": "11",
+          "searchable": false,
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "user_id",
+          "comment": "test_user外键",
+          "type": "int",
+          "enableFormItem": true,
+          "enableTableField": true,
+          "associate": {
+            "targetTableName": "user",
+            "targetColumnName": "id",
+            "sourceColumnName": "user_id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "username",
+                "aliasColumnName": "userUsername",
+                "tableFieldTitle": "用户"
+              }
+            ],
+            "formItemColumnName": "username"
+          }
+        }
+      ],
+      "bindRoles": ["admin"],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "comment": "用户",
+      "columns": [
+        {
+          "name": "username",
+          "comment": "用户名",
+          "type": "varchar",
+          "length": "255",
+          "repeatable": false,
+          "searchable": true
+        },
+        {
+          "name": "password",
+          "comment": "密码",
+          "type": "varchar",
+          "length": "255"
+        },
+        {
+          "name": "role",
+          "comment": "角色",
+          "type": "varchar",
+          "length": "255",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "order",
+          "comment": "顺序",
+          "type": "varchar",
+          "length": "255",
+          "nullable": false,
+          "searchable": true,
+          "enableFormItem": true,
+          "enableTableField": true
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "form": {
+        "items": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "options": [],
+            "label": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [],
+            "label": "用户"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [],
+            "label": "学校"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "label": "状态"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "用户"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "学校"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "状态",
+            "mappings": [
+              {
+                "source": 0,
+                "target": "未审核"
+              },
+              {
+                "source": 1,
+                "target": "已审核"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "form": {
+        "items": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "label": "姓名"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "label": "数量"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "label": "不存在"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "label": "学校"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "title": "姓名",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+          },
+          {
+            "title": "数量",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+          },
+          {
+            "title": "不存在",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem"
+          },
+          {
+            "title": "学校",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem"
+          }
+        ]
+      }
+    },
+    {
+      "form": {
+        "items": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "label": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "options": [
+              {
+                "title": "类型1",
+                "value": "type1"
+              }
+            ],
+            "label": "类型"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "require": false,
+            "label": "图片"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "require": false,
+            "label": "日期"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "require": false,
+            "label": "日期时间"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
+            "require": false,
+            "label": "文档"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "title": "类型"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "title": "图片"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "title": "日期"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateTimeFormItem",
+            "title": "日期时间"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.FileFormItem",
+            "title": "文档"
+          }
+        ]
+      }
+    },
+    {
+      "form": {
+        "items": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "label": "用户名"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.PasswordFormItem",
+            "require": true,
+            "label": "密码"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "label": "顺序"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "用户名"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.PasswordFormItem",
+            "title": "密码"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "title": "顺序"
+          }
+        ]
+      }
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "description": "管理员",
+      "menus": [
+        {
+          "name": "测试表管理",
+          "icon": "",
+          "href": "/testTable/tablePage",
+          "role": "admin"
+        },
+        {
+          "name": "测试用户管理",
+          "icon": "",
+          "href": "/testUser/tablePage",
+          "role": "admin"
+        },
+        {
+          "name": "测试学校管理",
+          "icon": "",
+          "href": "/testSchool/tablePage",
+          "role": "admin"
+        },
+        {
+          "name": "测试不绑定表菜单",
+          "icon": "",
+          "href": "/bindPage",
+          "bind": false,
+          "role": "admin"
+        }
+      ]
+    }
+  ]
+}
