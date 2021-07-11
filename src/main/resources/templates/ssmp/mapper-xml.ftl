@@ -9,11 +9,11 @@
     ?replace(' ' , '')
     ?uncapFirst>
 </#function>
-<#function literalize(tableName)>
+<#function literalize(str)>
     <#if config.database == "MYSQL">
-        <#return '`${tableName}`'>
+        <#return '`${str}`'>
     <#elseIf config.database == "SQLSERVER">
-        <#return '[${tableName}]'>
+        <#return '[${str}]'>
     </#if>
 </#function>
 <mapper namespace="${mapper.packageName}.${mapper.name?capFirst}Mapper">

@@ -52,7 +52,7 @@ class BackendParser(private val moshi: Moshi,
             val fields = it.columns.map { column ->
                 Field(column.name.toCamelCase(), column, typeUtil.convertColumnTypeToFieldType(column.type).description)
             }
-            Entity(config.entityPackagePath(), it.name.toCamelCase(), it, fields)
+            Entity(it.name.toCamelCase(), it, fields)
         }
     }
 

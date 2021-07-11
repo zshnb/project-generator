@@ -1,7 +1,6 @@
 package com.zshnb.projectgenerator.generator.entity
 
-class Entity(val packageName: String,
-             val name: String,
+class Entity(val name: String,
              val table: Table,
              val fields: List<Field>)
 

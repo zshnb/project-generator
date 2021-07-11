@@ -54,7 +54,10 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ), "${project.config.controllerDir()}/StaticResourceController.java")
 
         project.entities.forEach {
-            ioUtil.writeTemplate(entityTemplate, mapOf("entity" to it, "config" to project.config),
+            ioUtil.writeTemplate(entityTemplate, mapOf(
+                "entity" to it,
+                "packageName" to project.config.entityPackagePath(),
+                "config" to project.config),
                 "${project.config.entityDir()}/${it.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to project.config.requestPackagePath(),

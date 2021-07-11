@@ -1,4 +1,4 @@
-package ${entity.packageName};
+package ${packageName};
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -7,32 +7,25 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonFormat;
-<#assign tableName>
+<#function literalize(str)>
     <#if config.database == "MYSQL">
-        `${entity.table.name}`
+        <#return '`${str}`'>
     <#elseif config.database == "SQLSERVER">
-        [${entity.table.name}]
+        <#return '[${str}]'>
     </#if>
-</#assign>
+</#function>
 /**
     ${entity.table.comment}
 */
-@TableName("<#compress>${tableName}</#compress>")
+@TableName("${literalize(entity.table.name)}")
 public class ${entity.name?cap_first} extends Model<${entity.name?cap_first}> {
     <#list entity.fields as field>
-        <#assign fieldName>
-            <#if config.database == "MYSQL">
-                `${field.column.name}`
-            <#elseif config.database == "SQLSERVER">
-                [${field.column.name}]
-            </#if>
-        </#assign>
         /**
             ${field.column.comment}
         */
         <#if field.column.primary>
             @TableId(value = "${field.name}", type = IdType.AUTO)
-            @OrderBy
+            @OrderBy(isDesc = false)
         <#elseif field.type == 'LocalDateTime'>
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
         <#elseif field.type == 'LocalDate'>
@@ -42,8 +35,8 @@ public class ${entity.name?cap_first} extends Model<${entity.name?cap_first}> {
             @TableField(fill = FieldFill.INSERT)
         <#elseif field.name == 'updateAt'>
             @TableField(fill = FieldFill.INSERT_UPDATE)
-        <#elseif !field.column.primary  >
-            @TableField("<#compress>${fieldName}</#compress>")
+        <#elseif !field.column.primary>
+            @TableField("${literalize(field.column.name)}")
         </#if>
         private ${field.type} ${field.name};
     </#list>
