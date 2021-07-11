@@ -159,7 +159,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
             </#if>
         <#else>
             <#if service.entity.table.associate>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(new Page<>(<#compress>${pageParam}</#compress><#if (service.entity.table.bindRoles?size > 0)>, user</#if>);
+                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(<#compress>${pageParam}</#compress><#if (service.entity.table.bindRoles?size > 0)>, user</#if>);
                 return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
             <#else>
                 <#if (service.entity.table.bindRoles?size > 0)>
