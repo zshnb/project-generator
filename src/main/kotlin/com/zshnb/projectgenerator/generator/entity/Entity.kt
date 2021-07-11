@@ -9,8 +9,6 @@ data class Field(val name: String,
                  val column: Column,
                  val type: String)
 
-data class Dto(val entity: Entity, val packageName: String)
-
 enum class FieldType(val code: Int, val description: String) {
     INT(1, "Integer"),
     STRING(2, "String"),
