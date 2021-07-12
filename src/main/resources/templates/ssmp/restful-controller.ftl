@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<#assign comment>entity.table.comment</#assign>
 @RestController
 @RequestMapping("/${name}")
 public class ${name?capFirst}Controller {
@@ -29,7 +30,7 @@ public class ${name?capFirst}Controller {
     }
     <#else>
     /**
-        添加${entity.table.comment}
+        添加${comment}
     */
     @PostMapping("/add")
     public Response<${className}> add(@RequestBody ${className} request) {
@@ -38,7 +39,7 @@ public class ${name?capFirst}Controller {
     }
 
     /**
-        更新${entity.table.comment}
+        更新${comment}
     */
     @PutMapping("/update")
     public Response<${className}> update(@RequestBody ${className} old) {
@@ -47,7 +48,7 @@ public class ${name?capFirst}Controller {
     }
 
     /**
-        获取${entity.table.comment}
+        获取${comment}
     */
     @GetMapping("/{id}")
     public Response<${className}> detail(@PathVariable int id) {
@@ -55,7 +56,7 @@ public class ${name?capFirst}Controller {
     }
 
     /**
-        删除${entity.table.comment}
+        删除${comment}
     */
     @DeleteMapping("/{id}")
     public Response<String> delete(@PathVariable int id) {
@@ -64,7 +65,7 @@ public class ${name?capFirst}Controller {
     }
 
     /**
-        列出${entity.table.comment}
+        列出${comment}
     */
     @PostMapping("/list")
     public ListResponse<${className}> list(@RequestBody List${className}Request request) {

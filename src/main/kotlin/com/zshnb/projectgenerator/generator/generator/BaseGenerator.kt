@@ -80,21 +80,30 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "dtoPackageName" to config.dtoPackagePath(),
                 "config" to project.config)
                 , "${project.config.xmlDir()}/${it.name.capitalize()}Mapper.xml")
+
+            ioUtil.writeTemplate(serviceTemplate, mapOf(
+                "entity" to it,
+                "packageName" to config.servicePackagePath(),
+                "dependencies" to listOf(
+                    config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath()
+                )),
+                "${project.config.serviceDir()}/I${it.name.capitalize()}Service.java")
+
+            ioUtil.writeTemplate(serviceImplTemplate, mapOf(
+                "entity" to it,
+                "packageName" to config.serviceImplPackagePath(),
+                "servicePackageName" to config.servicePackagePath(),
+                "dependencies" to listOf(
+                    config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath(),
+                    config.exceptionPackagePath(), config.mapperPackagePath()
+                ),
+                "config" to project.config),
+                "${project.config.serviceImplDir()}/${it.name.capitalize()}ServiceImpl.java")
             if (it.table.associate) {
                 ioUtil.writeTemplate(dtoTemplate,
                     mapOf("entity" to it, "packageName" to project.config.dtoPackagePath())
                     , "${project.config.dtoDir()}/${it.name.capitalize()}Dto.java")
             }
-        }
-
-        project.services.forEach {
-            ioUtil.writeTemplate(serviceTemplate,
-                it,
-                "${project.config.serviceDir()}/I${it.entity.name.capitalize()}Service.java")
-
-            ioUtil.writeTemplate(serviceImplTemplate,
-                mapOf("service" to it, "config" to project.config),
-                "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
         }
 
         ioUtil.writeTemplate(pageRequestTemplate, project.config.commonPackagePath().packageName(),

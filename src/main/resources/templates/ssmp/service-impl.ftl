@@ -1,17 +1,17 @@
-package ${service.implPackageName};
+package ${packageName};
 
-<#assign name>${service.entity.name}</#assign>
-<#assign className>${service.entity.name?capFirst}</#assign>
+<#assign name>${entity.name}</#assign>
+<#assign className>${entity.name?capFirst}</#assign>
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import ${service.packageName}.I${className}Service;
-<#list service.dependencies as d>
+import ${servicePackageName}.I${className}Service;
+<#list dependencies as d>
 import ${d}.*;
 </#list>
 <#function literalize(str)>
@@ -28,9 +28,9 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     @Override
     public ${className} add(${className} ${name}) {
-        <#if (service.entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
-        <#list service.entity.fields?filter(f -> !f.column.repeatable) as field>
+        <#list entity.fields?filter(f -> !f.column.repeatable) as field>
             <#assign getField>${name}.get${field.name?capFirst}()</#assign>
             queryWrapper.eq("${field.column.name}", ${getField});
         </#list>
@@ -45,10 +45,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     @Override
     public ${className} update(${className} ${name}) {
-        <#if (service.entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
+        <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
         ${className} exist = getById(${name}.getId());
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
-        <#list service.entity.fields?filter(f -> !f.column.repeatable) as field>
+        <#list entity.fields?filter(f -> !f.column.repeatable) as field>
             <#assign getField>get${field.name?capFirst}()</#assign>
             queryWrapper.eq("${field.column.name}", ${name}.${getField});
         </#list>
@@ -108,35 +108,36 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     }
     <#else>
     <#assign returnClass>
-        <#if service.entity.table.associate>
-            ${className}Dto
+        <#if entity.table.associate>
+            ${className}Dto<#t>
         <#else>
-            ${className}
+            ${className}<#t>
         </#if>
     </#assign>
+    <#assign hasBindRoles = "${(entity.table.bindRoles?size > 0)?c}"/>
     @Override
-    public ListResponse<<#compress>${returnClass}</#compress>> page(List${className}Request request<#if (service.entity.table.bindRoles?size > 0)>, User user</#if>) {
+    public ListResponse<${returnClass}> page(List${className}Request request<#if hasBindRoles == "true">, User user</#if>) {
         <#assign pageParam>
             <#if config.database == "MYSQL">
-                new Page<>(request.getPageNumber(), request.getPageSize())
+                new Page<>(request.getPageNumber(), request.getPageSize())<#t>
             <#elseIf config.database == "SQLSERVER">
-                new Page<>(request.getPageNumber(), request.getPageSize(), false)
+                new Page<>(request.getPageNumber(), request.getPageSize(), false)<#t>
             </#if>
         </#assign>
         <#assign returnTotal>
             <#if config.database == "MYSQL">
-                page.getTotal()
+                page.getTotal()<#t>
             <#elseIf config.database == "SQLSERVER">
-                ${name}Mapper.count(<#if service.entity.table.searchable>request</#if><#if (service.entity.table.bindRoles?size > 0)>, user</#if>)
+                ${name}Mapper.count(<#if entity.table.searchable>request</#if><#if hasBindRoles == "true">, user</#if>)<#t>
             </#if>
         </#assign>
-        <#if service.entity.table.searchable>
-            <#if service.entity.table.associate>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(<#compress>${pageParam}</#compress><#if service.entity.table.searchable>, request</#if><#if (service.entity.table.bindRoles?size > 0)>, user</#if>);
-                return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
+        <#if entity.table.searchable>
+            <#if entity.table.associate>
+                IPage<${returnClass}> page = ${name}Mapper.findDtos(${pageParam}<#if entity.table.searchable>, request</#if><#if hasBindRoles == "true">, user</#if>);
+                return new ListResponse<>(page.getRecords(), ${returnTotal});
             <#else>
-            QueryWrapper<<#compress>${returnClass}</#compress>> queryWrapper = new QueryWrapper<>();
-            <#list service.entity.fields as field>
+            QueryWrapper<${returnClass}> queryWrapper = new QueryWrapper<>();
+            <#list entity.fields as field>
                 <#if field.column.searchable>
                     <#assign getField>request.get${field.name?capFirst}()</#assign>
                     <#if field.type == "String">
@@ -146,32 +147,32 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                     </#if>
                 </#if>
             </#list>
-            <#if (service.entity.table.bindRoles?size > 0)>
+            <#if hasBindRoles == "true">
                 List<String> roles = new ArrayList<String>() {{
-                <#list service.entity.table.bindRoles as role>
+                <#list entity.table.bindRoles as role>
                     add("${role}");
                 </#list>
                 queryWrapper.eq(roles.contains(user.getRole()), "user_id", user.getId())
             }};
             </#if>
-            IPage<<#compress>${returnClass}</#compress>> page = page(<#compress>${pageParam}</#compress>, queryWrapper);
-            return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
+            IPage<${returnClass}> page = page(${pageParam}, queryWrapper);
+            return new ListResponse<>(page.getRecords(), ${returnTotal});
             </#if>
         <#else>
-            <#if service.entity.table.associate>
-                IPage<<#compress>${returnClass}</#compress>> page = ${name}Mapper.findDtos(<#compress>${pageParam}</#compress><#if (service.entity.table.bindRoles?size > 0)>, user</#if>);
-                return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
+            <#if entity.table.associate>
+                IPage<${returnClass}> page = ${name}Mapper.findDtos(${pageParam}<#if hasBindRoles == "true">, user</#if>);
+                return new ListResponse<>(page.getRecords(), ${returnTotal});
             <#else>
-                <#if (service.entity.table.bindRoles?size > 0)>
+                <#if hasBindRoles == "true">
                 List<String> roles = new ArrayList<String>() {{
-                    <#list service.entity.table.bindRoles as role>
+                    <#list entity.table.bindRoles as role>
                         add("${role}");
                     </#list>
                 }};
                 </#if>
-                IPage<<#compress>${returnClass}</#compress>> page = page(<#compress>${pageParam}</#compress><#if (service.entity.table.bindRoles?size > 0)>,
+                IPage<${returnClass}> page = page(${pageParam}<#if hasBindRoles == "true">,
                     new QueryWrapper<>().eq(roles.contains(user.getRole()), "user_id", user.getId())</#if>);
-                return new ListResponse<>(page.getRecords(), <#compress>${returnTotal}</#compress>);
+                return new ListResponse<>(page.getRecords(), ${returnTotal});
             </#if>
         </#if>
     }

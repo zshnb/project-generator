@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 <#assign className>${name?capFirst}</#assign>
+<#assign comment>entity.table.comment</#assign>
 @Controller
 @RequestMapping("/${name}")
 public class ${className}Controller {
@@ -40,7 +41,7 @@ public class ${className}Controller {
     }
     <#else>
     /**
-        添加${entity.table.comment}
+        添加${comment}
     */
     @PostMapping("/add")
     @ResponseBody
@@ -50,7 +51,7 @@ public class ${className}Controller {
     }
 
     /**
-        更新${entity.table.comment}
+        更新${comment}
     */
     @PutMapping("/update")
     @ResponseBody
@@ -60,7 +61,7 @@ public class ${className}Controller {
     }
 
     /**
-        删除${entity.table.comment}
+        删除${comment}
     */
     @DeleteMapping("/{id}")
     @ResponseBody
@@ -70,7 +71,7 @@ public class ${className}Controller {
     }
 
     /**
-        分页列出${entity.table.comment}
+        分页列出${comment}
     */
     <#assign returnClass>
         <#if entity.table.associate>
@@ -87,7 +88,7 @@ public class ${className}Controller {
     }
 
     /**
-        列出${entity.table.comment}
+        列出${comment}
     */
     @GetMapping("/list")
     @ResponseBody
@@ -96,7 +97,7 @@ public class ${className}Controller {
     }
 
     /**
-        跳转${entity.table.comment}表格页面
+        跳转${comment}表格页面
     */
     @GetMapping("/tablePage")
     public String tablePage(HttpSession httpSession, Model model) {
@@ -109,7 +110,7 @@ public class ${className}Controller {
     }
 
     /**
-        跳转${entity.table.comment}添加页面
+        跳转${comment}添加页面
     */
     @GetMapping("/addPage")
     public String addPage () {
@@ -117,7 +118,7 @@ public class ${className}Controller {
     }
 
     /**
-        跳转${entity.table.comment}编辑页面
+        跳转${comment}编辑页面
     */
     @GetMapping("/editPage/{id}")
     public String editPage(@PathVariable int id, Model model) {
@@ -127,7 +128,7 @@ public class ${className}Controller {
     }
 
     /**
-        跳转${entity.table.comment}详情页面
+        跳转${comment}详情页面
     */
     @GetMapping("/detailPage/{id}")
     public String detailPage(@PathVariable int id, Model model) {

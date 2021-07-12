@@ -33,11 +33,9 @@ class BackendParser(private val moshi: Moshi,
             }
         }
         val entities = parseEntities(project.tables, project.config)
-        val services = parseServices(entities, project.config)
         val controllers = parseController(entities, project.config)
 
         project.entities = entities
-        project.services = services
         project.controllers = controllers
         return project
     }
@@ -79,13 +77,6 @@ class BackendParser(private val moshi: Moshi,
         val permissionTable = Table("permission", "权限", permissionColumns)
         return listOf(roleTable, menuTable, permissionTable)
     }
-
-    private fun parseServices(entities: List<Entity>, config: Config): List<Service> =
-        entities.map {
-            Service(config.servicePackagePath(), it, config.serviceImplPackagePath(), listOf(
-                config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(),
-                    config.mapperPackagePath(), config.dtoPackagePath(), config.exceptionPackagePath()))
-        }
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =
         entities.map {
