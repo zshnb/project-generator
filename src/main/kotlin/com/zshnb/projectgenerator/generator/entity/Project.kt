@@ -6,7 +6,6 @@ data class Project(val config: Config,
                    var controllers: List<Controller> = emptyList(),
                    var entities: List<Entity> = emptyList(),
                    var services: List<Service> = emptyList(),
-                   var mappers: List<Mapper> = emptyList(),
                    var pages: List<Page> = emptyList(),
                    val roles: List<Role> = emptyList()
 )

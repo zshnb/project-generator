@@ -34,12 +34,10 @@ class BackendParser(private val moshi: Moshi,
         }
         val entities = parseEntities(project.tables, project.config)
         val services = parseServices(entities, project.config)
-        val mappers = parseMappers(entities, project.config)
         val controllers = parseController(entities, project.config)
 
         project.entities = entities
         project.services = services
-        project.mappers = mappers
         project.controllers = controllers
         return project
     }
@@ -87,12 +85,6 @@ class BackendParser(private val moshi: Moshi,
             Service(config.servicePackagePath(), it, config.serviceImplPackagePath(), listOf(
                 config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(),
                     config.mapperPackagePath(), config.dtoPackagePath(), config.exceptionPackagePath()))
-        }
-
-    private fun parseMappers(entities: List<Entity>, config: Config): List<Mapper> =
-        entities.map {
-            Mapper(config.mapperPackagePath(), it.name,
-                config.entityPackagePath(), config.dtoPackagePath(), config.requestPackagePath(), it)
         }
 
     private fun parseController(entities: List<Entity>, config: Config): List<Controller> =

@@ -16,68 +16,58 @@
         <#return '[${str}]'>
     </#if>
 </#function>
-<mapper namespace="${mapper.packageName}.${mapper.name?capFirst}Mapper">
-    <#if mapper.entity.table.associate>
-        <select id="findDtos" resultType="${mapper.dtoPackageName}.${mapper.name?capFirst}Dto">
+<#assign name>${entity.name?capFirst}</#assign>
+<#assign tableName>${entity.table.name}</#assign>
+<mapper namespace="${packageName}.${name}Mapper">
+    <#if entity.table.associate>
+        <select id="findDtos" resultType="${dtoPackageName}.${name}Dto">
             select
-                ${literalize(mapper.entity.table.name)}.* <#if (mapper.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
-            <#list mapper.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 <#list column.associate.associateResultColumns as associateColumn>
                     ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
                 </#list>
                 <#if column_has_next>,</#if>
             </#list>
-            from ${literalize(mapper.entity.table.name)}
-            <#list mapper.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
-                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(mapper.entity.table.name)}.${literalize(column.associate.sourceColumnName)}
+            from ${literalize(tableName)}
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(tableName)}.${literalize(column.associate.sourceColumnName)}
             </#list>
-            <#if mapper.entity.table.searchable>
-                <where>
-                    <#list mapper.entity.fields?filter(f -> f.column.searchable) as field>
-                        <#switch field.type>
-                            <#case "String">
-                                <#assign defaultValue>''</#assign>
-                                <#break>
-                            <#case "Integer">
-                                <#assign defaultValue>0</#assign>
-                                <#break>
-                            <#case "LocalDate">
-                            <#case "LocalDateTime">
-                                <#assign defaultValue>null</#assign>
-                                <#break>
-                        </#switch>
-                        <#if field.column.associate??>
-                            <#assign associateFieldParam>
-                                ${camelize(field.column.associate.sourceColumnName)}
-                            </#assign>
-                            <if test="request.<#compress>${associateFieldParam}</#compress> != null and request.<#compress>${associateFieldParam}</#compress> != ${defaultValue}">
-                                and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.'}<#compress>${associateFieldParam}</#compress>${r'}'}
-                            </if>
-                        <#else>
-                            <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
-                                and ${literalize(field.column.name)} = ${r'#{request.'}${field.name}${r'}'}
-                            </if>
-                        </#if>
-                    </#list>
-                </where>
-                <#if (mapper.entity.table.bindRoles?size > 0)>
-                    <#list mapper.entity.table.bindRoles as role>
-                        <if test="user.role == '${role}'">
-                            and ${literalize(mapper.entity.table.name)}.user_id = ${r"#{user.id}"}
+            <where>
+                <#list entity.fields?filter(f -> f.column.searchable) as field>
+                    <#switch field.type>
+                        <#case "String">
+                            <#assign defaultValue>''</#assign>
+                            <#break>
+                        <#case "Integer">
+                            <#assign defaultValue>0</#assign>
+                            <#break>
+                        <#case "LocalDate">
+                        <#case "LocalDateTime">
+                            <#assign defaultValue>null</#assign>
+                            <#break>
+                    </#switch>
+                    <#if field.column.associate??>
+                        <#assign associateFieldParam>${camelize(field.column.associate.sourceColumnName)}</#assign>
+                        <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
+                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
                         </if>
-                    </#list>
-                </#if>
-            <#else>
-                <#if (mapper.entity.table.bindRoles?size > 0)>
-                    <#list mapper.entity.table.bindRoles as role>
-                        <if test="user.role == '${role}'">
-                            where ${literalize(mapper.entity.table.name)}.user_id = ${r"#{user.id}"}
+                    <#else>
+                        <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
+                            and ${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
                         </if>
-                    </#list>
-                </#if>
+                    </#if>
+                </#list>
+            </where>
+            <#if (entity.table.bindRoles?size > 0)>
+                <#list entity.table.bindRoles as role>
+                    <if test="user.role == '${role}'">
+                        and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
+                    </if>
+                </#list>
             </#if>
             <#if config.database == "SQLSERVER">
-                order by ${literalize(mapper.entity.table.name)}.id
+                order by ${literalize(tableName)}.id
             </#if>
         </select>
     </#if>
@@ -85,54 +75,42 @@
     <#if config.database == "SQLSERVER">
         <select id="count" resultType="int">
             select count(*)
-            from ${literalize(mapper.entity.table.name)}
-            <#list mapper.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+            from ${literalize(tableName)}
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(mapper.entity.table.name)}.${literalize(column.associate.sourceColumnName)}
             </#list>
-            <#if mapper.entity.table.searchable>
-                <where>
-                    <#list mapper.entity.fields?filter(f -> f.column.searchable) as field>
-                        <#switch field.type>
-                            <#case "String">
-                                <#assign defaultValue>''</#assign>
-                                <#break>
-                            <#case "Integer">
-                                <#assign defaultValue>0</#assign>
-                                <#break>
-                            <#case "LocalDate">
-                            <#case "LocalDateTime">
-                                <#assign defaultValue>null</#assign>
-                                <#break>
-                        </#switch>
-                        <#if field.column.associate??>
-                            <#assign associateFieldParam>
-                                ${camelize(field.column.associate.sourceColumnName)}
-                            </#assign>
-                            <if test="request.<#compress>${associateFieldParam}</#compress> != null and request.<#compress>${associateFieldParam}</#compress> != ${defaultValue}">
-                                and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.'}<#compress>${associateFieldParam}</#compress>${r'}'}
-                            </if>
-                        <#else>
-                            <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
-                                and ${literalize(field.column.name)} = ${r'#{request.'}${field.name}${r'}'}
-                            </if>
-                        </#if>
-                    </#list>
-                </where>
-                <#if (mapper.entity.table.bindRoles?size > 0)>
-                    <#list mapper.entity.table.bindRoles as role>
-                        <if test="user.role == '${role}'">
-                            and ${literalize(mapper.entity.table.name)}.user_id = ${r"#{user.id}"}
+            <where>
+                <#list entity.fields?filter(f -> f.column.searchable) as field>
+                    <#switch field.type>
+                        <#case "String">
+                            <#assign defaultValue>''</#assign>
+                            <#break>
+                        <#case "Integer">
+                            <#assign defaultValue>0</#assign>
+                            <#break>
+                        <#case "LocalDate">
+                        <#case "LocalDateTime">
+                            <#assign defaultValue>null</#assign>
+                            <#break>
+                    </#switch>
+                    <#if field.column.associate??>
+                        <#assign associateFieldParam>${camelize(field.column.associate.sourceColumnName)}</#assign>
+                        <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
+                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
                         </if>
-                    </#list>
-                </#if>
-            <#else>
-                <#if (mapper.entity.table.bindRoles?size > 0)>
-                    <#list mapper.entity.table.bindRoles as role>
-                        <if test="user.role == '${role}'">
-                            where ${literalize(mapper.entity.table.name)}.user_id = ${r"#{user.id}"}
+                    <#else>
+                        <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
+                            and ${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
                         </if>
-                    </#list>
-                </#if>
+                    </#if>
+                </#list>
+            </where>
+            <#if (entity.table.bindRoles?size > 0)>
+                <#list entity.table.bindRoles as role>
+                    <if test="user.role == '${role}'">
+                        and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
+                    </if>
+                </#list>
             </#if>
         </select>
     </#if>

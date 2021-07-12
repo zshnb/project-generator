@@ -15,6 +15,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
                          private val configuration: Configuration) {
     open fun generateProject(json: String) {
         val project = backendParser.parseProject(json)
+        val config = project.config
         mkdirs(project.config)
 
         val entityTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.ENTITY_TEMPLATE)
@@ -47,11 +48,11 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
         ioUtil.writeTemplate(initTableTemplate,
             project,
-            "${PathConstant.resourcesDirPath(project.config)}/initTable.sql")
+            "${PathConstant.resourcesDirPath(config)}/initTable.sql")
         ioUtil.writeTemplate(staticResourceControllerTemplate, mapOf(
-            "packageName" to project.config.controllerPackagePath(),
-            "commonPackageName" to project.config.commonPackagePath()
-        ), "${project.config.controllerDir()}/StaticResourceController.java")
+            "packageName" to config.controllerPackagePath(),
+            "commonPackageName" to config.commonPackagePath()
+        ), "${config.controllerDir()}/StaticResourceController.java")
 
         project.entities.forEach {
             ioUtil.writeTemplate(entityTemplate, mapOf(
@@ -64,6 +65,21 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "entity" to it,
                 "commonPackageName" to project.config.commonPackagePath()),
                 "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
+            ioUtil.writeTemplate(mapperTemplate, mapOf(
+                "entity" to it,
+                "packageName" to config.mapperPackagePath(),
+                "entityPackageName" to config.entityPackagePath(),
+                "requestPackageName" to config.requestPackagePath(),
+                "dtoPackageName" to config.dtoPackagePath(),
+                "config" to project.config)
+                , "${project.config.mapperDir()}/${it.name.capitalize()}Mapper.java")
+
+            ioUtil.writeTemplate(mapperXmlTemplate, mapOf(
+                "entity" to it,
+                "packageName" to config.mapperPackagePath(),
+                "dtoPackageName" to config.dtoPackagePath(),
+                "config" to project.config)
+                , "${project.config.xmlDir()}/${it.name.capitalize()}Mapper.xml")
             if (it.table.associate) {
                 ioUtil.writeTemplate(dtoTemplate,
                     mapOf("entity" to it, "packageName" to project.config.dtoPackagePath())
@@ -79,16 +95,6 @@ open class BaseGenerator(private val backendParser: BackendParser,
             ioUtil.writeTemplate(serviceImplTemplate,
                 mapOf("service" to it, "config" to project.config),
                 "${project.config.serviceImplDir()}/${it.entity.name.capitalize()}ServiceImpl.java")
-        }
-
-        project.mappers.forEach {
-            ioUtil.writeTemplate(mapperTemplate,
-                mapOf("mapper" to it, "config" to project.config)
-                , "${project.config.mapperDir()}/${it.name.capitalize()}Mapper.java")
-
-            ioUtil.writeTemplate(mapperXmlTemplate,
-                mapOf("mapper" to it, "config" to project.config)
-                , "${project.config.xmlDir()}/${it.name.capitalize()}Mapper.xml")
         }
 
         ioUtil.writeTemplate(pageRequestTemplate, project.config.commonPackagePath().packageName(),
