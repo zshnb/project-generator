@@ -60,11 +60,14 @@
                 </#list>
             </where>
             <#if (entity.table.bindRoles?size > 0)>
-                <#list entity.table.bindRoles as role>
-                    <if test="user.role == '${role}'">
-                        and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
-                    </if>
-                </#list>
+                <#assign roles>
+                    <#list entity.table.bindRoles as role>
+                        '${role}'<#if role_has_next>,</#if><#t>
+                    </#list>
+                </#assign>
+                <if test="user.role in ${r"{" + roles + "}"}">
+                    and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
+                </if>
             </#if>
             <#if config.database == "SQLSERVER">
                 order by ${literalize(tableName)}.id
@@ -106,11 +109,14 @@
                 </#list>
             </where>
             <#if (entity.table.bindRoles?size > 0)>
-                <#list entity.table.bindRoles as role>
-                    <if test="user.role == '${role}'">
-                        and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
-                    </if>
-                </#list>
+                <#assign roles>
+                    <#list entity.table.bindRoles as role>
+                        '${role}'<#if role_has_next>,</#if><#t>
+                    </#list>
+                </#assign>
+                <if test="user.role in ${r"{" + roles + "}"}">
+                    and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
+                </if>
             </#if>
         </select>
     </#if>

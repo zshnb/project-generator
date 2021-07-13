@@ -29,9 +29,9 @@ class ProjectController(
         val project = adapter.fromJson(json)!!
         val fileName = "${project.config.artifactId}.zip"
         layuiGenerator.generateProject(json)
-        zipFileWriter.createZipFile(fileName, project.config.artifactId)
+        zipFileWriter.createZipFile(fileName, "C:/Users/zsh/Workbench/${project.config.artifactId}")
         FileUtils.deleteDirectory(File(project.config.artifactId))
-        val file = File(projectConfig.tempDir, fileName)
+        val file = File(fileName)
         val resource = InputStreamResource(FileInputStream(file))
         val headers = HttpHeaders()
         headers.add("Content-Disposition", "attachment;fileName=${file.name}")

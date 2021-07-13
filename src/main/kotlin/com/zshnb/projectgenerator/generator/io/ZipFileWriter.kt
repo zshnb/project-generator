@@ -9,8 +9,8 @@ import java.util.zip.*
 @Component
 class ZipFileWriter(private val projectConfig: ProjectConfig) {
     fun createZipFile(zipFileName: String, rootDirName: String) {
-        val zipFile = File(projectConfig.tempDir, zipFileName)
-		zipFile.parentFile.mkdir()
+        val zipFile = File(zipFileName)
+//		zipFile.parentFile.mkdir()
         val fos = FileOutputStream(zipFile)
         val zos = ZipOutputStream(fos)
 

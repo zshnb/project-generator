@@ -16,7 +16,7 @@ class GeneratorTest {
 
     @Test
     fun generateMysql() {
-        FileUtils.deleteDirectory(File("temp"))
+        FileUtils.deleteDirectory(File("C:/Users/zsh/Workbench/temp"))
         val resource = ClassPathResource("mysql-project.json")
         val json = FileUtils.readLines(resource.file, StandardCharsets.UTF_8).joinToString(separator = "")
         layuiGenerator.generateProject(json)

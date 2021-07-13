@@ -1,10 +1,12 @@
 package com.zshnb.projectgenerator.generator.generator
 
+import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
 import com.zshnb.projectgenerator.generator.util.*
+import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.springframework.stereotype.Component
 import java.io.*
@@ -12,6 +14,8 @@ import java.io.*
 @Component
 open class BaseGenerator(private val backendParser: BackendParser,
                          private val ioUtil: IOUtil,
+                         private val projectConfig: ProjectConfig,
+                         private val pathConfig: PathConfig,
                          private val configuration: Configuration) {
     open fun generateProject(json: String) {
         val project = backendParser.parseProject(json)
@@ -48,38 +52,38 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
         ioUtil.writeTemplate(initTableTemplate,
             project,
-            "${PathConstant.resourcesDirPath(config)}/initTable.sql")
+            "${pathConfig.resourcesDirPath(config)}/initTable.sql")
         ioUtil.writeTemplate(staticResourceControllerTemplate, mapOf(
             "packageName" to config.controllerPackagePath(),
             "commonPackageName" to config.commonPackagePath()
-        ), "${config.controllerDir()}/StaticResourceController.java")
+        ), "${pathConfig.controllerDir(config)}/StaticResourceController.java")
 
         project.entities.forEach {
             ioUtil.writeTemplate(entityTemplate, mapOf(
                 "entity" to it,
                 "packageName" to project.config.entityPackagePath(),
                 "config" to project.config),
-                "${project.config.entityDir()}/${it.name.capitalize()}.java")
+                "${pathConfig.entityDir(config)}/${it.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to project.config.requestPackagePath(),
                 "entity" to it,
-                "commonPackageName" to project.config.commonPackagePath()),
-                "${project.config.requestDir()}/List${it.name.capitalize()}Request.java")
+                "commonPackageName" to config.commonPackagePath()),
+                "${pathConfig.requestDir(config)}/List${it.name.capitalize()}Request.java")
             ioUtil.writeTemplate(mapperTemplate, mapOf(
                 "entity" to it,
                 "packageName" to config.mapperPackagePath(),
                 "entityPackageName" to config.entityPackagePath(),
                 "requestPackageName" to config.requestPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
-                "config" to project.config)
-                , "${project.config.mapperDir()}/${it.name.capitalize()}Mapper.java")
+                "config" to config)
+                , "${pathConfig.mapperDir(config)}/${it.name.capitalize()}Mapper.java")
 
             ioUtil.writeTemplate(mapperXmlTemplate, mapOf(
                 "entity" to it,
                 "packageName" to config.mapperPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
-                "config" to project.config)
-                , "${project.config.xmlDir()}/${it.name.capitalize()}Mapper.xml")
+                "config" to config)
+                , "${pathConfig.xmlDir(config)}/${it.name.capitalize()}Mapper.xml")
 
             ioUtil.writeTemplate(serviceTemplate, mapOf(
                 "entity" to it,
@@ -87,7 +91,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "dependencies" to listOf(
                     config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath()
                 )),
-                "${project.config.serviceDir()}/I${it.name.capitalize()}Service.java")
+                "${pathConfig.serviceDir(config)}/I${it.name.capitalize()}Service.java")
 
             ioUtil.writeTemplate(serviceImplTemplate, mapOf(
                 "entity" to it,
@@ -97,59 +101,58 @@ open class BaseGenerator(private val backendParser: BackendParser,
                     config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath(),
                     config.exceptionPackagePath(), config.mapperPackagePath()
                 ),
-                "config" to project.config),
-                "${project.config.serviceImplDir()}/${it.name.capitalize()}ServiceImpl.java")
+                "config" to config),
+                "${pathConfig.serviceImplDir(config)}/${it.name.capitalize()}ServiceImpl.java")
             if (it.table.associate) {
                 ioUtil.writeTemplate(dtoTemplate,
-                    mapOf("entity" to it, "packageName" to project.config.dtoPackagePath())
-                    , "${project.config.dtoDir()}/${it.name.capitalize()}Dto.java")
+                    mapOf("entity" to it, "packageName" to config.dtoPackagePath())
+                    , "${pathConfig.dtoDir(config)}/${it.name.capitalize()}Dto.java")
             }
         }
 
-        ioUtil.writeTemplate(pageRequestTemplate, project.config.commonPackagePath().packageName(),
-            "${project.config.commonDir()}/PageRequest.java")
+        ioUtil.writeTemplate(pageRequestTemplate, config.commonPackagePath().packageName(),
+            "${pathConfig.commonDir(config)}/PageRequest.java")
 
-        ioUtil.writeTemplate(listResponseTemplate, project.config.commonPackagePath().packageName(),
-            "${project.config.commonDir()}/ListResponse.java")
+        ioUtil.writeTemplate(listResponseTemplate, config.commonPackagePath().packageName(),
+            "${pathConfig.commonDir(config)}/ListResponse.java")
 
-        ioUtil.writeTemplate(pomTemplate, project.config, "${project.config.artifactId}/pom.xml")
+        ioUtil.writeTemplate(pomTemplate, config, "${projectConfig.projectDir}/${config.artifactId}/pom.xml")
 
         ioUtil.writeTemplate(springbootMainTemplate, mapOf(
-            "packageName" to project.config.rootPackageName,
-            "mapperPackageName" to project.config.mapperPackagePath()
-        ), "${project.config.rootDir()}/SpringMainApplication.java")
+            "packageName" to config.rootPackageName,
+            "mapperPackageName" to config.mapperPackagePath()
+        ), "${pathConfig.rootDir(config)}/SpringMainApplication.java")
 
-        ioUtil.writeTemplate(responseTemplate, project.config.commonPackagePath().packageName(),
-            "${project.config.commonDir()}/Response.java")
+        ioUtil.writeTemplate(responseTemplate, config.commonPackagePath().packageName(),
+            "${pathConfig.commonDir(config)}/Response.java")
 
-        ioUtil.writeTemplate(applicationTemplate,
-            project.config,
-            "${PathConstant.resourcesDirPath(project.config)}/application.yml")
+        ioUtil.writeTemplate(applicationTemplate, config,
+            "${pathConfig.resourcesDirPath(config)}/application.yml")
 
         ioUtil.writeTemplate(mybatisPlusConfigTemplate,
-            mapOf("config" to project.config, "packageName" to project.config.configPackagePath()),
-            "${project.config.configDir()}/MybatisPlusConfig.java")
+            mapOf("config" to config, "packageName" to config.configPackagePath()),
+            "${pathConfig.configDir(config)}/MybatisPlusConfig.java")
 
-        ioUtil.writeTemplate(menuDtoTemplate, project.config.dtoPackagePath().packageName(),
-            "${project.config.dtoDir()}/MenuDto.java")
+        ioUtil.writeTemplate(menuDtoTemplate, config.dtoPackagePath().packageName(),
+            "${pathConfig.dtoDir(config)}/MenuDto.java")
 
-        ioUtil.writeTemplate(loginRequestTemplate, project.config.requestPackagePath().packageName(),
-            "${project.config.requestDir()}/LoginRequest.java")
+        ioUtil.writeTemplate(loginRequestTemplate, config.requestPackagePath().packageName(),
+            "${pathConfig.requestDir(config)}/LoginRequest.java")
 
         ioUtil.writeTemplate(
-            localDateTimeMetaObjectHandlerTemplate, project.config.configPackagePath().packageName(),
-            "${project.config.configDir()}/LocalDateTimeMetaObjectHandler.java")
+            localDateTimeMetaObjectHandlerTemplate, config.configPackagePath().packageName(),
+            "${pathConfig.configDir(config)}/LocalDateTimeMetaObjectHandler.java")
 
-        ioUtil.writeTemplate(uploadResponseTemplate, project.config.commonPackagePath().packageName(),
-            "${project.config.commonDir()}/UploadResponse.java")
+        ioUtil.writeTemplate(uploadResponseTemplate, config.commonPackagePath().packageName(),
+            "${pathConfig.commonDir(config)}/UploadResponse.java")
 
-        ioUtil.writeTemplate(invalidArgumentException, project.config.exceptionPackagePath().packageName(),
-            "${project.config.exceptionDir()}/InvalidArgumentException.java")
+        ioUtil.writeTemplate(invalidArgumentException, config.exceptionPackagePath().packageName(),
+            "${pathConfig.exceptionDir(config)}/InvalidArgumentException.java")
 
         ioUtil.writeTemplate(globalExceptionController, mapOf(
-            "packageName" to project.config.commonPackagePath(),
-            "dependencies" to listOf(project.config.exceptionPackagePath(), project.config.commonPackagePath())),
-            "${project.config.commonDir()}/GlobalExceptionController.java")
+            "packageName" to config.commonPackagePath(),
+            "dependencies" to listOf(config.exceptionPackagePath(), config.commonPackagePath())),
+            "${pathConfig.commonDir(config)}/GlobalExceptionController.java")
 
         var initMenuId = 1
         val roles = project.roles
@@ -175,8 +178,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
         }.flatten().flatten()
 
         ioUtil.writeTemplate(initDataTemplate,
-            mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to project.config),
-            "${PathConstant.resourcesDirPath(project.config)}/initData.sql")
+            mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
+            "${pathConfig.resourcesDirPath(config)}/initData.sql")
     }
 
     private fun getChildMenus(menu: Menu): List<Menu> {
@@ -188,18 +191,18 @@ open class BaseGenerator(private val backendParser: BackendParser,
     }
 
     open fun mkdirs(config: Config) {
-        val entityDir = File(config.entityDir())
-        val serviceDir = File(config.serviceDir())
-        val serviceImplDir = File(config.serviceImplDir())
-        val mapperDir = File(config.mapperDir())
-        val controllerDir = File(config.controllerDir())
-        val mapperXmlDir = File(config.xmlDir())
-        val requestDir = File(config.requestDir())
-        val commonDir = File(config.commonDir())
-        val configDir = File(config.configDir())
-        val dtoDir = File(config.dtoDir())
-        val exceptionDir = File(config.exceptionDir())
-        val rootDir = File(config.rootDir())
+        val entityDir = File(pathConfig.entityDir(config))
+        val serviceDir = File(pathConfig.serviceDir(config))
+        val serviceImplDir = File(pathConfig.serviceImplDir(config))
+        val mapperDir = File(pathConfig.mapperDir(config))
+        val controllerDir = File(pathConfig.controllerDir(config))
+        val mapperXmlDir = File(pathConfig.xmlDir(config))
+        val requestDir = File(pathConfig.requestDir(config))
+        val commonDir = File(pathConfig.commonDir(config))
+        val configDir = File(pathConfig.configDir(config))
+        val dtoDir = File(pathConfig.dtoDir(config))
+        val exceptionDir = File(pathConfig.exceptionDir(config))
+        val rootDir = File(pathConfig.rootDir(config))
 
         rootDir.mkdirs()
         entityDir.mkdir()

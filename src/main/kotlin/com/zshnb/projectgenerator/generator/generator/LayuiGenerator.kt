@@ -1,11 +1,13 @@
 package com.zshnb.projectgenerator.generator.generator
 
 import cn.hutool.core.util.ReUtil
+import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.*
 import com.zshnb.projectgenerator.generator.util.*
+import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.core.io.support.*
@@ -15,8 +17,11 @@ import java.io.*
 @Component
 class LayuiGenerator(private val backendParser: BackendParser,
                      private val configuration: Configuration,
+                     private val projectConfig: ProjectConfig,
+                     private val pathConfig: PathConfig,
                      private val frontendParser: FrontendParser,
-                     private val ioUtil: IOUtil) : BaseGenerator(backendParser, ioUtil, configuration) {
+                     private val ioUtil: IOUtil) :
+    BaseGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
     override fun generateProject(json: String) {
         super.generateProject(json)
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
@@ -30,6 +35,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
 
         val project = backendParser.parseProject(json)
         val pages = frontendParser.parsePages(project)
+        val config = project.config
         createOtherDirs(pages.map { it.entity!!.name }, project.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
@@ -38,10 +44,10 @@ class LayuiGenerator(private val backendParser: BackendParser,
             val url = it.url
             val filePath = url.path.substring(url.path.indexOf("layui") + 5)
             val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", url.path)) {
-                File("${PathConstant.resourcesDirPath(project.config)}/static/$filePath")
+                File("${pathConfig.resourcesDirPath(config)}/static/$filePath")
             } else {
                 if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
-                    File("${PathConstant.resourcesDirPath(project.config)}/templates/$filePath")
+                    File("${pathConfig.resourcesDirPath(config)}/templates/$filePath")
                 } else {
                     File("")
                 }
@@ -55,46 +61,46 @@ class LayuiGenerator(private val backendParser: BackendParser,
             .distinctBy { it.name }
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}${it.href}.html")
+                "${pathConfig.layUIPageDirPath(config)}${it.href}.html")
         }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
             "packageName" to project.config.controllerPackagePath(),
             "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
                 project.config.commonPackagePath(), project.config.requestPackagePath()),
             "unBindMenus" to unBindMenus),
-            "${project.config.controllerDir()}/IndexController.java")
+            "${pathConfig.controllerDir(config)}/IndexController.java")
 
         project.controllers.forEach {
             ioUtil.writeTemplate(controllerTemplate, it,
-                "${project.config.controllerDir()}/${it.name.capitalize()}Controller.java")
+                "${pathConfig.controllerDir(config)}/${it.name.capitalize()}Controller.java")
         }
 
         pages.forEach {
             it.entity!!
             ioUtil.writeTemplate(addPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/add.html")
+                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/add.html")
             ioUtil.writeTemplate(editPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/edit.html")
+                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/edit.html")
             ioUtil.writeTemplate(detailPageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/detail.html")
+                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/detail.html")
             ioUtil.writeTemplate(tablePageTemplate, it,
-                "${PathConstant.layUIPageDirPath(project.config)}/${it.entity.name}/table.html")
+                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/table.html")
         }
     }
 
     override fun mkdirs(config: Config) {
         super.mkdirs(config)
 
-        val pageDir = File(PathConstant.layUIPageDirPath(config))
+        val pageDir = File(pathConfig.layUIPageDirPath(config))
         pageDir.mkdirs()
 
-        val staticDir = File(PathConstant.layUIStaticDirPath(config))
+        val staticDir = File(pathConfig.layUIStaticDirPath(config))
         staticDir.mkdir()
     }
 
     private fun createOtherDirs(dirs: List<String>, config: Config) {
         dirs.forEach {
-            File("${PathConstant.layUIPageDirPath(config)}/$it").mkdirs()
+            File("${pathConfig.layUIPageDirPath(config)}/$it").mkdirs()
         }
     }
 }
