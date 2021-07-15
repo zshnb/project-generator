@@ -1,20 +1,18 @@
 package com.zshnb.projectgenerator.generator.io
 
-import com.zshnb.projectgenerator.web.config.ProjectConfig
 import org.apache.commons.io.FileUtils
 import org.springframework.stereotype.Component
 import java.io.*
 import java.util.zip.*
 
 @Component
-class ZipFileWriter(private val projectConfig: ProjectConfig) {
-    fun createZipFile(zipFileName: String, rootDirName: String) {
-        val zipFile = File(projectConfig.tempDir, zipFileName)
-		zipFile.parentFile.mkdir()
+class ZipFileWriter {
+    fun createZipFile(zipFileName: String, rootDirPath: String) {
+        val zipFile = File(zipFileName)
         val fos = FileOutputStream(zipFile)
         val zos = ZipOutputStream(fos)
 
-        val rootDir = File(rootDirName)
+        val rootDir = File(rootDirPath)
 		compress(rootDir, zos, rootDir.name)
 		zos.close()
     }

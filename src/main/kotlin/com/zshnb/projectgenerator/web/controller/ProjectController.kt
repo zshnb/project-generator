@@ -27,11 +27,12 @@ class ProjectController(
     fun generate(@RequestBody json: String): ResponseEntity<InputStreamResource> {
         val adapter = moshi.adapter(Project::class.java)
         val project = adapter.fromJson(json)!!
-        val fileName = "${project.config.artifactId}.zip"
+        val filePath = "${projectConfig.projectDir}/${project.config.artifactId}"
+        FileUtils.deleteDirectory(File(filePath))
+        val fileName = "$filePath.zip"
         layuiGenerator.generateProject(json)
-        zipFileWriter.createZipFile(fileName, project.config.artifactId)
-        FileUtils.deleteDirectory(File(project.config.artifactId))
-        val file = File(projectConfig.tempDir, fileName)
+        zipFileWriter.createZipFile(fileName, filePath)
+        val file = File(fileName)
         val resource = InputStreamResource(FileInputStream(file))
         val headers = HttpHeaders()
         headers.add("Content-Disposition", "attachment;fileName=${file.name}")

@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
   <#if database == "MYSQL">
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${jdbcHost}:${jdbcPort?c}/${jdbcDatabase}?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
     username: ${jdbcUser}
     password: ${jdbcPassword}

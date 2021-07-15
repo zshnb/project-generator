@@ -1,9 +1,9 @@
 package ${packageName};
 
 public class PageRequest {
-    int pageNumber = 1;
+    private int pageNumber = 1;
 
-    int pageSize = 20;
+    private int pageSize = 20;
 
     public int getPageNumber() {
         return pageNumber;
