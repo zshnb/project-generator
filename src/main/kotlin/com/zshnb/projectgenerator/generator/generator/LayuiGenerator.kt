@@ -22,8 +22,8 @@ class LayuiGenerator(private val backendParser: BackendParser,
                      private val frontendParser: FrontendParser,
                      private val ioUtil: IOUtil) :
     BaseGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(json: String) {
-        super.generateProject(json)
+    override fun generateProject(json: String): Project {
+        val project = super.generateProject(json)
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexControllerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
@@ -33,7 +33,6 @@ class LayuiGenerator(private val backendParser: BackendParser,
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
         val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EMPTY_PAGE)
 
-        val project = backendParser.parseProject(json)
         val pages = frontendParser.parsePages(project)
         val config = project.config
         createOtherDirs(pages.map { it.entity!!.name }, project.config)
@@ -70,8 +69,12 @@ class LayuiGenerator(private val backendParser: BackendParser,
             "unBindMenus" to unBindMenus),
             "${pathConfig.controllerDir(config)}/IndexController.java")
 
-        project.controllers.forEach {
-            ioUtil.writeTemplate(controllerTemplate, it,
+        project.entities.forEach {
+            ioUtil.writeTemplate(controllerTemplate, mapOf(
+                "entity" to it,
+                "packageName" to config.controllerPackagePath(),
+                "dependencies" to listOf(config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
+                    config.commonPackagePath(), config.requestPackagePath())),
                 "${pathConfig.controllerDir(config)}/${it.name.capitalize()}Controller.java")
         }
 
@@ -86,6 +89,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
             ioUtil.writeTemplate(tablePageTemplate, it,
                 "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/table.html")
         }
+        return project
     }
 
     override fun mkdirs(config: Config) {

@@ -17,10 +17,10 @@ open class BaseGenerator(private val backendParser: BackendParser,
                          private val projectConfig: ProjectConfig,
                          private val pathConfig: PathConfig,
                          private val configuration: Configuration) {
-    open fun generateProject(json: String) {
+    open fun generateProject(json: String): Project {
         val project = backendParser.parseProject(json)
         val config = project.config
-        mkdirs(project.config)
+        mkdirs(config)
 
         val entityTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.ENTITY_TEMPLATE)
         val serviceTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.SERVICE_TEMPLATE)
@@ -61,11 +61,11 @@ open class BaseGenerator(private val backendParser: BackendParser,
         project.entities.forEach {
             ioUtil.writeTemplate(entityTemplate, mapOf(
                 "entity" to it,
-                "packageName" to project.config.entityPackagePath(),
-                "config" to project.config),
+                "packageName" to config.entityPackagePath(),
+                "config" to config),
                 "${pathConfig.entityDir(config)}/${it.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
-                "packageName" to project.config.requestPackagePath(),
+                "packageName" to config.requestPackagePath(),
                 "entity" to it,
                 "commonPackageName" to config.commonPackagePath()),
                 "${pathConfig.requestDir(config)}/List${it.name.capitalize()}Request.java")
@@ -180,6 +180,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(initDataTemplate,
             mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")
+
+        return project
     }
 
     private fun getChildMenus(menu: Menu): List<Menu> {
