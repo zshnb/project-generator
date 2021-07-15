@@ -3,7 +3,6 @@ package com.zshnb.projectgenerator.generator.parser
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.ColumnType.*
-import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.util.TypeUtil
 import com.zshnb.projectgenerator.generator.util.toCamelCase
 import org.springframework.stereotype.Component
@@ -27,14 +26,14 @@ class BackendParser(private val moshi: Moshi,
                 it.role = role.name
             }
         }
-        project.entities = parseEntities(project.tables, project.config)
+        project.entities = parseEntities(project.tables)
         return project
     }
 
     /**
      * 从[Table]解析出Java代码的实体类
      * */
-    private fun parseEntities(tables: List<Table>, config: Config): List<Entity> {
+    private fun parseEntities(tables: List<Table>): List<Entity> {
         return tables.map {
             val fields = it.columns.map { column ->
                 Field(column.name.toCamelCase(), column, typeUtil.convertColumnTypeToFieldType(column.type).description)
