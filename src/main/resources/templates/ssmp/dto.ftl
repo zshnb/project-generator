@@ -1,6 +1,5 @@
 package ${packageName};
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,11 +14,12 @@ public class ${entity.name?cap_first}Dto {
         </#if>
         <#if field.column.associate??>
             <#list field.column.associate.associateResultColumns as column>
-                private String ${column.aliasColumnName};
-                public String get${column.aliasColumnName?cap_first}() {
+                <#assign type>${column.fieldType.description}</#assign>
+                private ${type} ${column.aliasColumnName};
+                public ${type} get${column.aliasColumnName?cap_first}() {
                     return this.${column.aliasColumnName};
                 }
-                public void set${column.aliasColumnName?cap_first}(String ${column.aliasColumnName}) {
+                public void set${column.aliasColumnName?cap_first}(${type} ${column.aliasColumnName}) {
                     this.${column.aliasColumnName} = ${column.aliasColumnName};
                 }
             </#list>

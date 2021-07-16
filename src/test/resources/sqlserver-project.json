@@ -47,7 +47,8 @@
               {
                 "originColumnName": "name",
                 "aliasColumnName": "userName",
-                "tableFieldTitle": "用户名"
+                "tableFieldTitle": "用户名",
+                "columnType": "varchar"
               }
             ],
             "formItemColumnName": "name"
@@ -68,7 +69,8 @@
               {
                 "originColumnName": "name",
                 "aliasColumnName": "schoolName",
-                "tableFieldTitle": "学校名"
+                "tableFieldTitle": "学校名",
+                "columnType": "varchar"
               }
             ],
             "formItemColumnName": "name"
@@ -161,7 +163,8 @@
               {
                 "originColumnName": "name",
                 "aliasColumnName": "schoolName",
-                "tableFieldTitle": "学校名"
+                "tableFieldTitle": "学校名",
+                "columnType": "varchar"
               }
             ],
             "formItemColumnName": "name"
@@ -263,7 +266,8 @@
               {
                 "originColumnName": "username",
                 "aliasColumnName": "userUsername",
-                "tableFieldTitle": "用户"
+                "tableFieldTitle": "用户",
+                "columnType": "varchar"
               }
             ],
             "formItemColumnName": "username"

@@ -1,6 +1,7 @@
 package com.zshnb.projectgenerator.generator.entity
 
 import com.squareup.moshi.Json
+import com.zshnb.projectgenerator.generator.entity.ColumnType.INT
 
 /**
  * @param searchable 是否有支持搜索的列
@@ -34,33 +35,16 @@ data class Column(val name: String,
                   val enableFormItem: Boolean = true,
                   val enableTableField: Boolean = true,
                   val associate: Associate? = null,
-                  val repeatable: Boolean = true) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Column
-
-        if (name != other.name) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return name.hashCode()
-    }
-}
+                  val repeatable: Boolean = true)
 
 /**
  * 表示表之间的一对多关联
  * @param targetTableName 被关联的一方表名
  * @param targetColumnName 被关联的一方表的列名
- * @param sourceColumnName 与一方表关联的多方表的列名
  * @param formItemColumnName 在添加修改页面，下拉框里option需要获取的一方表里的列名
  * */
 data class Associate(val targetTableName: String,
                      val targetColumnName: String,
-                     val sourceColumnName: String,
                      val associateResultColumns: List<AssociateResultColumn>,
                      val formItemColumnName: String)
 
@@ -70,9 +54,11 @@ data class Associate(val targetTableName: String,
  * @param aliasColumnName 列别名，用在sql里
  * @param tableFieldTitle 在表格页面显示的描述
  * */
-data class AssociateResultColumn(val originColumnName: String,
-                                 val aliasColumnName: String,
-                                 val tableFieldTitle: String)
+data class AssociateResultColumn(var originColumnName: String = "",
+                                 var aliasColumnName: String = "",
+                                 var columnType: ColumnType = INT,
+                                 var fieldType: FieldType = FieldType.INT,
+                                 var tableFieldTitle: String = "")
 
 enum class ColumnType(val code: Int, val description: String) {
     @Json(name = "int")
