@@ -23,7 +23,7 @@
                 <div style="margin: 10px 10px 10px 10px">
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
-                            <#list form.items as formItem>
+                            <#list form.items?filter(it -> it.field.column.searchable) as formItem>
                                 <#assign label>${formItem.label}</#assign>
                                 <#if formItem.field.column.searchable>
                                     <#switch formItem.class.simpleName>
@@ -144,13 +144,13 @@
                 form.render('select')
             }
         })
-        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        <#elseif formItem.class.simpleName == "DateTimeFormItem" && formItem.field.column.searchable>
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
             trigger: 'click'
         })
-        <#elseif formItem.class.simpleName == "DateFormItem">
+        <#elseif formItem.class.simpleName == "DateFormItem" && formItem.field.column.searchable>
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'date',

@@ -5,30 +5,20 @@ import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 
 @Component
-class FrontendParser {
+class FrontendParser(private val backendParser: BackendParser) {
     /**
     * 把前端传来的page对象完善，过滤掉不需要生成页面的entity
     * 为需要生成的page填充entity，过滤掉page中不需要生成表单项的field，然后为formItem填充field
     * */
     fun parsePages(project: Project): List<Page> {
         val pages = project.pages
-        return project.entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
+        val entities = backendParser.parseEntities(project.tables)
+        return entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
             val page = pages[index]
-            val enableFormItemFields = entity.fields.filter { it.column.enableFormItem }
             val formItems = page.form.items.mapIndexed { innerIndex, formItem ->
-                when (formItem) {
-                    is InputFormItem -> InputFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    is PasswordFormItem -> PasswordFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    is TextAreaFormItem -> TextAreaFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    is DateTimeFormItem -> DateTimeFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    is FileFormItem -> FileFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    is ImageFormItem -> ImageFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    is SelectFormItem -> SelectFormItem(enableFormItemFields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require, formItem.label)
-                    is RadioFormItem -> RadioFormItem(enableFormItemFields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require, formItem.label)
-                    is DateFormItem -> DateFormItem(enableFormItemFields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
-                    else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
-                }
+                getFormItem(formItem, entity.fields, innerIndex)
             }
+
             val enableTableFieldFields = entity.fields.filter { it.column.enableTableField || it.column.associate != null }
             val tableFields = page.table.fields.mapIndexed { innerIndex, tableField ->
                 TableField(tableField.title, tableField.formItemClassName,
@@ -39,4 +29,19 @@ class FrontendParser {
             Page(entity, FormComponent(formItems), TableComponent(tableFields, operations))
         }
     }
+
+    private fun getFormItem(formItem: FormItem, fields: List<Field>, innerIndex: Int): FormItem =
+        when (formItem) {
+            is InputFormItem -> InputFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            is PasswordFormItem -> PasswordFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            is TextAreaFormItem -> TextAreaFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            is DateTimeFormItem -> DateTimeFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            is FileFormItem -> FileFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            is ImageFormItem -> ImageFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            is SelectFormItem -> SelectFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require, formItem.label)
+            is RadioFormItem -> RadioFormItem(fields[innerIndex], formItem.options, formItem.formItemClassName, formItem.require, formItem.label)
+            is DateFormItem -> DateFormItem(fields[innerIndex], formItem.formItemClassName, formItem.require, formItem.label)
+            else -> throw RuntimeException("un support form item: ${formItem::class.simpleName}")
+        }
+
 }

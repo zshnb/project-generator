@@ -26,14 +26,13 @@ class BackendParser(private val moshi: Moshi,
                 it.role = role.name
             }
         }
-        project.entities = parseEntities(project.tables)
         return project
     }
 
     /**
      * 从[Table]解析出Java代码的实体类
      * */
-    private fun parseEntities(tables: List<Table>): List<Entity> {
+    fun parseEntities(tables: List<Table>): List<Entity> {
         return tables.map {
             val fields = it.columns.map { column ->
                 Field(column.name.toCamelCase(), column, typeUtil.convertColumnTypeToFieldType(column.type).description)
