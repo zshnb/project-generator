@@ -20,18 +20,18 @@
 <#assign tableName>${entity.table.name}</#assign>
 <mapper namespace="${packageName}.${name}Mapper">
     <#if entity.table.associate>
-        <select id="findDtos" resultType="${dtoPackageName}.${name}Dto">
+        <select id="findDtos" resultType="${dtoPackageName + "." + name}Dto">
             select
                 ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 <#list column.associate.associateResultColumns as associateColumn>
-                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
+                    ${literalize(column.associate.targetTableName + "." + associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
                 </#list>
                 <#if column_has_next>,</#if>
             </#list>
             from ${literalize(tableName)}
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
-                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(tableName)}.${literalize(column.associate.sourceColumnName)}
+                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName + "." + column.associate.targetColumnName)} = ${literalize(tableName + "." + column.name)}
             </#list>
             <where>
                 <#list entity.fields?filter(f -> f.column.searchable) as field>
@@ -48,13 +48,13 @@
                             <#break>
                     </#switch>
                     <#if field.column.associate??>
-                        <#assign associateFieldParam>${camelize(field.column.associate.sourceColumnName)}</#assign>
+                        <#assign associateFieldParam>${camelize(field.column.name)}</#assign>
                         <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
-                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
+                            and ${literalize(field.column.associate.targetTableName + "." + field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
                         </if>
                     <#else>
                         <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
-                            and ${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
+                            and ${literalize(tableName + "." + field.column.name)} = ${r'#{request.' + field.name + '}'}
                         </if>
                     </#if>
                 </#list>
@@ -80,7 +80,7 @@
             select count(*)
             from ${literalize(tableName)}
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
-                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(mapper.entity.table.name)}.${literalize(column.associate.sourceColumnName)}
+                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(mapper.entity.table.name)}.${literalize(column.name)}
             </#list>
             <where>
                 <#list entity.fields?filter(f -> f.column.searchable) as field>
@@ -97,7 +97,7 @@
                             <#break>
                     </#switch>
                     <#if field.column.associate??>
-                        <#assign associateFieldParam>${camelize(field.column.associate.sourceColumnName)}</#assign>
+                        <#assign associateFieldParam>${camelize(field.column.name)}</#assign>
                         <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
                             and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
                         </if>

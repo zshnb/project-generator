@@ -2,6 +2,7 @@ package com.zshnb.projectgenerator.generator.config
 
 import com.squareup.moshi.*
 import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.util.TypeUtil
 import org.springframework.stereotype.Component
 
 /**
@@ -56,6 +57,33 @@ class FormItemAdapter : JsonAdapter<FormItem>() {
     }
 
     override fun toJson(writer: JsonWriter, value: FormItem?) {
+        TODO("Not yet implemented")
+    }
+}
+
+@Component
+class AssociateResultColumnAdapter(private val typeUtil: TypeUtil) : JsonAdapter<AssociateResultColumn>() {
+    override fun fromJson(reader: JsonReader): AssociateResultColumn? {
+        val associateResultColumn = AssociateResultColumn()
+        reader.beginObject()
+        while (reader.hasNext()) {
+            with(associateResultColumn) {
+                when (reader.nextName()) {
+                    "originColumnName" -> originColumnName = reader.nextString()
+                    "aliasColumnName" -> aliasColumnName = reader.nextString()
+                    "tableFieldTitle" -> tableFieldTitle = reader.nextString()
+                    "columnType" -> {
+                        columnType = ColumnType.valueOf(reader.nextString().toUpperCase())
+                        fieldType = typeUtil.convertColumnTypeToFieldType(columnType)
+                    }
+                }
+            }
+        }
+        reader.endObject()
+        return associateResultColumn
+    }
+
+    override fun toJson(p0: JsonWriter, p1: AssociateResultColumn?) {
         TODO("Not yet implemented")
     }
 }

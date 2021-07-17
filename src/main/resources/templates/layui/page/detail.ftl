@@ -59,7 +59,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                     <div class="layui-input-block">
-                        <select name="${camelize(formItem.field.column.associate.sourceColumnName)}" disabled
+                        <select name="${camelize(formItem.field.column.name)}" disabled
                                 <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>>
                             <option value="">请选择${label}</option>
                         </select>
@@ -125,10 +125,10 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    if (it.id === ${r"[[${" + entity.name + "." + camelize(formItem.field.column.associate.sourceColumnName) + "}]]"}) {
-                        $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    if (it.id === ${r"[[${" + entity.name + "." + camelize(formItem.field.column.name) + "}]]"}) {
+                        $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     } else {
-                        $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                        $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     }
                 })
                 form.render('select')

@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.sourceColumnName == "user_id")?size > 0)>
+    <#if (entity.table.columns?filter(c -> c.associate?? && c.name == "user_id")?size > 0)>
         <input type="text" name="userId" th:value="${r"${session.user.id}"}" hidden/>
     </#if>
     <#function camelize(s)>
@@ -63,7 +63,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                     <div class="layui-input-block">
-                        <select name="${camelize(formItem.field.column.associate.sourceColumnName)}"
+                        <select name="${camelize(formItem.field.column.name)}"
                                 <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>>
                             <option value="">请选择${label}</option>
                         </select>
@@ -213,7 +213,7 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    $('select[name=${camelize(formItem.field.column.associate.sourceColumnName)}]').append(`<option value="${r"${it." + formItem.field.column.associate.targetColumnName + "}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it." + formItem.field.column.associate.targetColumnName + "}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                 })
                 form.render('select')
             }
