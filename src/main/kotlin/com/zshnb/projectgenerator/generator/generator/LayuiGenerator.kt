@@ -68,8 +68,8 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 project.config.commonPackagePath(), project.config.requestPackagePath()),
             "unBindMenus" to unBindMenus),
             "${pathConfig.controllerDir(config)}/IndexController.java")
-
-        project.entities.forEach {
+        val entities = backendParser.parseEntities(project.tables)
+        entities.forEach {
             ioUtil.writeTemplate(controllerTemplate, mapOf(
                 "entity" to it,
                 "packageName" to config.controllerPackagePath(),

@@ -58,7 +58,8 @@ open class BaseGenerator(private val backendParser: BackendParser,
             "commonPackageName" to config.commonPackagePath()
         ), "${pathConfig.controllerDir(config)}/StaticResourceController.java")
 
-        project.entities.forEach {
+        val entities = backendParser.parseEntities(project.tables)
+        entities.forEach {
             ioUtil.writeTemplate(entityTemplate, mapOf(
                 "entity" to it,
                 "packageName" to config.entityPackagePath(),
@@ -169,7 +170,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 }
             }.toList()
 
-        val permissions = project.entities.map { entity ->
+        val permissions = entities.map { entity ->
             entity.table.permissions.map {
                 it.operations.map { op ->
                     Triple(op.value, it.role, entity.name)

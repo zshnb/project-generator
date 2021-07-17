@@ -19,7 +19,8 @@ class RestfulBackendGenerator(private val backendParser: BackendParser,
     override fun generateProject(json: String): Project {
         val project = super.generateProject(json)
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.RESTFUL_CONTROLLER_TEMPLATE)
-        project.entities.forEach {
+        val entities = backendParser.parseEntities(project.tables)
+        entities.forEach {
             ioUtil.writeTemplate(controllerTemplate, it,
                 "${pathConfig.controllerDir(project.config)}/${it.name.capitalize()}Controller.java")
         }
