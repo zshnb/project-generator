@@ -144,13 +144,13 @@
                 form.render('select')
             }
         })
-        <#elseif formItem.class.simpleName == "DateTimeFormItem">
+        <#elseif formItem.class.simpleName == "DateTimeFormItem" && formItem.field.column.searchable>
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
             trigger: 'click'
         })
-        <#elseif formItem.class.simpleName == "DateFormItem">
+        <#elseif formItem.class.simpleName == "DateFormItem" && formItem.field.column.searchable>
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'date',
