@@ -23,7 +23,7 @@
                 <div style="margin: 10px 10px 10px 10px">
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
-                            <#list form.items as formItem>
+                            <#list form.items?filter(it -> it.field.column.searchable) as formItem>
                                 <#assign label>${formItem.label}</#assign>
                                 <#if formItem.field.column.searchable>
                                     <#switch formItem.class.simpleName>

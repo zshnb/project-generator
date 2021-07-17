@@ -217,6 +217,14 @@
           }
         },
         {
+          "name": "in_date",
+          "comment": "入学时间",
+          "type": "date",
+          "length": "255",
+          "enableFormItem": false,
+          "searchable": true
+        },
+        {
           "name": "id",
           "comment": "主键",
           "type": "int",
@@ -446,6 +454,10 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
             "label": "班级"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "label": "入学时间"
           }
         ]
       },
@@ -480,6 +492,10 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
             "title": ""
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "title": "入学时间"
           }
         ]
       }

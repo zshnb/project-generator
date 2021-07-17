@@ -28,7 +28,7 @@
         ?replace(' ' , '')
         ?uncap_first>
     </#function>
-    <#list form.items as formItem>
+    <#list form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#assign label>${formItem.label}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
         <#if formItem.class.simpleName == "InputFormItem">
@@ -140,7 +140,7 @@
             $ = layui.$,
             laydate = layui.laydate,
             upload = layui.upload
-        <#list form.items as formItem>
+        <#list form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
