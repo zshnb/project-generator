@@ -25,62 +25,13 @@
                 ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 <#list column.associate.associateResultColumns as associateColumn>
-                    ${literalize(column.associate.targetTableName + "." + associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
+                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
                 </#list>
                 <#if column_has_next>,</#if>
             </#list>
             from ${literalize(tableName)}
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
-                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName + "." + column.associate.targetColumnName)} = ${literalize(tableName + "." + column.name)}
-            </#list>
-            <where>
-                <#list entity.fields?filter(f -> f.column.searchable) as field>
-                    <#switch field.type>
-                        <#case "String">
-                            <#assign defaultValue>''</#assign>
-                            <#break>
-                        <#case "Integer">
-                            <#assign defaultValue>0</#assign>
-                            <#break>
-                        <#case "LocalDate">
-                        <#case "LocalDateTime">
-                            <#assign defaultValue>null</#assign>
-                            <#break>
-                    </#switch>
-                    <#if field.column.associate??>
-                        <#assign associateFieldParam>${camelize(field.column.name)}</#assign>
-                        <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
-                            and ${literalize(field.column.associate.targetTableName + "." + field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
-                        </if>
-                    <#else>
-                        <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
-                            and ${literalize(tableName + "." + field.column.name)} = ${r'#{request.' + field.name + '}'}
-                        </if>
-                    </#if>
-                </#list>
-            </where>
-            <#if (entity.table.bindRoles?size > 0)>
-                <#assign roles>
-                    <#list entity.table.bindRoles as role>
-                        '${role}'<#if role_has_next>,</#if><#t>
-                    </#list>
-                </#assign>
-                <if test="user.role in ${r"{" + roles + "}"}">
-                    and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
-                </if>
-            </#if>
-            <#if config.database == "SQLSERVER">
-                order by ${literalize(tableName)}.id
-            </#if>
-        </select>
-    </#if>
-
-    <#if config.database == "SQLSERVER">
-        <select id="count" resultType="int">
-            select count(*)
-            from ${literalize(tableName)}
-            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
-                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(mapper.entity.table.name)}.${literalize(column.name)}
+                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(tableName)}.${literalize(column.name)}
             </#list>
             <where>
                 <#list entity.fields?filter(f -> f.column.searchable) as field>
@@ -103,7 +54,63 @@
                         </if>
                     <#else>
                         <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
-                            and ${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
+                            and ${literalize(tableName)}.${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
+                        </if>
+                    </#if>
+                </#list>
+            </where>
+            <#if (entity.table.bindRoles?size > 0)>
+                <#assign roles>
+                    <#list entity.table.bindRoles as role>
+                        '${role}'<#if role_has_next>,</#if><#t>
+                    </#list>
+                </#assign>
+                <if test="user.role in ${r"{" + roles + "}"}">
+                    and ${literalize(tableName)}.user_id = ${r"#{user.id}"}
+                </if>
+            </#if>
+            <#if config.database == "SQLSERVER">
+                order by ${literalize(tableName)}.id
+            </#if>
+        </select>
+    </#if>
+
+    <#if config.database == "SQLSERVER">
+        <select id="count" resultType="int">
+            select
+            ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                <#list column.associate.associateResultColumns as associateColumn>
+                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
+                </#list>
+                <#if column_has_next>,</#if>
+            </#list>
+            from ${literalize(tableName)}
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(tableName)}.${literalize(column.name)}
+            </#list>
+            <where>
+                <#list entity.fields?filter(f -> f.column.searchable) as field>
+                    <#switch field.type>
+                        <#case "String">
+                            <#assign defaultValue>''</#assign>
+                            <#break>
+                        <#case "Integer">
+                            <#assign defaultValue>0</#assign>
+                            <#break>
+                        <#case "LocalDate">
+                        <#case "LocalDateTime">
+                            <#assign defaultValue>null</#assign>
+                            <#break>
+                    </#switch>
+                    <#if field.column.associate??>
+                        <#assign associateFieldParam>${camelize(field.column.name)}</#assign>
+                        <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
+                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
+                        </if>
+                    <#else>
+                        <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
+                            and ${literalize(tableName)}.${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
                         </if>
                     </#if>
                 </#list>

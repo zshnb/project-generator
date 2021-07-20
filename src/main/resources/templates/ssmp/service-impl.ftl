@@ -8,12 +8,24 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+<#if (tables?filter(it -> it.bindUser??)?size > 0)>
+    import org.springframework.transaction.annotation.Transactional;
+</#if>
 import java.util.List;
 import java.util.stream.Collectors;
 import ${servicePackageName}.I${className}Service;
 <#list dependencies as d>
 import ${d}.*;
 </#list>
+<#function camelize(s)>
+    <#return s
+    ?replace('(^_+)|(_+$)', '', 'r')
+    ?replace('\\_+(\\w)?', ' $1', 'r')
+    ?replace('([A-Z])', ' $1', 'r')
+    ?capitalize
+    ?replace(' ' , '')
+    ?uncapFirst>
+</#function>
 <#function literalize(str)>
     <#if config.database == "MYSQL">
         <#return '`${str}`'>
@@ -26,6 +38,19 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     @Autowired
     private ${className}Mapper ${name}Mapper;
 
+    <#if name != "user" && (tables?filter(it -> it.bindUser?? && it.name == name)?size > 0)>
+        @Autowired
+        private UserMapper userMapper;
+    </#if>
+    <#if name == "user" && (tables?filter(it -> it.bindUser??)?size > 0)>
+        <#list tables?filter(it -> it.bindUser??) as table>
+            @Autowired
+            private ${camelize(table.name)?capFirst}Mapper ${camelize(table.name)}Mapper;
+        </#list>
+    </#if>
+    <#if (tables?filter(it -> it.bindUser??)?size > 0)>
+    @Transactional
+    </#if>
     @Override
     public ${className} add(${className} ${name}) {
         <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
@@ -39,21 +64,42 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
             throw new InvalidArgumentException("记录已重复存在");
         }
         </#if>
-        save(${name});
+        <#if name == "user">
+            save(${name});
+            <#list tables?filter(it -> it.bindUser??) as table>
+                <#assign innerTableName = "${camelize(table.name)}"/>
+                if (user.getRole().equals("${innerTableName}")) {
+                    ${innerTableName?capFirst} ${innerTableName} = new ${innerTableName?capFirst}();
+                    ${innerTableName}.set${table.bindUser?capFirst}(user.getUsername());
+                    ${innerTableName}.setUserId(user.getId());
+                    ${innerTableName}Mapper.insert(${innerTableName});
+                }
+            </#list>
+        <#elseIf entity.table.bindUser??>
+            <#assign innerTableName = "${entity.name}"/>
+            User user = new User();
+            user.setUsername(${innerTableName}.get${entity.table.bindUser?capFirst}());
+            user.setPassword("123456");
+            user.setRole("${innerTableName}");
+            userMapper.insert(user);
+            ${innerTableName}.setUserId(user.getId());
+            save(${name});
+        <#else>
+            save(${name});
+        </#if>
         return getById(${name}.getId());
     }
 
     @Override
     public ${className} update(${className} ${name}) {
         <#if (entity.fields?filter(f -> !f.column.repeatable)?size > 0)>
-        ${className} exist = getById(${name}.getId());
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
         <#list entity.fields?filter(f -> !f.column.repeatable) as field>
             <#assign getField>get${field.name?capFirst}()</#assign>
             queryWrapper.eq("${field.column.name}", ${name}.${getField});
         </#list>
         ${className} mayExist = getOne(queryWrapper);
-        if (mayExist != null && !exist.getId().equals(mayExist.getId())) {
+        if (mayExist != null && !${name}.getId().equals(mayExist.getId())) {
             throw new InvalidArgumentException("记录已重复存在");
         }
         </#if>

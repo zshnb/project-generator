@@ -166,6 +166,7 @@
     {
       "name": "student",
       "comment": "班级",
+      "bindUser": "name",
       "columns": [
         {
           "name": "name",
@@ -220,7 +221,6 @@
           "name": "in_date",
           "comment": "入学时间",
           "type": "date",
-          "length": "255",
           "enableFormItem": false,
           "searchable": true
         },
@@ -554,6 +554,17 @@
     {
       "name": "teacher",
       "description": "老师",
+      "menus": [
+        {
+          "name": "学生管理",
+          "href": "/student/tablePage",
+          "role": "admin"
+        }
+      ]
+    },
+    {
+      "name": "student",
+      "description": "学生",
       "menus": [
         {
           "name": "学生管理",

@@ -98,6 +98,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "entity" to it,
                 "packageName" to config.serviceImplPackagePath(),
                 "servicePackageName" to config.servicePackagePath(),
+                "tables" to project.tables,
                 "dependencies" to listOf(
                     config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath(),
                     config.exceptionPackagePath(), config.mapperPackagePath()
