@@ -8,7 +8,7 @@ import java.lang.RuntimeException
 class FrontendParser(private val backendParser: BackendParser) {
     /**
     * 把前端传来的page对象完善，过滤掉不需要生成页面的entity
-    * 为需要生成的page填充entity，过滤掉page中不需要生成表单项的field，然后为formItem填充field
+    * 为需要生成的page填充entity，过滤掉page中不需要生成表单项的field，然后为formItem和tableField填充field
     * */
     fun parsePages(project: Project): List<Page> {
         val pages = project.pages

@@ -17,7 +17,7 @@ data class Table(val name: String,
                  val enablePage: Boolean = false,
                  val associate: Boolean = false,
                  val bindRoles: List<String> = emptyList(),
-                 val page: Page? = null)
+                 val bindUser: String? = null)
 
 /**
  * @param searchable 是否支持搜索

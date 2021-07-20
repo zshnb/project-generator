@@ -18,8 +18,16 @@ class BackendParser(private val moshi: Moshi,
         val project = adapter.fromJson(json)!!
         project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
         project.tables = project.tables.map {
-            Table(it.name, it.comment, it.columns, it.permissions, it.columns.any { column -> column.searchable },
-                it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles)
+            val columns = if (it.bindUser != null) {
+                it.columns.toMutableList().apply {
+                    add(Column("user_id", INT, "user外键", enableFormItem = false,
+                        enableTableField = false))
+                }
+            } else {
+                it.columns
+            }
+            Table(it.name, it.comment, columns, it.permissions, it.columns.any { column -> column.searchable },
+                it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles, it.bindUser)
         }
         project.roles.forEach { role ->
             role.menus.forEach {

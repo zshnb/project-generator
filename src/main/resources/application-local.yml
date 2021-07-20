@@ -2,7 +2,7 @@ server:
   port: 8888
 
 spring:
-  project-dir: C:/Users/zsh/Workbench
+  project-dir: C:/Users/zsh/Workbench/外包
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/projectGenerator?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false

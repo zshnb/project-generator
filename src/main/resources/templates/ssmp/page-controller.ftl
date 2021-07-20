@@ -102,9 +102,9 @@ public class ${className}Controller {
     */
     @GetMapping("/tablePage")
     public String tablePage(HttpSession httpSession, Model model) {
-        String role = ((User) httpSession.getAttribute("user")).getRole();
+        User user = (User) httpSession.getAttribute("user");
         List<Permission> permissions = permissionService.list(new QueryWrapper<Permission>()
-            .eq("role", role)
+            .eq("role", user.getRole())
             .eq("model", "${name}"));
         model.addAttribute("permissions", permissions.stream().map(Permission::getOperation).collect(Collectors.toList()));
         return "page/${name}/table";

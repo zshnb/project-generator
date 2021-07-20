@@ -16,7 +16,7 @@ class GeneratorTest {
 
     @BeforeEach
     fun cleanProject() {
-        FileUtils.deleteDirectory(File("C:/Users/zsh/Workbench/demo"))
+        FileUtils.deleteDirectory(File("C:/Users/zsh/Workbench/外包/demo"))
     }
 
     @Test
