@@ -1,6 +1,7 @@
 package com.zshnb.projectgenerator.generator.parser
 
 import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.entity.web.*
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 
@@ -10,9 +11,9 @@ class FrontendParser(private val backendParser: BackendParser) {
     * 把前端传来的page对象完善，过滤掉不需要生成页面的entity
     * 为需要生成的page填充entity，过滤掉page中不需要生成表单项的field，然后为formItem和tableField填充field
     * */
-    fun parsePages(project: Project): List<Page> {
-        val pages = project.pages
-        val entities = backendParser.parseEntities(project.tables)
+    fun parsePages(webProject: WebProject): List<Page> {
+        val pages = webProject.pages
+        val entities = backendParser.parseEntities(webProject.tables)
         return entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
             val page = pages[index]
             val formItems = page.form.items.mapIndexed { innerIndex, formItem ->

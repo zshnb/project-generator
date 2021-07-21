@@ -1,7 +1,7 @@
 package com.zshnb.projectgenerator.web.controller
 
 import com.squareup.moshi.Moshi
-import com.zshnb.projectgenerator.generator.entity.Project
+import com.zshnb.projectgenerator.generator.entity.web.WebProject
 import com.zshnb.projectgenerator.generator.generator.*
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
@@ -25,7 +25,7 @@ class ProjectController(
 ) {
     @PostMapping("/generate")
     fun generate(@RequestBody json: String): ResponseEntity<InputStreamResource> {
-        val adapter = moshi.adapter(Project::class.java)
+        val adapter = moshi.adapter(WebProject::class.java)
         val project = adapter.fromJson(json)!!
         val filePath = "${projectConfig.projectDir}/${project.config.artifactId}"
         FileUtils.deleteDirectory(File(filePath))

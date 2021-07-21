@@ -2,19 +2,20 @@ package com.zshnb.projectgenerator.generator.parser
 
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.*
-import com.zshnb.projectgenerator.generator.entity.ColumnType.*
+import com.zshnb.projectgenerator.generator.entity.web.*
+import com.zshnb.projectgenerator.generator.entity.web.ColumnType.*
 import com.zshnb.projectgenerator.generator.extension.toCamelCase
 import com.zshnb.projectgenerator.generator.util.TypeUtil
 import org.springframework.stereotype.Component
 
 /**
- * 从[Project]的json中解析出项目的各个部分
+ * 从[WebProject]的json中解析出项目的各个部分
  * */
 @Component
 class BackendParser(private val moshi: Moshi,
                     private val typeUtil: TypeUtil) {
-    fun parseProject(json: String): Project {
-        val adapter = moshi.adapter(Project::class.java)
+    fun parseProject(json: String): WebProject {
+        val adapter = moshi.adapter(WebProject::class.java)
         val project = adapter.fromJson(json)!!
         project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
         project.tables = project.tables.map {

@@ -1,6 +1,6 @@
 package com.zshnb.projectgenerator.generator.extension
 
-import com.zshnb.projectgenerator.generator.entity.Config
+import com.zshnb.projectgenerator.generator.entity.web.Config
 
 fun Config.entityPackagePath() = "$rootPackageName.$entityPackageName"
 fun Config.servicePackagePath() = "$rootPackageName.$servicePackageName"

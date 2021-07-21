@@ -3,6 +3,7 @@ package com.zshnb.projectgenerator.generator.generator
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser
 import com.zshnb.projectgenerator.generator.util.*
@@ -17,7 +18,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
                          private val projectConfig: ProjectConfig,
                          private val pathConfig: PathConfig,
                          private val configuration: Configuration) {
-    open fun generateProject(json: String): Project {
+    open fun generateProject(json: String): WebProject {
         val project = backendParser.parseProject(json)
         val config = project.config
         mkdirs(config)

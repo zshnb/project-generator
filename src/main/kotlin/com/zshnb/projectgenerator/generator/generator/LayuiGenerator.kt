@@ -4,6 +4,7 @@ import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.*
 import com.zshnb.projectgenerator.generator.util.*
@@ -22,7 +23,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
                      private val frontendParser: FrontendParser,
                      private val ioUtil: IOUtil) :
     BaseGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(json: String): Project {
+    override fun generateProject(json: String): WebProject {
         val project = super.generateProject(json)
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexControllerTemplate =

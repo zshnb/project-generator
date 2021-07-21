@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.entity
+package com.zshnb.projectgenerator.generator.entity.web
 
 /**
  * @param form 表单组件
