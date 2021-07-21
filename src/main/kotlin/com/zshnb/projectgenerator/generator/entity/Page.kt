@@ -28,7 +28,7 @@ class TableComponent(val fields: List<TableField>, val operations: List<Operatio
  * @param formItemClassName 与[FormItem]的一致
  * */
 data class TableField(val title: String,
-                      val formItemClassName: String,
+                      val formItemClassName: String?,
                       val field: Field?,
                       val mappings: List<Mapping>?)
 

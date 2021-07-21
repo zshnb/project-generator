@@ -18,6 +18,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
+<#function camelize(s)>
+    <#return s
+    ?replace('(^_+)|(_+$)', '', 'r')
+    ?replace('\\_+(\\w)?', ' $1', 'r')
+    ?replace('([A-Z])', ' $1', 'r')
+    ?capitalize
+    ?replace(' ' , '')
+    ?uncapFirst>
+</#function>
 <#assign className>${entity.name?capFirst}</#assign>
 <#assign comment>${entity.table.comment}</#assign>
 <#assign name>${entity.name}</#assign>
@@ -88,6 +97,13 @@ public class ${className}Controller {
         return ${service}.page(request<#if (entity.table.bindRoles?size > 0)>, user</#if>);
     }
 
+    <#list operations?filter(it -> it.type == "AJAX") as operation>
+        @${operation.detail.httpMethod?lowerCase?capFirst}Mapping("/${operation.value}<#if operation.detail.pathVariable>/{id}</#if>")
+        @ResponseBody
+        public Response<String> ${camelize(operation.value?replace('-', '_'))}(<#if operation.detail.pathVariable>@PathVariable int id</#if>) {
+            return Response.ok();
+        }
+    </#list>
     /**
         列出${comment}
     */
@@ -137,5 +153,12 @@ public class ${className}Controller {
         model.addAttribute("${name}", ${name});
         return "page/${name}/detail";
     }
+
+    <#list operations?filter(it -> it.type == "NEW_PAGE") as operation>
+    @GetMapping("/${operation.value}<#if operation.detail.pathVariable>/{id}</#if>")
+    public String ${camelize(operation.value?replace('-', '_'))}(<#if operation.detail.pathVariable>@PathVariable int id</#if>) {
+        return "page/${name}";
+    }
+    </#list>
     </#if>
 }

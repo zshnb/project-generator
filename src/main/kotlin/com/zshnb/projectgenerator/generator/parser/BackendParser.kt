@@ -3,8 +3,8 @@ package com.zshnb.projectgenerator.generator.parser
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.ColumnType.*
+import com.zshnb.projectgenerator.generator.extension.toCamelCase
 import com.zshnb.projectgenerator.generator.util.TypeUtil
-import com.zshnb.projectgenerator.generator.util.toCamelCase
 import org.springframework.stereotype.Component
 
 /**

@@ -200,8 +200,6 @@
           "name": "clazz_id",
           "comment": "班级",
           "type": "int",
-          "enableFormItem": true,
-          "enableTableField": true,
           "searchable": true,
           "associate": {
             "targetTableName": "clazz",
@@ -286,6 +284,103 @@
               "description": "删除",
               "value": "delete",
               "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "course",
+      "comment": "课程",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "名称",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true,
+          "repeatable": false
+        },
+        {
+          "name": "user_id",
+          "comment": "老师id",
+          "type": "int",
+          "searchable": true,
+          "associate": {
+            "targetTableName": "user",
+            "targetColumnName": "id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "userUsername",
+                "aliasColumnName": "userName",
+                "tableFieldTitle": "老师名",
+                "columnType": "varchar"
+              }
+            ],
+            "formItemColumnName": "username"
+          }
+        },
+        {
+          "name": "status",
+          "comment": "状态",
+          "type": "int",
+          "enableFormItem": false,
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            },
+            {
+              "description": "审核",
+              "value": "review-status",
+              "position": "toolColumn",
+              "custom": true,
+              "type": "AJAX",
+              "detail": {
+                "httpMethod": "PUT",
+                "pathVariable": true,
+                "body": false
+              }
             }
           ]
         }
@@ -496,6 +591,45 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
             "title": "入学时间"
+          }
+        ]
+      }
+    },
+    {
+      "form": {
+        "items": [
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "require": true,
+            "label": "名称"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "require": true,
+            "label": "老师"
+          }
+        ]
+      },
+      "table": {
+        "fields": [
+          {
+            "title": "名称"
+          },
+          {
+            "title": "老师"
+          },
+          {
+            "title": "状态",
+            "mappings": [
+              {
+                "source": 0,
+                "target": "未通过"
+              },
+              {
+                "source": 1,
+                "target": "已通过"
+              }
+            ]
           }
         ]
       }

@@ -36,31 +36,31 @@ data class Menu(
  * */
 data class Operation(val description: String,
                      val value: String,
-                     val position: OperationPosition) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+                     val position: OperationPosition,
+                     val custom: Boolean = false,
+                     val type: OperationType?,
+                     val detail: OperationDetail?)
 
-        other as Operation
+data class OperationDetail(val httpMethod: HttpMethod,
+                           val pathVariable: Boolean,
+                           val body: Boolean)
 
-        if (description != other.description) return false
-        if (value != other.value) return false
-        if (position != other.position) return false
+enum class HttpMethod {
+    GET,
+    POST,
+    PUT,
+    DELETE
+}
 
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = description.hashCode()
-        result = 31 * result + value.hashCode()
-        result = 31 * result + position.hashCode()
-        return result
-    }
+enum class OperationType {
+    NEW_PAGE,
+    AJAX
 }
 
 enum class OperationPosition(val code: Int, val description: String) {
     @Json(name = "toolbar")
     TOOLBAR(0, "toolbar"),
+
     @Json(name = "toolColumn")
     TOOL_COLUMN(1, "toolColumn")
     ;
