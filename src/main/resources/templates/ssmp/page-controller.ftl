@@ -102,7 +102,7 @@ public class ${className}Controller {
         @${operation.detail.httpMethod?lowerCase?capFirst}Mapping("/${operation.value}<#if operation.detail.pathVariable>/{id}</#if>")
         @ResponseBody
         public Response<String> ${methodName}(<#if operation.detail.pathVariable>@PathVariable int id</#if>) {
-            ${service}.${methodName}(<#if operation.detail.pathVariable>int id</#if>)
+            ${service}.${methodName}(<#if operation.detail.pathVariable>id</#if>);
             return Response.ok();
         }
     </#list>

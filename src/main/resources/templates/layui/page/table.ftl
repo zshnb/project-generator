@@ -349,10 +349,11 @@
                 })
                 return false
                 <#else>
+                <#assign requireBodyMethods = ["POST", "PUT", "DELETE"]>
                 $.ajax({
                     url: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
                     type: '${operation.detail.httpMethod?lower_case}',
-                    <#if operation.detail.body>
+                    <#if requireBodyMethods?seq_contains(operation.detail.httpMethod)>
                         contentType: 'application/json',
                         data: JSON.stringify({})
                     </#if>
