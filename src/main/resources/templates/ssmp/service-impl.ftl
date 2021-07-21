@@ -227,4 +227,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         return new ListResponse<>(list(), 0L);
     }
     </#if>
+    <#list operations as operation>
+    @Override
+    public Response<String> ${camelize(operation.value?replace('-', '_'))}(<#if operation.detail.pathVariable>int id</#if>) {
+        return Response.ok();
+    }
+    </#list>
 }

@@ -25,7 +25,9 @@ class FrontendParser(private val backendParser: BackendParser) {
                     enableTableFieldFields[innerIndex], tableField.mappings)
             }
             val operations = entity.table.permissions.map { it.operations }
-                .flatten().toSet().toList()
+                .flatten()
+                .distinctBy { it.value }
+                .toList()
             Page(entity, FormComponent(formItems), TableComponent(tableFields, operations))
         }
     }

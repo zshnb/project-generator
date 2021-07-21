@@ -69,13 +69,19 @@ class LayuiGenerator(private val backendParser: BackendParser,
             "unBindMenus" to unBindMenus),
             "${pathConfig.controllerDir(config)}/IndexController.java")
         val entities = backendParser.parseEntities(project.tables)
-        entities.forEach {
+        entities.forEach { entity ->
+            val operations = entity.table.permissions.asSequence().map { it.operations }
+                .flatten()
+                .distinctBy { it.value }
+                .filter { it.custom }
+                .toList()
             ioUtil.writeTemplate(controllerTemplate, mapOf(
-                "entity" to it,
+                "entity" to entity,
+                "operations" to operations,
                 "packageName" to config.controllerPackagePath(),
                 "dependencies" to listOf(config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
                     config.commonPackagePath(), config.requestPackagePath())),
-                "${pathConfig.controllerDir(config)}/${it.name.capitalize()}Controller.java")
+                "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
         }
 
         pages.forEach {

@@ -93,7 +93,7 @@
         </script>
 
         <#list table.fields as tableField>
-            <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
+            <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                 <script type="text/html" id="${tableField.field.name}">
                     {{#
                         let fileName = d.${tableField.field.name}
@@ -183,9 +183,9 @@
                         <#assign fieldName>${tableField.field.name}</#assign>
                         <#assign title>${tableField.title}</#assign>
                         <#if tableField.field.column.enableTableField && !tableField.field.column.associate??>
-                            <#if tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.ImageFormItem">
+                            <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.ImageFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="/download?fileName={{d.${fieldName}}}"/></div>'},
-                            <#elseif tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
+                            <#elseif tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}'},
                             <#elseif tableField.mappings??>
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
@@ -221,7 +221,6 @@
                     </#list>
                 }
             }, 'data')
-
             return false
         })
 
@@ -246,6 +245,41 @@
                     layer.full(index)
                 })
             }
+            <#list table.operations?filter(it -> it.custom && it.position == "toolbar") as operation>
+            else if (obj.event === '${operation.value}') {
+                <#if operation.type == "NEW_PAGE">
+                let index = layer.open({
+                    title: '',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    end: function () {
+                        let iframeIndex = parent.layer.getFrameIndex(window.name)
+                        parent.layer.close(iframeIndex)
+                    }
+                })
+                $(window).on('resize', function () {
+                    layer.full(index)
+                })
+                return false
+                <#else>
+                $.ajax({
+                    url: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    type: '${operation.detail.httpMethod?lower_case}',
+                    <#if operation.detail.body>
+                    contentType: 'application/json',
+                    data: JSON.stringify({})
+                    </#if>
+                    success: function () {
+                        table.reload('currentTableId')
+                    }
+                })
+                </#if>
+            }
+            </#list>
         })
 
         table.on('tool(currentTableFilter)', function (obj) {
@@ -294,6 +328,42 @@
                 })
                 return false
             }
+            <#list table.operations?filter(it -> it.custom && it.position == "toolColumn") as operation>
+            else if (obj.event === '${operation.value}') {
+                <#if operation.type == "NEW_PAGE">
+                let index = layer.open({
+                    title: '',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    end: function () {
+                        let iframeIndex = parent.layer.getFrameIndex(window.name)
+                        parent.layer.close(iframeIndex)
+                    }
+                })
+                $(window).on('resize', function () {
+                    layer.full(index)
+                })
+                return false
+                <#else>
+                <#assign requireBodyMethods = ["POST", "PUT", "DELETE"]>
+                $.ajax({
+                    url: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    type: '${operation.detail.httpMethod?lower_case}',
+                    <#if requireBodyMethods?seq_contains(operation.detail.httpMethod)>
+                        contentType: 'application/json',
+                        data: JSON.stringify({})
+                    </#if>
+                    success: function () {
+                        table.reload('currentTableId')
+                    }
+                })
+                </#if>
+            }
+            </#list>
         })
     })
 </script>
