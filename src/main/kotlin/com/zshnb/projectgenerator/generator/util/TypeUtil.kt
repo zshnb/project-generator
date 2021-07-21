@@ -1,6 +1,5 @@
 package com.zshnb.projectgenerator.generator.util
 
-import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.entity.web.FieldType.*
 import com.zshnb.projectgenerator.generator.entity.web.FieldType.Boolean

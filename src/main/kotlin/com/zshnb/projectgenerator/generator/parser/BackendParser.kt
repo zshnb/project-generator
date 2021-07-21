@@ -1,7 +1,6 @@
 package com.zshnb.projectgenerator.generator.parser
 
 import com.squareup.moshi.Moshi
-import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.entity.web.ColumnType.*
 import com.zshnb.projectgenerator.generator.extension.toCamelCase

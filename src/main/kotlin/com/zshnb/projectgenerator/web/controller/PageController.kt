@@ -1,6 +1,5 @@
 package com.zshnb.projectgenerator.web.controller
 
-import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.web.common.*
 import org.springframework.web.bind.annotation.*

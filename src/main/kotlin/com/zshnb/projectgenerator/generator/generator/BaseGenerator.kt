@@ -2,7 +2,6 @@ package com.zshnb.projectgenerator.generator.generator
 
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
-import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.parser.BackendParser

@@ -1,6 +1,5 @@
 package com.zshnb.projectgenerator.generator.parser
 
-import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import org.springframework.stereotype.Component
 import java.lang.RuntimeException

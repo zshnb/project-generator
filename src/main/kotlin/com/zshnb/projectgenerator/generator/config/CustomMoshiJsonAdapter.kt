@@ -1,7 +1,6 @@
 package com.zshnb.projectgenerator.generator.config
 
 import com.squareup.moshi.*
-import com.zshnb.projectgenerator.generator.entity.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.util.TypeUtil
 import org.springframework.stereotype.Component
