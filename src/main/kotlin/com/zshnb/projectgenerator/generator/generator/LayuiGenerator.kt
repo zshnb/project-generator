@@ -70,7 +70,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
             "${pathConfig.controllerDir(config)}/IndexController.java")
         val entities = backendParser.parseEntities(project.tables)
         entities.forEach { entity ->
-            val operations = entity.table.permissions.map { it.operations }
+            val operations = entity.table.permissions.asSequence().map { it.operations }
                 .flatten()
                 .distinctBy { it.value }
                 .filter { it.custom }

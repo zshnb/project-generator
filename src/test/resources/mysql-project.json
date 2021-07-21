@@ -381,6 +381,18 @@
                 "pathVariable": true,
                 "body": false
               }
+            },
+            {
+              "description": "打开新页面",
+              "value": "open-new-page",
+              "position": "toolColumn",
+              "custom": true,
+              "type": "NEW_PAGE",
+              "detail": {
+                "httpMethod": "GET",
+                "pathVariable": true,
+                "body": false
+              }
             }
           ]
         }

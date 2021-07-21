@@ -60,6 +60,11 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
         val entities = backendParser.parseEntities(project.tables)
         entities.forEach {
+            val operations = it.table.permissions.asSequence().map { it.operations }
+                .flatten()
+                .distinctBy { it.value }
+                .filter { it.custom && it.type == OperationType.AJAX }
+                .toList()
             ioUtil.writeTemplate(entityTemplate, mapOf(
                 "entity" to it,
                 "packageName" to config.entityPackagePath(),
@@ -88,6 +93,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
             ioUtil.writeTemplate(serviceTemplate, mapOf(
                 "entity" to it,
+                "operations" to operations,
                 "packageName" to config.servicePackagePath(),
                 "dependencies" to listOf(
                     config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath()
@@ -96,6 +102,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
 
             ioUtil.writeTemplate(serviceImplTemplate, mapOf(
                 "entity" to it,
+                "operations" to operations,
                 "packageName" to config.serviceImplPackagePath(),
                 "servicePackageName" to config.servicePackagePath(),
                 "tables" to project.tables,

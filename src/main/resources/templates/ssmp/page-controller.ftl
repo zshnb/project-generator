@@ -85,22 +85,24 @@ public class ${className}Controller {
     */
     <#assign returnClass>
         <#if entity.table.associate>
-            ${name?capFirst}Dto
+            ${name?capFirst}Dto<#t>
         <#else>
-            ${className}
+            ${className}<#t>
         </#if>
     </#assign>
     @PostMapping("/page")
     @ResponseBody
-    public ListResponse<<#compress>${returnClass}</#compress>> page(@RequestBody List${className}Request request, HttpSession session) {
+    public ListResponse<${returnClass}> page(@RequestBody List${className}Request request, HttpSession session) {
         User user = (User) session.getAttribute("user");
         return ${service}.page(request<#if (entity.table.bindRoles?size > 0)>, user</#if>);
     }
 
     <#list operations?filter(it -> it.type == "AJAX") as operation>
+        <#assign methodName = "${camelize(operation.value?replace('-', '_'))}"/>
         @${operation.detail.httpMethod?lowerCase?capFirst}Mapping("/${operation.value}<#if operation.detail.pathVariable>/{id}</#if>")
         @ResponseBody
-        public Response<String> ${camelize(operation.value?replace('-', '_'))}(<#if operation.detail.pathVariable>@PathVariable int id</#if>) {
+        public Response<String> ${methodName}(<#if operation.detail.pathVariable>@PathVariable int id</#if>) {
+            ${service}.${methodName}(<#if operation.detail.pathVariable>int id</#if>)
             return Response.ok();
         }
     </#list>
