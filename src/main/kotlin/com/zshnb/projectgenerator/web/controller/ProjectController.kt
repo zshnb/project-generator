@@ -2,7 +2,7 @@ package com.zshnb.projectgenerator.web.controller
 
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.web.WebProject
-import com.zshnb.projectgenerator.generator.generator.*
+import com.zshnb.projectgenerator.generator.generator.web.*
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import com.zshnb.projectgenerator.web.request.AddOrUpdateProjectRequest
@@ -16,8 +16,7 @@ import java.io.*
 @RestController
 @RequestMapping("/api/project")
 class ProjectController(
-    private val layuiGenerator: LayuiGenerator,
-    private val restfulBackendGenerator: RestfulBackendGenerator,
+    private val layuiGenerator: LayuiWebProjectGenerator,
     private val zipFileWriter: ZipFileWriter,
     private val projectConfig: ProjectConfig,
     private val moshi: Moshi,

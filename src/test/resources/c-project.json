@@ -1,0 +1,73 @@
+{
+  "name": "demo",
+  "entities": [
+    {
+      "name": "student",
+      "comment": "学生",
+      "fileOperation": true,
+      "fields": [
+        {
+          "name": "name",
+          "comment": "姓名",
+          "type": "STRING"
+        },
+        {
+          "name": "number",
+          "comment": "学号",
+          "type": "STRING",
+          "searchable": true
+        },
+        {
+          "name": "age",
+          "comment": "年龄",
+          "type": "INT",
+          "searchable": true
+        }
+      ],
+      "menus": [
+        {
+          "method": "add_student()",
+          "name": "添加学生",
+          "value": "add"
+        },
+        {
+          "method": "update_student()",
+          "name": "修改学生",
+          "value": "edit"
+        },
+        {
+          "method": "find_student_by_number()",
+          "name": "学号查找学生",
+          "value": "detail"
+        },
+        {
+          "method": "find_student_by_age()",
+          "name": "年龄查找学生",
+          "value": "detail"
+        },
+        {
+          "method": "list_student()",
+          "name": "浏览学生"
+        },
+        {
+          "method": "delete_student_by_number()",
+          "name": "学号删除学生",
+          "value": "delete"
+        },
+        {
+          "method": "delete_student_by_age()",
+          "name": "年龄删除学生",
+          "value": "delete"
+        },
+        {
+          "method": "save_student_to_file()",
+          "name": "保存学生"
+        },
+        {
+          "method": "load_student_from_file()",
+          "name": "加载学生"
+        }
+      ]
+    }
+  ]
+}

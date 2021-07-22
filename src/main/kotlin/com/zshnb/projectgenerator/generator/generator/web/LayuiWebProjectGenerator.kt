@@ -1,11 +1,12 @@
-package com.zshnb.projectgenerator.generator.generator
+package com.zshnb.projectgenerator.generator.generator.web
 
 import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
+import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
-import com.zshnb.projectgenerator.generator.parser.*
+import com.zshnb.projectgenerator.generator.parser.web.*
 import com.zshnb.projectgenerator.generator.util.*
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
@@ -15,15 +16,16 @@ import org.springframework.stereotype.Component
 import java.io.*
 
 @Component
-class LayuiGenerator(private val backendParser: BackendParser,
-                     private val configuration: Configuration,
-                     private val projectConfig: ProjectConfig,
-                     private val pathConfig: PathConfig,
-                     private val frontendParser: FrontendParser,
-                     private val ioUtil: IOUtil) :
-    BaseGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(json: String): WebProject {
+class LayuiWebProjectGenerator(private val backendParser: BackendParser,
+                               private val configuration: Configuration,
+                               private val projectConfig: ProjectConfig,
+                               private val pathConfig: PathConfig,
+                               private val frontendParser: FrontendParser,
+                               private val ioUtil: IOUtil) :
+    BaseWebProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
+    override fun generateProject(json: String): Project {
         val project = super.generateProject(json)
+        val webProject = project.webProject!!
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexControllerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
@@ -33,9 +35,9 @@ class LayuiGenerator(private val backendParser: BackendParser,
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
         val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EMPTY_PAGE)
 
-        val pages = frontendParser.parsePages(project)
-        val config = project.config
-        createOtherDirs(pages.map { it.entity!!.name }, project.config)
+        val pages = frontendParser.parsePages(webProject)
+        val config = webProject.config
+        createOtherDirs(pages.map { it.entity!!.name }, webProject.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
 
@@ -55,7 +57,7 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 FileUtils.copyURLToFile(url, destination)
             }
         }
-        val unBindMenus = project.roles.flatMap { it.menus }
+        val unBindMenus = webProject.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
             .distinctBy { it.name }
         unBindMenus.forEach {
@@ -63,12 +65,12 @@ class LayuiGenerator(private val backendParser: BackendParser,
                 "${pathConfig.layUIPageDirPath(config)}${it.href}.html")
         }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
-            "packageName" to project.config.controllerPackagePath(),
-            "dependencies" to listOf(project.config.entityPackagePath(), project.config.serviceImplPackagePath(),
-                project.config.commonPackagePath(), project.config.requestPackagePath()),
+            "packageName" to webProject.config.controllerPackagePath(),
+            "dependencies" to listOf(webProject.config.entityPackagePath(), webProject.config.serviceImplPackagePath(),
+                webProject.config.commonPackagePath(), webProject.config.requestPackagePath()),
             "unBindMenus" to unBindMenus),
             "${pathConfig.controllerDir(config)}/IndexController.java")
-        val entities = backendParser.parseEntities(project.tables)
+        val entities = backendParser.parseEntities(webProject.tables)
         entities.forEach { entity ->
             val operations = entity.table.permissions.asSequence().map { it.operations }
                 .flatten()

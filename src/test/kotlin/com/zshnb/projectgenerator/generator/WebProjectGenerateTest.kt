@@ -1,6 +1,6 @@
 package com.zshnb.projectgenerator.generator
 
-import com.zshnb.projectgenerator.generator.generator.LayuiGenerator
+import com.zshnb.projectgenerator.generator.generator.web.LayuiWebProjectGenerator
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,9 +10,9 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 
 @SpringBootTest
-class GeneratorTest {
+class WebProjectGenerateTest {
     @Autowired
-    private lateinit var layuiGenerator: LayuiGenerator
+    private lateinit var layuiGenerator: LayuiWebProjectGenerator
 
     @BeforeEach
     fun cleanProject() {

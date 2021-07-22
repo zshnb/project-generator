@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.parser
+package com.zshnb.projectgenerator.generator.parser.web
 
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.web.*

@@ -1,10 +1,12 @@
-package com.zshnb.projectgenerator.generator.generator
+package com.zshnb.projectgenerator.generator.generator.web
 
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
+import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
-import com.zshnb.projectgenerator.generator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.generator.BaseGenerate
+import com.zshnb.projectgenerator.generator.parser.web.BackendParser
 import com.zshnb.projectgenerator.generator.util.*
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
@@ -12,12 +14,12 @@ import org.springframework.stereotype.Component
 import java.io.*
 
 @Component
-open class BaseGenerator(private val backendParser: BackendParser,
-                         private val ioUtil: IOUtil,
-                         private val projectConfig: ProjectConfig,
-                         private val pathConfig: PathConfig,
-                         private val configuration: Configuration) {
-    open fun generateProject(json: String): WebProject {
+open class BaseWebProjectGenerator(private val backendParser: BackendParser,
+                                   private val ioUtil: IOUtil,
+                                   private val projectConfig: ProjectConfig,
+                                   private val pathConfig: PathConfig,
+                                   private val configuration: Configuration) : BaseGenerate{
+    override fun generateProject(json: String): Project {
         val project = backendParser.parseProject(json)
         val config = project.config
         mkdirs(config)
@@ -190,7 +192,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
             mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")
 
-        return project
+        return Project(webProject = project)
     }
 
     private fun getChildMenus(menu: Menu): List<Menu> {
