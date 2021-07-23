@@ -13,6 +13,6 @@ data class Field(val name: String,
 
 enum class FieldType(val description: String) {
     INT("int"),
-    STRING("char[255]"),
+    STRING("string"),
     CHAR("char")
 }
