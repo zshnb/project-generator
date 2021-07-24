@@ -25,7 +25,8 @@
                 ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 <#list column.associate.associateResultColumns as associateColumn>
-                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
+                    <#assign aliasColumnName = "${literalize(column.associate.targetTableName + associateColumn.originColumnName?capFirst)}">
+                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${aliasColumnName}<#if associateColumn_has_next>,</#if>
                 </#list>
                 <#if column_has_next>,</#if>
             </#list>
@@ -77,14 +78,7 @@
 
     <#if config.database == "SQLSERVER">
         <select id="count" resultType="int">
-            select
-            ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
-            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
-                <#list column.associate.associateResultColumns as associateColumn>
-                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${associateColumn.aliasColumnName}<#if associateColumn_has_next>,</#if>
-                </#list>
-                <#if column_has_next>,</#if>
-            </#list>
+            select count(*)
             from ${literalize(tableName)}
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(tableName)}.${literalize(column.name)}
