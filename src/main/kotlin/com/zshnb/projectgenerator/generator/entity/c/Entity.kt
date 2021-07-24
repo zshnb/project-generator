@@ -1,7 +1,5 @@
 package com.zshnb.projectgenerator.generator.entity.c
 
-import com.squareup.moshi.Json
-
 data class Entity(val name: String,
                   val comment: String,
                   val fields: List<Field>,
