@@ -49,7 +49,7 @@
                             <#break>
                     </#switch>
                     <#assign paramField>${camelize(field.column.name)}</#assign>
-                    <if test="request.${paramField} != null and request.${paramField} != ${defaultValue}">
+                    <if test="request.${paramField} != null<#if defaultValue != 'null'> and request.${paramField} != ${defaultValue}</#if>">
                         <#if field.column.associate??>
                             and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + paramField + '}'}
                         <#else>
@@ -95,16 +95,14 @@
                             <#assign defaultValue>null</#assign>
                             <#break>
                     </#switch>
-                    <#if field.column.associate??>
-                        <#assign paramField>${camelize(field.column.name)}</#assign>
-                        <if test="request.${paramField} != null and request.${paramField} != ${defaultValue}">
+                    <#assign paramField>${camelize(field.column.name)}</#assign>
+                    <if test="request.${paramField} != null<#if defaultValue != 'null'> and request.${paramField} != ${defaultValue}</#if>">
+                        <#if field.column.associate??>
                             and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + paramField + '}'}
-                        </if>
-                    <#else>
-                        <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
+                        <#else>
                             and ${literalize(tableName)}.${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
-                        </if>
-                    </#if>
+                        </#if>
+                    </if>
                 </#list>
             </where>
             <#if (entity.table.bindRoles?size > 0)>
