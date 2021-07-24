@@ -1,7 +1,7 @@
-package com.zshnb.projectgenerator.generator.entity
+package com.zshnb.projectgenerator.generator.entity.web
 
 import com.squareup.moshi.Json
-import com.zshnb.projectgenerator.generator.entity.ColumnType.INT
+import com.zshnb.projectgenerator.generator.entity.web.ColumnType.INT
 
 /**
  * @param searchable 是否有支持搜索的列

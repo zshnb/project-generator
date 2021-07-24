@@ -1,4 +1,6 @@
-package com.zshnb.projectgenerator.generator.entity
+package com.zshnb.projectgenerator.generator.entity.web
+
+import com.zshnb.projectgenerator.generator.entity.web.Database.MYSQL
 
 data class Config(val artifactId: String,
                   val groupId: String,
@@ -14,5 +16,5 @@ data class Config(val artifactId: String,
                   val jdbcUser: String,
                   val jdbcPassword: String,
                   val jdbcDatabase: String,
-                  val database: Database = Database.MYSQL
+                  val database: Database = MYSQL
 )

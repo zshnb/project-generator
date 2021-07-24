@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.entity
+package com.zshnb.projectgenerator.generator.entity.web
 
 class Entity(val name: String,
              val table: Table,

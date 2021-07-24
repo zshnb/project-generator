@@ -475,7 +475,7 @@
       "form": {
         "items": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "require": true,
             "label": "名称"
           }
@@ -484,7 +484,7 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "名称"
           }
         ]
@@ -494,16 +494,16 @@
       "form": {
         "items": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "require": true,
             "label": "名称"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "label": "学生人数"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "label": "学院"
           }
         ]
@@ -511,15 +511,15 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "名称"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "学生人数"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": ""
           }
         ]
@@ -529,17 +529,17 @@
       "form": {
         "items": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "require": true,
             "label": "姓名"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "require": true,
             "label": "学号"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "options": [
               {
                 "title": "男",
@@ -553,15 +553,15 @@
             "label": "性别"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.ImageFormItem",
             "label": "头像"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "label": "班级"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.DateFormItem",
             "label": "入学时间"
           }
         ]
@@ -569,15 +569,15 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "姓名"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "学号"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "title": "性别",
             "mappings": [
               {
@@ -591,15 +591,15 @@
             ]
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.ImageFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.ImageFormItem",
             "title": "头像"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": ""
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.DateFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.DateFormItem",
             "title": "入学时间"
           }
         ]
@@ -609,12 +609,12 @@
       "form": {
         "items": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "require": true,
             "label": "名称"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.SelectFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "require": true,
             "label": "老师"
           }
@@ -648,12 +648,12 @@
       "form": {
         "items": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "require": true,
             "label": "用户名"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.PasswordFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.PasswordFormItem",
             "require": true,
             "label": "密码"
           }
@@ -662,11 +662,11 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.InputFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "用户名"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.PasswordFormItem",
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.PasswordFormItem",
             "title": "密码"
           }
         ]

@@ -1,10 +1,12 @@
-package com.zshnb.projectgenerator.generator.generator
+package com.zshnb.projectgenerator.generator.generator.web
 
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
-import com.zshnb.projectgenerator.generator.entity.*
+import com.zshnb.projectgenerator.generator.entity.Project
+import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
-import com.zshnb.projectgenerator.generator.parser.BackendParser
+import com.zshnb.projectgenerator.generator.generator.BaseGenerate
+import com.zshnb.projectgenerator.generator.parser.web.BackendParser
 import com.zshnb.projectgenerator.generator.util.*
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
@@ -12,14 +14,14 @@ import org.springframework.stereotype.Component
 import java.io.*
 
 @Component
-open class BaseGenerator(private val backendParser: BackendParser,
-                         private val ioUtil: IOUtil,
-                         private val projectConfig: ProjectConfig,
-                         private val pathConfig: PathConfig,
-                         private val configuration: Configuration) {
-    open fun generateProject(json: String): Project {
-        val project = backendParser.parseProject(json)
-        val config = project.config
+open class BaseWebProjectGenerator(private val backendParser: BackendParser,
+                                   private val ioUtil: IOUtil,
+                                   private val projectConfig: ProjectConfig,
+                                   private val pathConfig: PathConfig,
+                                   private val configuration: Configuration) : BaseGenerate{
+    override fun generateProject(project: Project): Project {
+        val webProject = backendParser.parseProject(project.webProject!!)
+        val config = webProject.config
         mkdirs(config)
 
         val entityTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.ENTITY_TEMPLATE)
@@ -51,14 +53,14 @@ open class BaseGenerator(private val backendParser: BackendParser,
         val globalExceptionController = configuration.getTemplate(BackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
 
         ioUtil.writeTemplate(initTableTemplate,
-            project,
+            webProject,
             "${pathConfig.resourcesDirPath(config)}/initTable.sql")
         ioUtil.writeTemplate(staticResourceControllerTemplate, mapOf(
             "packageName" to config.controllerPackagePath(),
             "commonPackageName" to config.commonPackagePath()
         ), "${pathConfig.controllerDir(config)}/StaticResourceController.java")
 
-        val entities = backendParser.parseEntities(project.tables)
+        val entities = backendParser.parseEntities(webProject.tables)
         entities.forEach {
             val operations = it.table.permissions.asSequence().map { it.operations }
                 .flatten()
@@ -105,7 +107,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
                 "operations" to operations,
                 "packageName" to config.serviceImplPackagePath(),
                 "servicePackageName" to config.servicePackagePath(),
-                "tables" to project.tables,
+                "tables" to webProject.tables,
                 "dependencies" to listOf(
                     config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath(),
                     config.exceptionPackagePath(), config.mapperPackagePath()
@@ -164,7 +166,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
             "${pathConfig.commonDir(config)}/GlobalExceptionController.java")
 
         var initMenuId = 1
-        val roles = project.roles
+        val roles = webProject.roles
         val menus = roles.asSequence().map { it.menus }
             .flatten()
             .map { getChildMenus(it) }
@@ -190,7 +192,7 @@ open class BaseGenerator(private val backendParser: BackendParser,
             mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")
 
-        return project
+        return Project(webProject = webProject)
     }
 
     private fun getChildMenus(menu: Menu): List<Menu> {

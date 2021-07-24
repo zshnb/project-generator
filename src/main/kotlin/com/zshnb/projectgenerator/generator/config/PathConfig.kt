@@ -1,6 +1,6 @@
 package com.zshnb.projectgenerator.generator.config
 
-import com.zshnb.projectgenerator.generator.entity.Config
+import com.zshnb.projectgenerator.generator.entity.web.Config
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import org.springframework.stereotype.Component
 
