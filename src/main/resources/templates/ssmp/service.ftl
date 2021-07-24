@@ -34,8 +34,6 @@ public interface I${name?cap_first}Service extends IService<${name?cap_first}> {
     ListResponse<${name?cap_first}> listAll();
     </#if>
     <#list operations as operation>
-    public Response<String> ${camelize(operation.value?replace('-', '_'))}(<#if operation.detail.pathVariable>int id</#if>) {
-        return Response.ok();
-    }
+    public Response<String> ${camelize(operation.value?replace('-', '_'))}(<#if operation.detail.pathVariable>int id</#if>);
     </#list>
 }

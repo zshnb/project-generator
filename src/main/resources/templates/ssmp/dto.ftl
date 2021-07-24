@@ -15,12 +15,13 @@ public class ${entity.name?cap_first}Dto {
         <#if field.column.associate??>
             <#list field.column.associate.associateResultColumns as column>
                 <#assign type>${column.fieldType.description}</#assign>
-                private ${type} ${column.aliasColumnName};
-                public ${type} get${column.aliasColumnName?cap_first}() {
-                    return this.${column.aliasColumnName};
+                <#assign aliasColumnName = "${field.column.associate.targetTableName + column.originColumnName?cap_first}">
+                private ${type} ${aliasColumnName};
+                public ${type} get${aliasColumnName?cap_first}() {
+                    return this.${aliasColumnName};
                 }
-                public void set${column.aliasColumnName?cap_first}(${type} ${column.aliasColumnName}) {
-                    this.${column.aliasColumnName} = ${column.aliasColumnName};
+                public void set${aliasColumnName?cap_first}(${type} ${aliasColumnName}) {
+                    this.${aliasColumnName} = ${aliasColumnName};
                 }
             </#list>
         </#if>

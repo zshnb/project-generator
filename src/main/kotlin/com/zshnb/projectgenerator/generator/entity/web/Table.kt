@@ -52,11 +52,9 @@ data class Associate(val targetTableName: String,
 /**
  * 描述被关联的多方表被筛选出来的列以及供前端显示用的描述
  * @param originColumnName 原本的列名
- * @param aliasColumnName 列别名，用在sql里
  * @param tableFieldTitle 在表格页面显示的描述
  * */
 data class AssociateResultColumn(var originColumnName: String = "",
-                                 var aliasColumnName: String = "",
                                  var columnType: ColumnType = INT,
                                  var fieldType: FieldType = FieldType.INT,
                                  var tableFieldTitle: String = "")

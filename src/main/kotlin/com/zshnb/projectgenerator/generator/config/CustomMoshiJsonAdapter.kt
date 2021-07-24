@@ -70,7 +70,6 @@ class AssociateResultColumnAdapter(private val typeUtil: TypeUtil) : JsonAdapter
             with(associateResultColumn) {
                 when (reader.nextName()) {
                     "originColumnName" -> originColumnName = reader.nextString()
-                    "aliasColumnName" -> aliasColumnName = reader.nextString()
                     "tableFieldTitle" -> tableFieldTitle = reader.nextString()
                     "columnType" -> {
                         columnType = ColumnType.valueOf(reader.nextString().toUpperCase())
