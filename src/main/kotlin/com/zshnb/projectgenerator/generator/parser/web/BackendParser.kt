@@ -1,6 +1,5 @@
 package com.zshnb.projectgenerator.generator.parser.web
 
-import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.entity.web.ColumnType.*
 import com.zshnb.projectgenerator.generator.extension.toCamelCase
@@ -11,13 +10,10 @@ import org.springframework.stereotype.Component
  * 从[WebProject]的json中解析出项目的各个部分
  * */
 @Component
-class BackendParser(private val moshi: Moshi,
-                    private val typeUtil: TypeUtil) {
-    fun parseProject(json: String): WebProject {
-        val adapter = moshi.adapter(WebProject::class.java)
-        val project = adapter.fromJson(json)!!
-        project.tables = project.tables + buildRoleAndMenuAndPermissionTable()
-        project.tables = project.tables.map {
+class BackendParser(private val typeUtil: TypeUtil) {
+    fun parseProject(webProject: WebProject): WebProject {
+        webProject.tables = webProject.tables + buildRoleAndMenuAndPermissionTable()
+        webProject.tables = webProject.tables.map {
             val columns = if (it.bindUser != null) {
                 it.columns.toMutableList().apply {
                     add(Column("user_id", INT, "user外键", enableFormItem = false,
@@ -29,12 +25,12 @@ class BackendParser(private val moshi: Moshi,
             Table(it.name, it.comment, columns, it.permissions, it.columns.any { column -> column.searchable },
                 it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles, it.bindUser)
         }
-        project.roles.forEach { role ->
+        webProject.roles.forEach { role ->
             role.menus.forEach {
                 it.role = role.name
             }
         }
-        return project
+        return webProject
     }
 
     /**

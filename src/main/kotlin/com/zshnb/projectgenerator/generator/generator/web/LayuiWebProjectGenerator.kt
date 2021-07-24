@@ -23,9 +23,9 @@ class LayuiWebProjectGenerator(private val backendParser: BackendParser,
                                private val frontendParser: FrontendParser,
                                private val ioUtil: IOUtil) :
     BaseWebProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(json: String): Project {
-        val project = super.generateProject(json)
-        val webProject = project.webProject!!
+    override fun generateProject(project: Project): Project {
+        val baseProject = super.generateProject(project)
+        val webProject = baseProject.webProject!!
         val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexControllerTemplate =
             configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
@@ -97,7 +97,7 @@ class LayuiWebProjectGenerator(private val backendParser: BackendParser,
             ioUtil.writeTemplate(tablePageTemplate, it,
                 "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/table.html")
         }
-        return project
+        return baseProject
     }
 
     override fun mkdirs(config: Config) {
