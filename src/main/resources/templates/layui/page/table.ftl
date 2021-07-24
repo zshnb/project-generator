@@ -194,7 +194,8 @@
                             </#if>
                         <#elseif tableField.field.column.associate??>
                             <#list tableField.field.column.associate.associateResultColumns as column>
-                                { field: '${column.aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
+                                <#assign aliasColumnName = "${tableField.field.column.associate.targetTableName + column.originColumnName?cap_first}">
+                                { field: '${aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                             </#list>
                         </#if>
                     </#list>

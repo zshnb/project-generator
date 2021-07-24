@@ -108,7 +108,6 @@
             "associateResultColumns": [
               {
                 "originColumnName": "name",
-                "aliasColumnName": "departName",
                 "tableFieldTitle": "学院名",
                 "columnType": "varchar"
               }
@@ -207,7 +206,6 @@
             "associateResultColumns": [
               {
                 "originColumnName": "name",
-                "aliasColumnName": "clazzName",
                 "tableFieldTitle": "班级名",
                 "columnType": "varchar"
               }
@@ -312,7 +310,6 @@
             "associateResultColumns": [
               {
                 "originColumnName": "userUsername",
-                "aliasColumnName": "userName",
                 "tableFieldTitle": "老师名",
                 "columnType": "varchar"
               }

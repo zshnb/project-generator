@@ -48,16 +48,14 @@
                             <#assign defaultValue>null</#assign>
                             <#break>
                     </#switch>
-                    <#if field.column.associate??>
-                        <#assign associateFieldParam>${camelize(field.column.name)}</#assign>
-                        <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
-                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
-                        </if>
-                    <#else>
-                        <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
+                    <#assign paramField>${camelize(field.column.name)}</#assign>
+                    <if test="request.${paramField} != null and request.${paramField} != ${defaultValue}">
+                        <#if field.column.associate??>
+                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + paramField + '}'}
+                        <#else>
                             and ${literalize(tableName)}.${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
-                        </if>
-                    </#if>
+                        </#if>
+                    </if>
                 </#list>
             </where>
             <#if (entity.table.bindRoles?size > 0)>
@@ -98,9 +96,9 @@
                             <#break>
                     </#switch>
                     <#if field.column.associate??>
-                        <#assign associateFieldParam>${camelize(field.column.name)}</#assign>
-                        <if test="request.${associateFieldParam} != null and request.${associateFieldParam} != ${defaultValue}">
-                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + associateFieldParam + '}'}
+                        <#assign paramField>${camelize(field.column.name)}</#assign>
+                        <if test="request.${paramField} != null and request.${paramField} != ${defaultValue}">
+                            and ${literalize(field.column.associate.targetTableName)}.${literalize(field.column.associate.targetColumnName)} = ${r'#{request.' + paramField + '}'}
                         </if>
                     <#else>
                         <if test="request.${field.column.name} != null and request.${field.column.name} != ${defaultValue}">
