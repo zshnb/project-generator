@@ -27,6 +27,10 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
         val baseProject = super.generateProject(project)
         val webProject = baseProject.webProject!!
         val controllerTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
+        val webXmlTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.WEB_XML)
+        val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_INDEX_PAGE)
+        val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_LOGIN_PAGE)
+        val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_REGISTER_PAGE)
         val indexControllerTemplate =
             configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
         val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_ADD_PAGE)
@@ -35,28 +39,19 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
         val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
         val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EMPTY_PAGE)
 
-        val pages = frontendParser.parsePages(webProject)
         val config = webProject.config
-        createOtherDirs(pages.map { it.entity!!.name }, webProject.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
 
-        resources.forEach {
-            val url = it.url
-            val filePath = url.path.substring(url.path.indexOf("layui") + 5)
-            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", url.path)) {
-                File("${pathConfig.webappDirPath(config)}/static/$filePath")
-            } else {
-                if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
-                    File("${pathConfig.webappDirPath(config)}/WEB-INF/jsp/${it.file.nameWithoutExtension}.jsp")
-                } else {
-                    File("")
-                }
-            }
-            if (destination.name.isNotEmpty()) {
-                FileUtils.copyURLToFile(url, destination)
-            }
+        resources.filter {
+            ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", it.url.path)
+        }.map {
+            val filePath = it.url.path.substring(it.url.path.indexOf("layui") + 5)
+            it.url to File("${pathConfig.webappDirPath(config)}/static/$filePath")
+        }.forEach {
+            FileUtils.copyURLToFile(it.first, it.second)
         }
+
         val unBindMenus = webProject.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
             .distinctBy { it.name }
@@ -65,11 +60,12 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
                 "${pathConfig.thymeleafPageDirPath(config)}${it.href}.html")
         }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
-            "packageName" to webProject.config.controllerPackagePath(),
-            "dependencies" to listOf(webProject.config.entityPackagePath(), webProject.config.serviceImplPackagePath(),
-                webProject.config.commonPackagePath(), webProject.config.requestPackagePath()),
+            "packageName" to config.controllerPackagePath(),
+            "dependencies" to listOf(config.entityPackagePath(), config.serviceImplPackagePath(),
+                config.commonPackagePath(), config.requestPackagePath()),
             "unBindMenus" to unBindMenus),
             "${pathConfig.controllerDir(config)}/IndexController.java")
+
         val entities = backendParser.parseEntities(webProject.tables)
         entities.forEach { entity ->
             val operations = entity.table.permissions.asSequence().map { it.operations }
@@ -86,24 +82,35 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
                 "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
         }
 
+        ioUtil.writeTemplate(webXmlTemplate, emptyMap<Int, Int>(),
+            "${pathConfig.webappDirPath(config)}/WEB-INF/web.xml")
+        ioUtil.writeTemplate(indexPageTemplate, mapOf("projectType" to "ssm"),
+            "${pathConfig.jspPageDir(config)}/index.jsp")
+        ioUtil.writeTemplate(loginPageTemplate, mapOf("projectType" to "ssm"),
+            "${pathConfig.jspPageDir(config)}/login.jsp")
+        ioUtil.writeTemplate(registerPageTemplate, mapOf("projectType" to "ssm"),
+            "${pathConfig.jspPageDir(config)}/register.jsp")
+
+        val pages = frontendParser.parsePages(webProject)
+        createOtherDirs(pages.map { it.entity!!.name }, webProject.config)
         pages.forEach {
             it.entity!!
             ioUtil.writeTemplate(addPageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/add.jsp")
+            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/add.jsp")
             ioUtil.writeTemplate(editPageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/edit.jsp")
+            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/edit.jsp")
             ioUtil.writeTemplate(detailPageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/detail.jsp")
+            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/detail.jsp")
             ioUtil.writeTemplate(tablePageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/table.jsp")
+            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/table.jsp")
         }
         return baseProject
     }
@@ -120,7 +127,7 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
 
     private fun createOtherDirs(dirs: List<String>, config: Config) {
         dirs.forEach {
-            File("${pathConfig.thymeleafPageDirPath(config)}/$it").mkdirs()
+            File("${pathConfig.jspPageDir(config)}/page/$it").mkdirs()
         }
     }
 }

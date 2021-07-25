@@ -1,3 +1,6 @@
+<#if projectType == "ssm">
+    <%@ page contentType="text/html; charset=gbk"%>
+</#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,11 +15,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="icon" th:href="@{/images/favicon.ico}">
-    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/layuimini.css?v=2.0.4.2}" media="all">
-    <link rel="stylesheet" th:href="@{/css/themes/default.css}" media="all">
-    <link rel="stylesheet" th:href="@{/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
+    <#if projectType == "ssm">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/layui/css/layui.css" media="all">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/layuimini.css?v=2.0.4.2" media="all">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/themes/default.css" media="all">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <#else>
+        <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/css/layuimini.css?v=2.0.4.2}" media="all">
+        <link rel="stylesheet" th:href="@{/css/themes/default.css}" media="all">
+        <link rel="stylesheet" th:href="@{/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
+    </#if>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -48,7 +57,7 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;" th:text="${session.user.username}"></a>
+                    <a href="javascript:;" <#if projectType == "ssm">${r'th:text="${session.user.username}"'}</#if></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" class="logout">退出登录</a>
@@ -103,8 +112,13 @@
 
     </div>
 </div>
-<script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
-<script th:src="@{/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
+<#if projectType == "ssm">
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/js/lay-config.js?v=2.0.0" charset="utf-8"></script>>
+<#else>
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
+</#if>
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,
