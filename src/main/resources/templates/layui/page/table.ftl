@@ -305,7 +305,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${pag.entity.name}/editPage/${r"${data.id}"}`,
+                    content: `/${page.entity.name}/editPage/${r"${data.id}"}`,
                     end: function () {
                         table.reload('currentTableId')
                     }

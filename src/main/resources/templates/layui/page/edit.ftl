@@ -24,7 +24,7 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <input type="hidden" name="id" th:value="${r"${" + entity.name + ".id}"}">
+    <input type="hidden" name="id" th:value="${r"${" + page.entity.name + ".id}"}">
     <#function camelize(s)>
         <#return s
         ?replace('(^_+)|(_+$)', '', 'r')
@@ -37,7 +37,7 @@
     <#list page.form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#assign label>${formItem.label}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
-        <#assign name>${entity.name}</#assign>
+        <#assign name>${page.entity.name}</#assign>
         <#if formItem.class.simpleName == "InputFormItem">
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
@@ -226,7 +226,7 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    if (it.id === ${r"[[${" + entity.name + "." + camelize(formItem.field.column.name) + "}]]"}) {
+                    if (it.id === ${r"[[${" + page.entity.name + "." + camelize(formItem.field.column.name) + "}]]"}) {
                         $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     } else {
                         $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
