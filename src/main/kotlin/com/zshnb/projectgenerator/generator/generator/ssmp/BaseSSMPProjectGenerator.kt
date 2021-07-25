@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.generator.web
+package com.zshnb.projectgenerator.generator.generator.ssmp
 
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
@@ -14,43 +14,43 @@ import org.springframework.stereotype.Component
 import java.io.*
 
 @Component
-open class BaseWebProjectGenerator(private val backendParser: BackendParser,
-                                   private val ioUtil: IOUtil,
-                                   private val projectConfig: ProjectConfig,
-                                   private val pathConfig: PathConfig,
-                                   private val configuration: Configuration) : BaseGenerate{
+open class BaseSSMPProjectGenerator(private val backendParser: BackendParser,
+                                    private val ioUtil: IOUtil,
+                                    private val projectConfig: ProjectConfig,
+                                    private val pathConfig: PathConfig,
+                                    private val configuration: Configuration) : BaseGenerate{
     override fun generateProject(project: Project): Project {
         val webProject = backendParser.parseProject(project.webProject!!)
         val config = webProject.config
         mkdirs(config)
 
-        val entityTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.ENTITY_TEMPLATE)
-        val serviceTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.SERVICE_TEMPLATE)
-        val serviceImplTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.SERVICE_IMPL_TEMPLATE)
-        val mapperTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.MAPPER_TEMPLATE)
-        val mapperXmlTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.MAPPER_XML_TEMPLATE)
-        val listRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LIST_REQUEST_TEMPLATE)
-        val listResponseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LIST_RESPONSE_TEMPLATE)
-        val pageRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_REQUEST_TEMPLATE)
-        val pomTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.POM_TEMPLATE)
+        val entityTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.ENTITY_TEMPLATE)
+        val serviceTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.SERVICE_TEMPLATE)
+        val serviceImplTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.SERVICE_IMPL_TEMPLATE)
+        val mapperTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.MAPPER_TEMPLATE)
+        val mapperXmlTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.MAPPER_XML_TEMPLATE)
+        val listRequestTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.LIST_REQUEST_TEMPLATE)
+        val listResponseTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.LIST_RESPONSE_TEMPLATE)
+        val pageRequestTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_REQUEST_TEMPLATE)
+        val pomTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.POM_TEMPLATE)
         val springbootMainTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.SPRING_BOOT_MAIN_APPLICATION_TEMPLATE)
-        val responseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.RESPONSE_TEMPLATE)
-        val initTableTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.INIT_TABLE_TEMPLATE)
-        val applicationTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.APPLICATION_TEMPLATE)
+            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.SPRING_BOOT_MAIN_APPLICATION_TEMPLATE)
+        val responseTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.RESPONSE_TEMPLATE)
+        val initTableTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INIT_TABLE_TEMPLATE)
+        val applicationTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.APPLICATION_TEMPLATE)
         val mybatisPlusConfigTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.MYBATIS_PLUS_CONFIG_TEMPLATE)
-        val initDataTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.INIT_DATA_TEMPLATE)
-        val menuDtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.MENU_DTO_TEMPLATE)
-        val loginRequestTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
+            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.MYBATIS_PLUS_CONFIG_TEMPLATE)
+        val initDataTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INIT_DATA_TEMPLATE)
+        val menuDtoTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.MENU_DTO_TEMPLATE)
+        val loginRequestTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
         val staticResourceControllerTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER_TEMPLATE)
+            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER_TEMPLATE)
         val localDateTimeMetaObjectHandlerTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE)
-        val uploadResponseTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.UPLOAD_RESPONSE_TEMPLATE)
-        val dtoTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.DTO_TEMPLATE)
-        val invalidArgumentException = configuration.getTemplate(BackendFreeMarkerFileConstant.INVALID_ARGUMENT_EXCEPTION_TEMPLATE)
-        val globalExceptionController = configuration.getTemplate(BackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
+            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE)
+        val uploadResponseTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.UPLOAD_RESPONSE_TEMPLATE)
+        val dtoTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.DTO_TEMPLATE)
+        val invalidArgumentException = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INVALID_ARGUMENT_EXCEPTION_TEMPLATE)
+        val globalExceptionController = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
 
         ioUtil.writeTemplate(initTableTemplate,
             webProject,

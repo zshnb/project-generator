@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.generator.web
+package com.zshnb.projectgenerator.generator.generator.ssmp
 
 import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.config.PathConfig
@@ -16,19 +16,19 @@ import org.springframework.stereotype.Component
 import java.io.*
 
 @Component
-class LayuiWebProjectGenerator(private val backendParser: BackendParser,
-                               private val configuration: Configuration,
-                               private val projectConfig: ProjectConfig,
-                               private val pathConfig: PathConfig,
-                               private val frontendParser: FrontendParser,
-                               private val ioUtil: IOUtil) :
-    BaseWebProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
+class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
+                                private val configuration: Configuration,
+                                private val projectConfig: ProjectConfig,
+                                private val pathConfig: PathConfig,
+                                private val frontendParser: FrontendParser,
+                                private val ioUtil: IOUtil) :
+    BaseSSMPProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
     override fun generateProject(project: Project): Project {
         val baseProject = super.generateProject(project)
         val webProject = baseProject.webProject!!
-        val controllerTemplate = configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
+        val controllerTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexControllerTemplate =
-            configuration.getTemplate(BackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
+            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
         val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_ADD_PAGE)
         val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EDIT_PAGE)
         val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_DETAIL_PAGE)
