@@ -1,3 +1,6 @@
+<#if projectType == "ssm">
+    <%@ page contentType="text/html; charset=gbk"%>
+</#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -6,8 +9,13 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <#if projectType == "ssm">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/layui/css/layui.css" media="all">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/public.css" media="all">
+    <#else>
+        <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    </#if>
     <style>
         body {
             background-color: #ffffff;
@@ -16,7 +24,7 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <#if (entity.table.columns?filter(c -> c.associate?? && c.name == "user_id")?size > 0)>
+    <#if (page.entity.table.columns?filter(c -> c.associate?? && c.name == "user_id")?size > 0)>
         <input type="text" name="userId" th:value="${r"${session.user.id}"}" hidden/>
     </#if>
     <#function camelize(s)>
@@ -28,7 +36,7 @@
         ?replace(' ' , '')
         ?uncap_first>
     </#function>
-    <#list form.items?filter(it -> it.field.column.enableFormItem) as formItem>
+    <#list page.form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#assign label>${formItem.label}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
         <#if formItem.class.simpleName == "InputFormItem">
@@ -133,14 +141,18 @@
         </div>
     </div>
 </div>
-<script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+<#if projectType == "ssm">
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+<#else>
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+</#if>
 <script>
     layui.use(['form', 'laydate', 'upload'], function () {
         let form = layui.form,
             $ = layui.$,
             laydate = layui.laydate,
             upload = layui.upload
-        <#list form.items?filter(it -> it.field.column.enableFormItem) as formItem>
+        <#list page.form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
@@ -224,7 +236,7 @@
         //监听提交
         form.on('submit(save-btn)', function (data) {
             $.ajax({
-                url: '/${entity.name}/add',
+                url: '/${page.entity.name}/add',
                 type: 'post',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',

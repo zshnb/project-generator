@@ -11,6 +11,8 @@ class PathConfig(private val projectConfig: ProjectConfig) {
 
     fun resourcesDirPath(config: Config): String = "${projectConfig.projectDir}/${config.artifactId}/src/main/resources"
 
+    fun webappDirPath(config: Config): String = "${projectConfig.projectDir}/${config.artifactId}/src/main/webapp"
+
     fun layUIPageDirPath(config: Config): String =
         "${projectConfig.projectDir}/${config.artifactId}/src/main/resources/templates/page"
 
