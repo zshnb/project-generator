@@ -1,5 +1,5 @@
 <#if projectType == "ssm">
-<%@ page contentType="text/html; charset=gbk"%>
+<%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="${config.rootPackageName}.${config.entityPackageName}.User" %>
 </#if>
 <!DOCTYPE html>
