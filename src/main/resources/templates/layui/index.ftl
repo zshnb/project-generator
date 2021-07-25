@@ -1,5 +1,6 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=gbk"%>
+<%@ page import="${config.rootPackageName}.${config.entityPackageName}.User" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
@@ -57,7 +58,7 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;" <#if projectType == "ssm">${r'th:text="${session.user.username}"'}</#if></a>
+                    <a href="javascript:;" <#if projectType == "ssm"><%=((User)session.getAttribute("user")).getUsername()%></#if></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" class="logout">退出登录</a>
