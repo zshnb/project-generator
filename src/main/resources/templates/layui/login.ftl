@@ -1,3 +1,6 @@
+<#if projectType == "ssm">
+<%@ page contentType="text/html; charset=gbk"%>
+</#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>

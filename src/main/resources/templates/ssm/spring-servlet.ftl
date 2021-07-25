@@ -7,7 +7,7 @@
 
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven/>
-    <context:component-scan base-package="com.demo.demo"/>
+    <context:component-scan base-package="${rootPackageName}"/>
 
     <bean id="internalResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
@@ -16,10 +16,15 @@
 
     <!-- H2 Data Source Config -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/db?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=GMT%2B8&amp;useSSL=false"/>
-        <property name="username" value="root"/>
-        <property name="password" value="root"/>
+        <#if database == "MYSQL">
+            <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jdbcUrl" value="jdbc:mysql://${jdbcHost}:${jdbcPort?c}/${jdbcDatabase}?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=GMT%2B8&amp;useSSL=false"/>
+        <#else>
+            <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="jdbcUrl" value="jdbc:sqlserver://${jdbcHost}:${jdbcPort?c};Database=${jdbcDatabase}"/>
+        </#if>
+        <property name="username" value="${jdbcUser}"/>
+        <property name="password" value="${jdbcPassword}"/>
     </bean>
 
     <!-- SqlSessionFactory Config -->
@@ -43,7 +48,11 @@
 
     <bean id="paginationInnerInterceptor"
           class="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor">
+        <#if database == "MYSQL">
         <constructor-arg name="dbType" value="MYSQL"/>
+        <#elseif config.database == "SQLSERVER">
+        <constructor-arg name="dbType" value="SQL_SERVER"/>
+        </#if>
     </bean>
 
     <bean id="countSqlParser"
@@ -53,7 +62,7 @@
 
     <!-- MyBatis Mapper Scan Config  -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.demo.demo.mapper"/>
+        <property name="basePackage" value="${rootPackageName}.${mapperPackageName}"/>
     </bean>
 
 </beans>

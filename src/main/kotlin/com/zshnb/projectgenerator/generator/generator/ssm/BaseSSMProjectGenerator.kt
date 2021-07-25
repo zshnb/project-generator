@@ -35,7 +35,6 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
         val pomTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.POM_TEMPLATE)
         val responseTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.RESPONSE_TEMPLATE)
         val initTableTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INIT_TABLE_TEMPLATE)
-        val applicationTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.APPLICATION_TEMPLATE)
         val mybatisPlusConfigTemplate =
             configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.MYBATIS_PLUS_CONFIG_TEMPLATE)
         val initDataTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INIT_DATA_TEMPLATE)
@@ -47,8 +46,9 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
             configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE)
         val uploadResponseTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.UPLOAD_RESPONSE_TEMPLATE)
         val dtoTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.DTO_TEMPLATE)
-        val invalidArgumentException = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INVALID_ARGUMENT_EXCEPTION_TEMPLATE)
-        val globalExceptionController = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
+        val invalidArgumentExceptionTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.INVALID_ARGUMENT_EXCEPTION_TEMPLATE)
+        val globalExceptionControllerTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
+        val springServletTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.SPRING_SERVLET)
 
         ioUtil.writeTemplate(initTableTemplate,
             webProject,
@@ -119,6 +119,9 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
             }
         }
 
+        ioUtil.writeTemplate(springServletTemplate, config,
+            "${pathConfig.resourcesDirPath(config)}/spring-servlet.xml")
+
         ioUtil.writeTemplate(pageRequestTemplate, config.commonPackagePath().packageName(),
             "${pathConfig.commonDir(config)}/PageRequest.java")
 
@@ -129,9 +132,6 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
 
         ioUtil.writeTemplate(responseTemplate, config.commonPackagePath().packageName(),
             "${pathConfig.commonDir(config)}/Response.java")
-
-        ioUtil.writeTemplate(applicationTemplate, config,
-            "${pathConfig.resourcesDirPath(config)}/application.yml")
 
         ioUtil.writeTemplate(mybatisPlusConfigTemplate,
             mapOf("config" to config, "packageName" to config.configPackagePath()),
@@ -150,10 +150,10 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(uploadResponseTemplate, config.commonPackagePath().packageName(),
             "${pathConfig.commonDir(config)}/UploadResponse.java")
 
-        ioUtil.writeTemplate(invalidArgumentException, config.exceptionPackagePath().packageName(),
+        ioUtil.writeTemplate(invalidArgumentExceptionTemplate, config.exceptionPackagePath().packageName(),
             "${pathConfig.exceptionDir(config)}/InvalidArgumentException.java")
 
-        ioUtil.writeTemplate(globalExceptionController, mapOf(
+        ioUtil.writeTemplate(globalExceptionControllerTemplate, mapOf(
             "packageName" to config.commonPackagePath(),
             "dependencies" to listOf(config.exceptionPackagePath(), config.commonPackagePath())),
             "${pathConfig.commonDir(config)}/GlobalExceptionController.java")

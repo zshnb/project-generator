@@ -98,31 +98,27 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
             ioUtil.writeTemplate(addPageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/add.jsp")
+            ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/add.jsp")
             ioUtil.writeTemplate(editPageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/edit.jsp")
+            ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/edit.jsp")
             ioUtil.writeTemplate(detailPageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/detail.jsp")
+            ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/detail.jsp")
             ioUtil.writeTemplate(tablePageTemplate, mapOf(
                 "page" to it,
                 "projectType" to "ssm"
-            ), "${pathConfig.jspPageDir(config)}/${it.entity.name}/table.jsp")
+            ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/table.jsp")
         }
         return baseProject
     }
 
     override fun mkdirs(config: Config) {
         super.mkdirs(config)
-
         val pageDir = File(pathConfig.jspPageDir(config))
         pageDir.mkdirs()
-
-        val staticDir = File(pathConfig.layUIStaticDirPath(config))
-        staticDir.mkdir()
     }
 
     private fun createOtherDirs(dirs: List<String>, config: Config) {
