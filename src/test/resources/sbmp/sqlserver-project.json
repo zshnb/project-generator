@@ -14,10 +14,9 @@
     "jdbcUser": "sa",
     "jdbcPassword": "root",
     "jdbcDatabase": "db",
-    "database": "sqlserver",
-    "type": "sbmp"
+    "database": "sqlserver"
   },
-  "type": 1,
+  "type": "SBMP",
   "tables": [
     {
       "name": "depart",

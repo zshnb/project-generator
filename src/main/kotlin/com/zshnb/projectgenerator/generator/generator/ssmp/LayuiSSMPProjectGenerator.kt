@@ -62,7 +62,7 @@ class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
             .distinctBy { it.name }
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, it,
-                "${pathConfig.layUIPageDirPath(config)}${it.href}.html")
+                "${pathConfig.thymeleafPageDirPath(config)}${it.href}.html")
         }
         ioUtil.writeTemplate(indexControllerTemplate, mapOf(
             "packageName" to webProject.config.controllerPackagePath(),
@@ -89,13 +89,13 @@ class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
         pages.forEach {
             it.entity!!
             ioUtil.writeTemplate(addPageTemplate, it,
-                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/add.html")
+                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/add.html")
             ioUtil.writeTemplate(editPageTemplate, it,
-                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/edit.html")
+                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/edit.html")
             ioUtil.writeTemplate(detailPageTemplate, it,
-                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/detail.html")
+                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/detail.html")
             ioUtil.writeTemplate(tablePageTemplate, it,
-                "${pathConfig.layUIPageDirPath(config)}/${it.entity.name}/table.html")
+                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/table.html")
         }
         return baseProject
     }
@@ -103,7 +103,7 @@ class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
     override fun mkdirs(config: Config) {
         super.mkdirs(config)
 
-        val pageDir = File(pathConfig.layUIPageDirPath(config))
+        val pageDir = File(pathConfig.thymeleafPageDirPath(config))
         pageDir.mkdirs()
 
         val staticDir = File(pathConfig.layUIStaticDirPath(config))
@@ -112,7 +112,7 @@ class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
 
     private fun createOtherDirs(dirs: List<String>, config: Config) {
         dirs.forEach {
-            File("${pathConfig.layUIPageDirPath(config)}/$it").mkdirs()
+            File("${pathConfig.thymeleafPageDirPath(config)}/$it").mkdirs()
         }
     }
 }

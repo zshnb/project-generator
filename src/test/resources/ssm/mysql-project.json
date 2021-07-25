@@ -13,10 +13,9 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "db",
-    "type": "ssm"
+    "jdbcDatabase": "db"
   },
-  "type": 1,
+  "type": "SSM",
   "tables": [
     {
       "name": "depart",
