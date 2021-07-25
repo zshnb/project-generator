@@ -10,11 +10,11 @@
     "mapperPackageName": "mapper",
     "controllerPackageName": "controller",
     "jdbcHost": "localhost",
-    "jdbcPort": 1433,
-    "jdbcUser": "sa",
+    "jdbcPort": 3306,
+    "jdbcUser": "root",
     "jdbcPassword": "root",
     "jdbcDatabase": "db",
-    "database": "sqlserver"
+    "type": "ssm"
   },
   "type": 1,
   "tables": [
@@ -109,7 +109,6 @@
             "associateResultColumns": [
               {
                 "originColumnName": "name",
-                "aliasColumnName": "departName",
                 "tableFieldTitle": "学院名",
                 "columnType": "varchar"
               }
@@ -208,7 +207,6 @@
             "associateResultColumns": [
               {
                 "originColumnName": "name",
-                "aliasColumnName": "clazzName",
                 "tableFieldTitle": "班级名",
                 "columnType": "varchar"
               }
@@ -313,7 +311,6 @@
             "associateResultColumns": [
               {
                 "originColumnName": "userUsername",
-                "aliasColumnName": "userName",
                 "tableFieldTitle": "老师名",
                 "columnType": "varchar"
               }

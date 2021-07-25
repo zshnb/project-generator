@@ -1,3 +1,6 @@
+<#if projectType == "ssm">
+    <%@ page contentType="text/html; charset=gbk"%>
+</#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -6,8 +9,13 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <#if projectType == "ssm">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/layui/css/layui.css" media="all">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/public.css" media="all">
+    <#else>
+        <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    </#if>
     <style>
         body {
             background-color: #ffffff;
@@ -25,7 +33,7 @@
         ?replace(' ' , '')
         ?uncap_first>
     </#function>
-    <#list form.items?filter(it -> it.field.column.enableFormItem) as formItem>
+    <#list page.form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#assign label>${formItem.label}</#assign>
         <#assign formItemName>${formItem.field.name}</#assign>
         <#assign name>${entity.name}</#assign>
@@ -100,13 +108,17 @@
         </#if>
     </#list>
 </div>
-<script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
-<script th:inline="javascript">
+<#if projectType == "ssm">
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+<#else>
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+</#if>
+<script <#if projectType != "ssm">th:inline="javascript"</#if>>
     layui.use(['laydate', 'form'], function () {
         let laydate = layui.laydate,
             form = layui.form,
             $ = layui.$
-        <#list form.items?filter(it -> it.field.column.enableFormItem) as formItem>
+        <#list page.form.items?filter(it -> it.field.column.enableFormItem) as formItem>
         <#if formItem.class.simpleName == "DateTimeFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',

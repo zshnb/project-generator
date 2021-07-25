@@ -13,7 +13,8 @@
     "jdbcPort": 3306,
     "jdbcUser": "root",
     "jdbcPassword": "root",
-    "jdbcDatabase": "db"
+    "jdbcDatabase": "db",
+    "type": "sbmp"
   },
   "type": 1,
   "tables": [

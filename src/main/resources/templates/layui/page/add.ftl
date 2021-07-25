@@ -146,7 +146,7 @@
 <#else>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
 </#if>
-<script>
+<script <#if projectType != "ssm">th:inline="javascript"</#if>>
     layui.use(['form', 'laydate', 'upload'], function () {
         let form = layui.form,
             $ = layui.$,

@@ -1,3 +1,6 @@
+<#if projectType == "ssm">
+    <%@ page contentType="text/html; charset=gbk"%>
+</#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -6,8 +9,13 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <#if projectType == "ssm">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/lib/layui/css/layui.css" media="all">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/public.css" media="all">
+    <#else>
+        <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+        <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    </#if>
 </head>
 <style>
     .layui-table-cell {
@@ -17,13 +25,13 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <#if entity.table.searchable>
+        <#if page.entity.table.searchable>
             <fieldset class="table-search-fieldset">
                 <legend>搜索信息</legend>
                 <div style="margin: 10px 10px 10px 10px">
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
-                            <#list form.items?filter(it -> it.field.column.searchable) as formItem>
+                            <#list page.form.items?filter(it -> it.field.column.searchable) as formItem>
                                 <#assign label>${formItem.label}</#assign>
                                 <#if formItem.field.column.searchable>
                                     <#switch formItem.class.simpleName>
@@ -76,7 +84,7 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <#list table.operations?filter(o -> o.position == "toolbar") as operation>
+                <#list page.table.operations?filter(o -> o.position == "toolbar") as operation>
                     <button th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
                             class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="${operation.value}">${operation.description}</button>
                 </#list>
@@ -86,13 +94,13 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <#list table.operations?filter(o -> o.position == "toolColumn") as operation>
+            <#list page.table.operations?filter(o -> o.position == "toolColumn") as operation>
                 <a th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
                    class="layui-btn layui-btn-xs layui-btn-normal data-count-delete" lay-event="${operation.value}">${operation.description}</a>
             </#list>
         </script>
 
-        <#list table.fields as tableField>
+        <#list page.table.fields as tableField>
             <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
                 <script type="text/html" id="${tableField.field.name}">
                     {{#
@@ -116,8 +124,12 @@
         </#list>
     </div>
 </div>
-<script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
-<script th:inline="javascript">
+<#if projectType == "ssm">
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+<#else>
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+</#if>
+<script <#if projectType != "ssm">th:inline="javascript"</#if>>
     layui.use(['form', 'table', 'laydate'], function () {
         let $ = layui.jquery,
             form = layui.form,
@@ -132,7 +144,7 @@
             ?replace(' ' , '')
             ?uncap_first>
         </#function>
-        <#list form.items as formItem>
+        <#list page.form.items as formItem>
         <#if formItem.field.column.associate?? && formItem.field.column.searchable>
         $.ajax({
             type: 'get',
@@ -163,7 +175,7 @@
             elem: '#currentTableId',
             toolbar: '#toolbarDemo',
             defaultToolbar: [],
-            url: '/${entity.name}/page',
+            url: '/${page.entity.name}/page',
             method: 'post',
             contentType: 'application/json',
             parseData: function (res) {
@@ -179,7 +191,7 @@
             },
             cols: [
                 [
-                    <#list table.fields as tableField>
+                    <#list page.table.fields as tableField>
                         <#assign fieldName>${tableField.field.name}</#assign>
                         <#assign title>${tableField.title}</#assign>
                         <#if tableField.field.column.enableTableField && !tableField.field.column.associate??>
@@ -215,7 +227,7 @@
                 page: {
                     curr: 1
                 }, where: {
-                    <#list entity.fields as field>
+                    <#list page.entity.fields as field>
                         <#if field.column.searchable>
                             ${field.name}: data.field.${field.name}<#if field_has_next>,</#if>
                         </#if>
@@ -237,7 +249,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '/${entity.name}/addPage',
+                    content: '/${page.entity.name}/addPage',
                     end: function () {
                         table.reload('currentTableId')
                     }
@@ -246,7 +258,7 @@
                     layer.full(index)
                 })
             }
-            <#list table.operations?filter(it -> it.custom && it.position == "toolbar") as operation>
+            <#list page.table.operations?filter(it -> it.custom && it.position == "toolbar") as operation>
             else if (obj.event === '${operation.value}') {
                 <#if operation.type == "NEW_PAGE">
                 let index = layer.open({
@@ -256,7 +268,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    content: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
                     end: function () {
                         let iframeIndex = parent.layer.getFrameIndex(window.name)
                         parent.layer.close(iframeIndex)
@@ -268,7 +280,7 @@
                 return false
                 <#else>
                 $.ajax({
-                    url: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    url: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
                     type: '${operation.detail.httpMethod?lower_case}',
                     <#if operation.detail.body>
                     contentType: 'application/json',
@@ -293,7 +305,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${entity.name}/editPage/${r"${data.id}"}`,
+                    content: `/${pag.entity.name}/editPage/${r"${data.id}"}`,
                     end: function () {
                         table.reload('currentTableId')
                     }
@@ -310,7 +322,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${entity.name}/detailPage/${r"${data.id}"}`,
+                    content: `/${page.entity.name}/detailPage/${r"${data.id}"}`,
                 })
                 $(window).on('resize', function () {
                     layer.full(index)
@@ -319,7 +331,7 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
-                        url: `/${entity.name}/${r"${data.id}"}`,
+                        url: `/${page.entity.name}/${r"${data.id}"}`,
                         type: 'delete',
                         success: function () {
                             layer.close(index)
@@ -329,7 +341,7 @@
                 })
                 return false
             }
-            <#list table.operations?filter(it -> it.custom && it.position == "toolColumn") as operation>
+            <#list page.table.operations?filter(it -> it.custom && it.position == "toolColumn") as operation>
             else if (obj.event === '${operation.value}') {
                 <#if operation.type == "NEW_PAGE">
                 let index = layer.open({
@@ -339,7 +351,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    content: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
                     end: function () {
                         let iframeIndex = parent.layer.getFrameIndex(window.name)
                         parent.layer.close(iframeIndex)
@@ -352,7 +364,7 @@
                 <#else>
                 <#assign requireBodyMethods = ["POST", "PUT", "DELETE"]>
                 $.ajax({
-                    url: `/${entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    url: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
                     type: '${operation.detail.httpMethod?lower_case}',
                     <#if requireBodyMethods?seq_contains(operation.detail.httpMethod)>
                         contentType: 'application/json',
