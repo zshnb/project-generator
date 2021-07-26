@@ -236,7 +236,13 @@
             }, 'data')
             return false
         })
-
+        <#assign dollar>
+        <#if projectType == "ssm">
+            \$<#t>
+        <#else>
+            $<#t>
+        </#if>
+        </#assign>
         /**
          * toolbar监听事件
          */
@@ -268,7 +274,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    content: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${dollar + r"{data.id}"}</#if>`,
                     end: function () {
                         let iframeIndex = parent.layer.getFrameIndex(window.name)
                         parent.layer.close(iframeIndex)
@@ -280,7 +286,7 @@
                 return false
                 <#else>
                 $.ajax({
-                    url: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    url: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${dollar + r"{data.id}"}</#if>`,
                     type: '${operation.detail.httpMethod?lower_case}',
                     <#if operation.detail.body>
                     contentType: 'application/json',
@@ -305,7 +311,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${page.entity.name}/editPage/${r"${data.id}"}`,
+                    content: `/${page.entity.name}/editPage/${dollar + r"{data.id}"}`,
                     end: function () {
                         table.reload('currentTableId')
                     }
@@ -322,7 +328,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${page.entity.name}/detailPage/${r"${data.id}"}`,
+                    content: `/${page.entity.name}/detailPage/${dollar + r"{data.id}"}`,
                 })
                 $(window).on('resize', function () {
                     layer.full(index)
@@ -331,7 +337,7 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
-                        url: `/${page.entity.name}/${r"${data.id}"}`,
+                        url: `/${page.entity.name}/${dollar + r"{data.id}"}`,
                         type: 'delete',
                         success: function () {
                             layer.close(index)
@@ -351,7 +357,7 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    content: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${dollar + r"{data.id}"}</#if>`,
                     end: function () {
                         let iframeIndex = parent.layer.getFrameIndex(window.name)
                         parent.layer.close(iframeIndex)
@@ -364,7 +370,7 @@
                 <#else>
                 <#assign requireBodyMethods = ["POST", "PUT", "DELETE"]>
                 $.ajax({
-                    url: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${r"${data.id}"}</#if>`,
+                    url: `/${page.entity.name}/${operation.value}<#if operation.detail.pathVariable>/${dollar + r"{data.id}"}</#if>`,
                     type: '${operation.detail.httpMethod?lower_case}',
                     <#if requireBodyMethods?seq_contains(operation.detail.httpMethod)>
                         contentType: 'application/json',

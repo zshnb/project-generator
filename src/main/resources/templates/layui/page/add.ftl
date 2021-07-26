@@ -220,12 +220,19 @@
             }
         })
         <#elseif formItem.field.column.associate??>
+        <#assign dollar>
+        <#if projectType == "ssm">
+            \$<#t>
+        <#else>
+            $<#t>
+        </#if>
+        </#assign>
         $.ajax({
             type: 'get',
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it." + formItem.field.column.associate.targetColumnName + "}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${dollar + r"{it." + formItem.field.column.associate.targetColumnName + "}"}">${dollar + r"{it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                 })
                 form.render('select')
             }
