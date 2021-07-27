@@ -91,14 +91,7 @@
             type: 'get',
             success: function (data) {
                 data.data.forEach(role => {
-                    <#assign dollar>
-                        <#if projectType == "ssm">
-                            \$<#t>
-                        <#else>
-                            $<#t>
-                        </#if>
-                    </#assign>
-                    $('select[name=role]').append(${r'`<option value="' + dollar + '{role.name}">' + dollar + '{role.description}</option>`'})
+                    $('select[name=role]').append(${r'`<option value="${role.name}">${role.description}</option>`'})
                 });
                 form.render('select');
             }

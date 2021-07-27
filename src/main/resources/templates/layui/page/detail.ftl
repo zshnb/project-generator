@@ -1,5 +1,6 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ page isELIgnored="false" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">

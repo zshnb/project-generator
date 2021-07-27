@@ -1,5 +1,8 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page isELIgnored="false" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
@@ -85,8 +88,14 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <#list page.table.operations?filter(o -> o.position == "toolbar") as operation>
-                    <button th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
-                            class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="${operation.value}">${operation.description}</button>
+                    <#if projectType == "ssm">
+                        <c:if test="${r"${fn:contains(permissions, '" + operation.value + "')}"}">
+                            <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="${operation.value}">${operation.description}</button>
+                        </c:if>
+                    <#else>
+                        <button th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
+                                class="layui-btn layui-btn-normal layui-btn-sm" lay-event="${operation.value}">${operation.description}</button>
+                    </#if>
                 </#list>
             </div>
         </script>
@@ -95,8 +104,14 @@
 
         <script type="text/html" id="currentTableBar">
             <#list page.table.operations?filter(o -> o.position == "toolColumn") as operation>
-                <a th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
-                   class="layui-btn layui-btn-xs layui-btn-normal data-count-delete" lay-event="${operation.value}">${operation.description}</a>
+                <#if projectType == "ssm">
+                    <c:if test="${r"${fn:contains(permissions, '" + operation.value + "')}"}">
+                        <button class="layui-btn layui-btn-normal layui-btn-xs" lay-event="${operation.value}">${operation.description}</button>
+                    </c:if>
+                <#else>
+                    <button th:if="${r"${#lists.contains(permissions, '" + operation.value + "')}"}"
+                            class="layui-btn layui-btn-normal layui-btn-xs" lay-event="${operation.value}">${operation.description}</button>
+                </#if>
             </#list>
         </script>
 

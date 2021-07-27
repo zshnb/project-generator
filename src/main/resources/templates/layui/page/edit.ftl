@@ -1,5 +1,6 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ page isELIgnored="false" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
@@ -24,7 +25,7 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <input type="hidden" name="id" th:value="${r"${" + page.entity.name + ".id}"}">
+    <input type="hidden" name="id" <#if projectType != "ssm">th:</#if>value="${r"${" + page.entity.name + ".id}"}">
     <#function camelize(s)>
         <#return s
         ?replace('(^_+)|(_+$)', '', 'r')
@@ -42,7 +43,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                 <div class="layui-input-block">
-                    <input type="text" name="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
+                    <input type="text" name="${formItemName}" <#if projectType != "ssm">th:</#if>value="${r"${" + name + "." + formItemName + "}"}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
                            placeholder="请输入${label}" class="layui-input"/>
                 </div>
@@ -51,7 +52,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                 <div class="layui-input-block">
-                    <input type="password" name="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
+                    <input type="password" name="${formItemName}" <#if projectType != "ssm">th:</#if>value="${r"${" + name + "." + formItemName + "}"}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
                            placeholder="请输入${label}" value="" class="layui-input"/>
                 </div>
@@ -83,7 +84,7 @@
                         <select name="${formItemName}">
                             <#list formItem.options as option>
                                 <option value="${option.value}"
-                                        th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
+                                        <#if projectType != "ssm">th:</#if>selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
                             </#list>
                         </select>
                     </div>
@@ -96,7 +97,7 @@
                     <#list formItem.options as option>
                         <input type="radio" name="${formItemName}" value="${option.value}" title="${option.title}"
                                <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
-                               th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}"/>
+                               <#if projectType != "ssm">th:</#if>checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}"/>
                     </#list>
                 </div>
             </div>
@@ -106,7 +107,7 @@
                 <div class="layui-input-block">
                     <textarea placeholder="请输入内容" class="layui-textarea" name="${formItemName}"
                               <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
-                              th:text="${r"${" + name + "." + formItemName + "}"}">
+                              <#if projectType != "ssm">th:text="${r"${" + name + "." + formItemName + "}"}"</#if>>
                     </textarea>
                 </div>
             </div>
@@ -130,7 +131,7 @@
                     </div>
                     <button type="button" class="layui-btn" id="upload-btn-${formItem.field.name}">开始上传</button>
                 </div>
-                <input name="${formItemName}" type="text" hidden th:value="${r"${" + name + "." + formItemName + "}"}">
+                <input name="${formItemName}" type="text" hidden <#if projectType != "ssm">th:</#if>value="${r"${" + name + "." + formItemName + "}"}">
             </div>
         </#if>
     </#list>

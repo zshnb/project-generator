@@ -221,6 +221,12 @@
           "searchable": true
         },
         {
+          "name": "status",
+          "comment": "状态",
+          "type": "varchar",
+          "length": "255"
+        },
+        {
           "name": "id",
           "comment": "主键",
           "type": "int",
@@ -560,6 +566,20 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.DateFormItem",
             "label": "入学时间"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.RadioFormItem",
+            "options": [
+              {
+                "title": "未入学",
+                "value": "未入学"
+              },
+              {
+                "title": "已入学",
+                "value": "已入学"
+              }
+            ],
+            "label": "入学时间"
           }
         ]
       },
@@ -598,6 +618,10 @@
           {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.DateFormItem",
             "title": "入学时间"
+          },
+          {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
+            "title": "状态"
           }
         ]
       }

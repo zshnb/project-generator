@@ -26,13 +26,13 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
     override fun generateProject(project: Project): Project {
         val baseProject = super.generateProject(project)
         val webProject = baseProject.webProject!!
-        val controllerTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
+        val pageControllerTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
+        val indexPageControllerTemplate =
+            configuration.getTemplate(SSMBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
         val webXmlTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.WEB_XML)
         val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_INDEX_PAGE)
         val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_LOGIN_PAGE)
         val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_REGISTER_PAGE)
-        val indexControllerTemplate =
-            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
         val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_ADD_PAGE)
         val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EDIT_PAGE)
         val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_DETAIL_PAGE)
@@ -59,7 +59,7 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
             ioUtil.writeTemplate(emptyPageTemplate, it,
                 "${pathConfig.thymeleafPageDirPath(config)}${it.href}.html")
         }
-        ioUtil.writeTemplate(indexControllerTemplate, mapOf(
+        ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
             "packageName" to config.controllerPackagePath(),
             "dependencies" to listOf(config.entityPackagePath(), config.serviceImplPackagePath(),
                 config.commonPackagePath(), config.requestPackagePath()),
@@ -73,7 +73,7 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
                 .distinctBy { it.value }
                 .filter { it.custom }
                 .toList()
-            ioUtil.writeTemplate(controllerTemplate, mapOf(
+            ioUtil.writeTemplate(pageControllerTemplate, mapOf(
                 "entity" to entity,
                 "operations" to operations,
                 "packageName" to config.controllerPackagePath(),
