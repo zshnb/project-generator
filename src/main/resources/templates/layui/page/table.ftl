@@ -116,7 +116,7 @@
         </script>
 
         <#list page.table.fields as tableField>
-            <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
+            <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.web.FileFormItem">
                 <script type="text/html" id="${tableField.field.name}">
                     {{#
                         let fileName = d.${tableField.field.name}
@@ -140,7 +140,7 @@
     </div>
 </div>
 <#if projectType == "ssm">
-    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
 <#else>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
 </#if>
@@ -159,6 +159,13 @@
             ?replace(' ' , '')
             ?uncap_first>
         </#function>
+        <#assign dollar>
+        <#if projectType == "ssm">
+            \$<#t>
+        <#else>
+            $<#t>
+        </#if>
+        </#assign>
         <#list page.form.items as formItem>
         <#if formItem.field.column.associate?? && formItem.field.column.searchable>
         $.ajax({
@@ -166,7 +173,7 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${dollar + r"{it.id}"}">${dollar + r"{it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                 })
                 form.render('select')
             }
@@ -210,9 +217,9 @@
                         <#assign fieldName>${tableField.field.name}</#assign>
                         <#assign title>${tableField.title}</#assign>
                         <#if tableField.field.column.enableTableField && !tableField.field.column.associate??>
-                            <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.ImageFormItem">
+                            <#if tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.web.ImageFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '<div><img src="/download?fileName={{d.${fieldName}}}"/></div>'},
-                            <#elseif tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.FileFormItem">
+                            <#elseif tableField.formItemClassName?? && tableField.formItemClassName == "com.zshnb.projectgenerator.generator.entity.web.FileFormItem">
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}'},
                             <#elseif tableField.mappings??>
                             { field: '${fieldName}', title: '${title}', sort: true, templet: '#${tableField.field.name}' },
@@ -251,13 +258,6 @@
             }, 'data')
             return false
         })
-        <#assign dollar>
-        <#if projectType == "ssm">
-            \$<#t>
-        <#else>
-            $<#t>
-        </#if>
-        </#assign>
         /**
          * toolbar监听事件
          */
@@ -305,7 +305,7 @@
                     type: '${operation.detail.httpMethod?lower_case}',
                     <#if operation.detail.body>
                     contentType: 'application/json',
-                    data: JSON.stringify({})
+                    data: JSON.stringify({}),
                     </#if>
                     success: function () {
                         table.reload('currentTableId')
@@ -389,7 +389,7 @@
                     type: '${operation.detail.httpMethod?lower_case}',
                     <#if requireBodyMethods?seq_contains(operation.detail.httpMethod)>
                         contentType: 'application/json',
-                        data: JSON.stringify({})
+                        data: JSON.stringify({}),
                     </#if>
                     success: function () {
                         table.reload('currentTableId')

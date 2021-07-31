@@ -1,5 +1,6 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ page isELIgnored="true" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
@@ -66,9 +67,9 @@
     </div>
 </div>
 <#if projectType == "ssm">
-    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
-    <script src="<%=request.getContextPath() %>/static/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>>
-    <script src="<%=request.getContextPath() %>/static/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="<%=request.getContextPath() %>/static/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+    <script src="<%=request.getContextPath() %>/static/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
 <#else>
     <script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>

@@ -1,6 +1,7 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="${config.rootPackageName}.${config.entityPackageName}.User" %>
+<%@ page isELIgnored="true" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
@@ -114,8 +115,8 @@
     </div>
 </div>
 <#if projectType == "ssm">
-    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
-    <script src="<%=request.getContextPath() %>/static/js/lay-config.js?v=2.0.0" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="<%=request.getContextPath() %>/static/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 <#else>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script th:src="@{/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>

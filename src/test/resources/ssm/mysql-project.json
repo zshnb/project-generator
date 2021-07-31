@@ -68,6 +68,11 @@
               "position": "toolColumn"
             },
             {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
               "description": "删除",
               "value": "delete",
               "position": "toolColumn"
@@ -154,6 +159,11 @@
               "position": "toolColumn"
             },
             {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
               "description": "删除",
               "value": "delete",
               "position": "toolColumn"
@@ -217,7 +227,6 @@
           "name": "in_date",
           "comment": "入学时间",
           "type": "date",
-          "enableFormItem": false,
           "searchable": true
         },
         {
@@ -265,6 +274,11 @@
               "position": "toolColumn"
             },
             {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
               "description": "删除",
               "value": "delete",
               "position": "toolColumn"
@@ -282,6 +296,11 @@
             {
               "description": "修改",
               "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "详情",
+              "value": "detail",
               "position": "toolColumn"
             },
             {
@@ -306,6 +325,11 @@
           "repeatable": false
         },
         {
+          "name": "description",
+          "comment": "描述",
+          "type": "text"
+        },
+        {
           "name": "user_id",
           "comment": "老师id",
           "type": "int",
@@ -315,7 +339,7 @@
             "targetColumnName": "id",
             "associateResultColumns": [
               {
-                "originColumnName": "userUsername",
+                "originColumnName": "username",
                 "tableFieldTitle": "老师名",
                 "columnType": "varchar"
               }
@@ -366,6 +390,11 @@
             {
               "description": "修改",
               "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "详情",
+              "value": "detail",
               "position": "toolColumn"
             },
             {
@@ -487,7 +516,6 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "名称"
           }
         ]
@@ -514,15 +542,12 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "名称"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "学生人数"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": ""
           }
         ]
@@ -579,22 +604,19 @@
                 "value": "已入学"
               }
             ],
-            "label": "入学时间"
+            "label": "状态"
           }
         ]
       },
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "姓名"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "学号"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "title": "性别",
             "mappings": [
               {
@@ -612,15 +634,12 @@
             "title": "头像"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": ""
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.DateFormItem",
             "title": "入学时间"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "title": "状态"
           }
         ]
@@ -635,6 +654,11 @@
             "label": "名称"
           },
           {
+            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.TextAreaFormItem",
+            "require": true,
+            "label": "描述"
+          },
+          {
             "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.SelectFormItem",
             "require": true,
             "label": "老师"
@@ -645,6 +669,9 @@
         "fields": [
           {
             "title": "名称"
+          },
+          {
+            "title": "描述"
           },
           {
             "title": "老师"
@@ -683,11 +710,9 @@
       "table": {
         "fields": [
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.InputFormItem",
             "title": "用户名"
           },
           {
-            "formItemClassName": "com.zshnb.projectgenerator.generator.entity.web.PasswordFormItem",
             "title": "密码"
           }
         ]
@@ -713,6 +738,11 @@
           "name": "学生管理",
           "href": "/student/tablePage",
           "role": "admin"
+        },
+        {
+          "name": "课程管理",
+          "href": "/course/tablePage",
+          "role": "admin"
         }
       ]
     },
@@ -723,7 +753,12 @@
         {
           "name": "学生管理",
           "href": "/student/tablePage",
-          "role": "admin"
+          "role": "teacher"
+        },
+        {
+          "name": "课程管理",
+          "href": "/course/tablePage",
+          "role": "teacher"
         }
       ]
     },
@@ -734,7 +769,7 @@
         {
           "name": "学生管理",
           "href": "/student/tablePage",
-          "role": "admin"
+          "role": "student"
         }
       ]
     }

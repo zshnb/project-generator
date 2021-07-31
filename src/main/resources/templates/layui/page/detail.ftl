@@ -1,5 +1,6 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 </#if>
 <!DOCTYPE html>
@@ -42,7 +43,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
-                    <input type="text" th:value="${r"${" + name + "." + formItemName + "}"}"
+                    <input type="text" <#if projectType != "ssm">th:</#if>value="${r"${" + name + "." + formItemName + "}"}"
                            class="layui-input" readonly>
                 </div>
             </div>
@@ -50,7 +51,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                 <div class="layui-input-block">
-                    <input type="password" name="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
+                    <input type="password" name="${formItemName}"<#if projectType != "ssm">th:</#if>value="${r"${" + name + "." + formItemName + "}"}"
                            <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
                            placeholder="请输入${label}" value="" class="layui-input" readonly>
                 </div>
@@ -59,8 +60,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
-                    <input type="text" id="${formItemName}" th:value="${r"${" + name + "." + formItemName + "}"}"
-                           value="" class="layui-input" readonly>
+                    <input type="text" id="${formItemName}" value="" class="layui-input" readonly>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "SelectFormItem">
@@ -79,10 +79,17 @@
                     <label class="layui-form-label">${label}</label>
                     <div class="layui-input-block">
                         <select name="${formItemName}" disabled>
-                            <#list formItem.options as option>
-                                <option value="${option.value}"
-                                        th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
-                            </#list>
+                            <#if projectType == "ssm">
+                                <#list formItem.options as option>
+                                    <option value="${option.value}"
+                                            ${r"${" + name + "." + formItemName + " == '" + option.value + "' ? 'selected' : ''}"}>${option.title}</option>
+                                </#list>
+                            <#else>
+                                <#list formItem.options as option>
+                                    <option value="${option.value}"
+                                            th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
+                                </#list>
+                            </#if>
                         </select>
                     </div>
                 </div>
@@ -91,10 +98,17 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
-                    <#list formItem.options as option>
-                        <input type="radio" value="${option.value}" title="${option.title}" readonly
-                               th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">
-                    </#list>
+                    <#if projectType == "ssm">
+                        <#list formItem.options as option>
+                            <input type="radio" value="${option.value}" title="${option.title}" readonly
+                                    ${r"${" + name + "." + formItemName + " == '" + option.value + "' ? 'checked' : ''}"}/>
+                        </#list>
+                    <#else>
+                        <#list formItem.options as option>
+                            <input type="radio" value="${option.value}" title="${option.title}" readonly
+                                   th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">
+                        </#list>
+                    </#if>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "TextAreaFormItem">
@@ -102,7 +116,10 @@
                 <label class="layui-form-label">${label}</label>
                 <div class="layui-input-block">
                     <textarea placeholder="请输入内容" class="layui-textarea" readonly
-                              th:text="${r"${" + name + "." + formItemName + "}"}">
+                              <#if projectType != "ssm">th:text="${r"${" + name + "." + formItemName + "}"}"</#if>>
+                        <#if projectType == "ssm">
+                            ${r"${" + name + "." + formItemName + "}"}
+                        </#if>
                     </textarea>
                 </div>
             </div>
@@ -110,7 +127,7 @@
     </#list>
 </div>
 <#if projectType == "ssm">
-    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
 <#else>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
 </#if>
@@ -124,13 +141,21 @@
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
-            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"}
+            <#if projectType == "ssm">
+            value: ${r"${'" + page.entity.name + "." + formItem.field.name + "'}"},
+            <#else>
+            value: ${r"[[${#temporals.format(" + page.entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"},
+            </#if>
         })
         <#elseif formItem.class.simpleName == "DateFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'date',
-            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"}
+            <#if projectType == "ssm">
+            value: ${r"${" + page.entity.name + "." + formItem.field.name + "}"},
+            <#else>
+            value: ${r"[[${#temporals.format(" + page.entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"},
+            </#if>
         })
         <#elseif formItem.field.column.associate??>
         $.ajax({
@@ -138,11 +163,19 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
+                    <#if projectType == "ssm">
+                    if (it.id === ${r"${" + page.entity.name + "." + camelize(formItem.field.column.name) + "}"}) {
+                        $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"\${it.id}"}" selected>${r"\${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    } else {
+                        $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"\${it.id}"}">${r"\${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    }
+                    <#else>
                     if (it.id === ${r"[[${" + page.entity.name + "." + camelize(formItem.field.column.name) + "}]]"}) {
                         $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     } else {
                         $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     }
+                    </#if>
                 })
                 form.render('select')
             }

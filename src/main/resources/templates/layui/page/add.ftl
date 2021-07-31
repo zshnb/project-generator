@@ -1,5 +1,6 @@
 <#if projectType == "ssm">
 <%@ page contentType="text/html; charset=utf-8"%>
+<%@ page isELIgnored="true" %>
 </#if>
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
@@ -142,7 +143,7 @@
     </div>
 </div>
 <#if projectType == "ssm">
-    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
 <#else>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
 </#if>
@@ -167,7 +168,7 @@
         })
         <#elseif formItem.class.simpleName == "FileFormItem" || formItem.class.simpleName == "ImageFormItem">
         //多文件列表示例
-        let imageList${formItem.field.name?cap_first} = $('#file-list-${formItem.field.name}')
+        let fileList${formItem.field.name?cap_first} = $('#file-list-${formItem.field.name}')
         let uploadListIns${formItem.field.name?cap_first} = upload.render({
             elem: '#upload-${formItem.field.name}',
             url: '/upload',
@@ -201,11 +202,11 @@
                         tr.remove()
                         uploadListIns${formItem.field.name?cap_first}.config.elem.next()[0].value = '' //清空 input file 值，以免删除后出现同名文件不可选
                     })
-                    imageList${formItem.field.name?cap_first}.append(tr)
+                    fileList${formItem.field.name?cap_first}.append(tr)
                 })
             },
             done: function (res, index) {
-                let tr = imageList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
+                let tr = fileList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
                 tds.eq(3).html('') //清空操作
@@ -213,26 +214,19 @@
                 return delete this.files[index] //删除文件队列已经上传成功的文件
             },
             error: function () {
-                let tr = imageList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
+                let tr = fileList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>')
                 tds.eq(3).find('.reload-btn').removeClass('layui-hide') //显示重传
             }
         })
         <#elseif formItem.field.column.associate??>
-        <#assign dollar>
-        <#if projectType == "ssm">
-            \$<#t>
-        <#else>
-            $<#t>
-        </#if>
-        </#assign>
         $.ajax({
             type: 'get',
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
-                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${dollar + r"{it." + formItem.field.column.associate.targetColumnName + "}"}">${dollar + r"{it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it." + formItem.field.column.associate.targetColumnName + "}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                 })
                 form.render('select')
             }

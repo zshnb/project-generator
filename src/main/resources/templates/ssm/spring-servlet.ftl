@@ -9,6 +9,8 @@
     <mvc:annotation-driven/>
     <context:component-scan base-package="${rootPackageName}"/>
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+
     <bean id="internalResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>

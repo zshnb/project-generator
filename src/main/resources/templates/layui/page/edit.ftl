@@ -81,11 +81,19 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">${label}</label>
                     <div class="layui-input-block">
-                        <select name="${formItemName}">
-                            <#list formItem.options as option>
-                                <option value="${option.value}"
-                                        <#if projectType != "ssm">th:</#if>selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
-                            </#list>
+                        <select name="${formItemName}"
+                                <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>>
+                            <#if projectType == "ssm">
+                                <#list formItem.options as option>
+                                    <option value="${option.value}"
+                                            ${r"${" + name + "." + formItemName + " == '" + option.value + "' ? 'selected' : ''}"}>${option.title}</option>
+                                </#list>
+                            <#else>
+                                <#list formItem.options as option>
+                                    <option value="${option.value}"
+                                            th:selected="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}">${option.title}</option>
+                                </#list>
+                            </#if>
                         </select>
                     </div>
                 </div>
@@ -94,11 +102,19 @@
             <div class="layui-form-item">
                 <label class="layui-form-label <#if formItem.require>required</#if>">${label}</label>
                 <div class="layui-input-block">
-                    <#list formItem.options as option>
-                        <input type="radio" name="${formItemName}" value="${option.value}" title="${option.title}"
-                               <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
-                               <#if projectType != "ssm">th:</#if>checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}"/>
-                    </#list>
+                    <#if projectType == "ssm">
+                        <#list formItem.options as option>
+                            <input type="radio" value="${option.value}" title="${option.title}"
+                                   <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
+                                   ${r"${" + name + "." + formItemName + " == '" + option.value + "' ? 'checked' : ''}"}/>
+                        </#list>
+                    <#else>
+                        <#list formItem.options as option>
+                            <input type="radio" name="${formItemName}" value="${option.value}" title="${option.title}"
+                                   <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
+                                   th:checked="${r"${" + name + "." + formItemName + " == '" + option.value + "'}"}"/>
+                        </#list>
+                    </#if>
                 </div>
             </div>
         <#elseif formItem.class.simpleName == "TextAreaFormItem">
@@ -108,6 +124,9 @@
                     <textarea placeholder="请输入内容" class="layui-textarea" name="${formItemName}"
                               <#if formItem.require>lay-verify="required" lay-reqtext="${label}不能为空"</#if>
                               <#if projectType != "ssm">th:text="${r"${" + name + "." + formItemName + "}"}"</#if>>
+                        <#if projectType == "ssm">
+                            ${r"${" + name + "." + formItemName + "}"}
+                        </#if>
                     </textarea>
                 </div>
             </div>
@@ -142,7 +161,7 @@
     </div>
 </div>
 <#if projectType == "ssm">
-    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>>
+    <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
 <#else>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
 </#if>
@@ -157,19 +176,34 @@
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'datetime',
-            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"},
+            <#if projectType == "ssm">
+            value: ${r"${'" + page.entity.name + "." + formItem.field.name + "'}"},
+            <#else>
+            value: ${r"[[${#temporals.format(" + page.entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"},
+            </#if>
             trigger: 'click'
         })
         <#elseif formItem.class.simpleName == "DateFormItem">
         laydate.render({
             elem: '#${formItem.field.name}',
             type: 'date',
-            value: ${r"[[${#temporals.format(" + entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"},
+            <#if projectType == "ssm">
+            value: ${r"${'" + page.entity.name + "." + formItem.field.name + "'}"},
+            <#else>
+            value: ${r"[[${#temporals.format(" + page.entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd')}]]"},
+            </#if>
             trigger: 'click'
         })
         <#elseif formItem.class.simpleName == "FileFormItem" || formItem.class.simpleName == "ImageFormItem">
+        <#assign dollar>
+        <#if projectType == "ssm">
+            \$<#t>
+        <#else>
+            $<#t>
+        </#if>
+        </#assign>
         //多文件列表示例
-        let imageList${formItem.field.name?cap_first} = $('#file-list-${formItem.field.name}')
+        let fileList${formItem.field.name?cap_first} = $('#file-list-${formItem.field.name}')
         let uploadListIns${formItem.field.name?cap_first} = upload.render({
             elem: '#upload-${formItem.field.name}',
             url: '/upload',
@@ -182,9 +216,9 @@
                 //读取本地文件
                 obj.preview(function (index, file) {
                     let tr = $(`
-                        <tr id="upload-${r"${index}"}">
-                            <td>${r"${file.name}"}</td>
-                            <td>${r"${(file.size / 1024).toFixed(1)}kb"}</td>
+                        <tr id="upload-${dollar + r"{index}"}">
+                            <td>${dollar + r"{file.name}"}</td>
+                            <td>${dollar + r"{(file.size / 1024).toFixed(1)}kb"}</td>
                             <td>等待上传</td>
                             <td>
                                 <button class="layui-btn layui-btn-xs reload-btn layui-hide">重传</button>
@@ -203,19 +237,19 @@
                         tr.remove()
                         uploadListIns${formItem.field.name?cap_first}.config.elem.next()[0].value = '' //清空 input file 值，以免删除后出现同名文件不可选
                     })
-                    imageList${formItem.field.name?cap_first}.append(tr)
+                    fileList${formItem.field.name?cap_first}.append(tr)
                 })
             },
             done: function (res, index) {
-                let tr = imageList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
+                let tr = fileList${formItem.field.name?cap_first}.find(${r"`tr#upload-" + dollar + "{index}`"}),
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>')
                 tds.eq(3).html('') //清空操作
                 $('input[name=${formItem.field.name}]').val(res.data.fileName)
                 return delete this.files[index] //删除文件队列已经上传成功的文件
             },
-            error: function () {
-                let tr = imageList${formItem.field.name?cap_first}.find(${r"`tr#upload-${index}`"}),
+            error: function (index, upload) {
+                let tr = fileList${formItem.field.name?cap_first}.find(${r"`tr#upload-" + dollar + "{index}`"}),
                     tds = tr.children()
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>')
                 tds.eq(3).find('.reload-btn').removeClass('layui-hide') //显示重传
@@ -227,11 +261,19 @@
             url: '/${camelize(formItem.field.column.associate.targetTableName)}/list',
             success: function (data) {
                 data.data.forEach(it => {
+                    <#if projectType == "ssm">
+                    if (it.id === ${r"${" + page.entity.name + "." + camelize(formItem.field.column.name) + "}"}) {
+                        $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"\${it.id}"}" selected>${r"\${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    } else {
+                        $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"\${it.id}"}">${r"\${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
+                    }
+                    <#else>
                     if (it.id === ${r"[[${" + page.entity.name + "." + camelize(formItem.field.column.name) + "}]]"}) {
                         $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}" selected>${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     } else {
                         $('select[name=${camelize(formItem.field.column.name)}]').append(`<option value="${r"${it.id}"}">${r"${it." + formItem.field.column.associate.formItemColumnName + "}"}</option>`)
                     }
+                    </#if>
                 })
                 form.render('select')
             }
