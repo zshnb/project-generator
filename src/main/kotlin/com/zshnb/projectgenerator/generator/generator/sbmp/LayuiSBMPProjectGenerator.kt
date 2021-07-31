@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.generator.ssmp
+package com.zshnb.projectgenerator.generator.generator.sbmp
 
 import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.config.PathConfig
@@ -16,19 +16,22 @@ import org.springframework.stereotype.Component
 import java.io.*
 
 @Component
-class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
+class LayuiSBMPProjectGenerator(private val backendParser: BackendParser,
                                 private val configuration: Configuration,
                                 private val projectConfig: ProjectConfig,
                                 private val pathConfig: PathConfig,
                                 private val frontendParser: FrontendParser,
                                 private val ioUtil: IOUtil) :
-    BaseSSMPProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
+    BaseSBMPProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
     override fun generateProject(project: Project): Project {
         val baseProject = super.generateProject(project)
         val webProject = baseProject.webProject!!
-        val pageControllerTemplate = configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
+        val pageControllerTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexPageControllerTemplate =
-            configuration.getTemplate(SSMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
+            configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
+        val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_INDEX_PAGE)
+        val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_LOGIN_PAGE)
+        val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_REGISTER_PAGE)
         val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_ADD_PAGE)
         val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EDIT_PAGE)
         val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_DETAIL_PAGE)
@@ -41,22 +44,31 @@ class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
 
-        resources.forEach {
-            val url = it.url
-            val filePath = url.path.substring(url.path.indexOf("layui") + 5)
-            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", url.path)) {
-                File("${pathConfig.resourcesDirPath(config)}/static/$filePath")
-            } else {
-                if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
-                    File("${pathConfig.resourcesDirPath(config)}/templates/$filePath")
-                } else {
-                    File("")
-                }
-            }
-            if (destination.name.isNotEmpty()) {
-                FileUtils.copyURLToFile(url, destination)
-            }
+        resources.filter {
+            ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", it.url.path)
+        }.map {
+            val filePath = it.url.path.substring(it.url.path.indexOf("layui") + 5)
+            it.url to File("${pathConfig.resourcesDirPath(config)}/static/$filePath")
+        }.forEach {
+            FileUtils.copyURLToFile(it.first, it.second)
         }
+//        resources.forEach {
+//            val url = it.url
+//            val filePath = url.path.substring(url.path.indexOf("layui") + 5)
+//            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", url.path)) {
+//                File("${pathConfig.resourcesDirPath(config)}/static/$filePath")
+//            } else {
+//                if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
+//                    File("${pathConfig.resourcesDirPath(config)}/templates/$filePath")
+//                } else {
+//                    File("")
+//                }
+//            }
+//            if (destination.name.isNotEmpty()) {
+//                FileUtils.copyURLToFile(url, destination)
+//            }
+//        }
+
         val unBindMenus = webProject.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
             .distinctBy { it.name }
@@ -86,16 +98,30 @@ class LayuiSSMPProjectGenerator(private val backendParser: BackendParser,
                 "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
         }
 
+        ioUtil.writeTemplate(indexPageTemplate, mapOf("config" to config, "projectType" to "sbmp"),
+            "${pathConfig.thymeleafTemplateDirPath(config)}/index.html")
+        ioUtil.writeTemplate(loginPageTemplate, mapOf("projectType" to "sbmp"),
+            "${pathConfig.thymeleafTemplateDirPath(config)}/login.html")
+        ioUtil.writeTemplate(registerPageTemplate, mapOf("projectType" to "sbmp"),
+            "${pathConfig.thymeleafTemplateDirPath(config)}/register.html")
         pages.forEach {
             it.entity!!
-            ioUtil.writeTemplate(addPageTemplate, it,
-                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/add.html")
-            ioUtil.writeTemplate(editPageTemplate, it,
-                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/edit.html")
-            ioUtil.writeTemplate(detailPageTemplate, it,
-                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/detail.html")
-            ioUtil.writeTemplate(tablePageTemplate, it,
-                "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/table.html")
+            ioUtil.writeTemplate(addPageTemplate, mapOf(
+                "page" to it,
+                "projectType" to "sbmp"
+            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/add.html")
+            ioUtil.writeTemplate(editPageTemplate, mapOf(
+                "page" to it,
+                "projectType" to "sbmp"
+            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/edit.html")
+            ioUtil.writeTemplate(detailPageTemplate, mapOf(
+                "page" to it,
+                "projectType" to "sbmp"
+            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/detail.html")
+            ioUtil.writeTemplate(tablePageTemplate, mapOf(
+                "page" to it,
+                "projectType" to "sbmp"
+            ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/table.html")
         }
         return baseProject
     }

@@ -1,7 +1,7 @@
 package com.zshnb.projectgenerator.generator.constant
 
 
-class SSMPBackendFreeMarkerFileConstant {
+class SBMPBackendFreeMarkerFileConstant {
     companion object {
         const val ENTITY_TEMPLATE = "ssmp/entity.ftl"
         const val SERVICE_TEMPLATE = "ssmp/service.ftl"
