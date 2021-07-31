@@ -2,6 +2,6 @@ package com.zshnb.projectgenerator.generator.generator
 
 import com.zshnb.projectgenerator.generator.entity.Project
 
-interface BaseGenerate {
+interface BaseGenerator {
     fun generateProject(project: Project): Project
 }
