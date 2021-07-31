@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1"
-         metadata-complete="true">>
+         metadata-complete="true">
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>spring</servlet-name>
@@ -12,6 +12,7 @@
       <param-name>contextConfigLocation</param-name>
       <param-value>/WEB-INF/classes/spring-servlet.xml</param-value>
     </init-param>
+    <multipart-config/>
   </servlet>
   <servlet-mapping>
     <servlet-name>spring</servlet-name>
