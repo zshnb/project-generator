@@ -2,8 +2,10 @@ package com.zshnb.projectgenerator.web.controller
 
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
+import com.zshnb.projectgenerator.generator.entity.web.WebProjectType.SBMP
 import com.zshnb.projectgenerator.generator.generator.c.CProjectGenerator
-import com.zshnb.projectgenerator.generator.generator.web.*
+import com.zshnb.projectgenerator.generator.generator.sbmp.*
+import com.zshnb.projectgenerator.generator.generator.ssm.LayuiSSMProjectGenerator
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import com.zshnb.projectgenerator.web.request.AddOrUpdateProjectRequest
@@ -17,7 +19,8 @@ import java.io.*
 @RestController
 @RequestMapping("/api/project")
 class ProjectController(
-    private val layuiGenerator: LayuiWebProjectGenerator,
+    private val layuiSBMPProjectGenerator: LayuiSBMPProjectGenerator,
+    private val layuiSSMProjectGenerator: LayuiSSMProjectGenerator,
     private val cProjectGenerator: CProjectGenerator,
     private val zipFileWriter: ZipFileWriter,
     private val projectConfig: ProjectConfig,
@@ -33,7 +36,11 @@ class ProjectController(
                 val filePath = "${projectConfig.projectDir}/${project.webProject.config.artifactId}"
                 FileUtils.deleteDirectory(File(filePath))
                 val fileName = "$filePath.zip"
-                layuiGenerator.generateProject(project)
+                if (project.webProject.type == SBMP) {
+                    layuiSBMPProjectGenerator.generateProject(project)
+                } else {
+                    layuiSSMProjectGenerator.generateProject(project)
+                }
                 zipFileWriter.createZipFile(fileName, filePath)
                 File(fileName) to project.webProject.config.artifactId
             }

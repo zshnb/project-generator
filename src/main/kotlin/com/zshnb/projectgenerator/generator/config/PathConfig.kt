@@ -11,8 +11,15 @@ class PathConfig(private val projectConfig: ProjectConfig) {
 
     fun resourcesDirPath(config: Config): String = "${projectConfig.projectDir}/${config.artifactId}/src/main/resources"
 
-    fun layUIPageDirPath(config: Config): String =
+    fun webappDirPath(config: Config): String = "${projectConfig.projectDir}/${config.artifactId}/src/main/webapp"
+
+    fun thymeleafPageDirPath(config: Config): String =
         "${projectConfig.projectDir}/${config.artifactId}/src/main/resources/templates/page"
+
+    fun thymeleafTemplateDirPath(config: Config): String =
+        "${projectConfig.projectDir}/${config.artifactId}/src/main/resources/templates"
+
+    fun jspPageDir(config: Config): String = "${webappDirPath(config)}/WEB-INF/jsp"
 
     fun layUIStaticDirPath(config: Config): String =
         "${projectConfig.projectDir}/${config.artifactId}/src/main/resources/static"
