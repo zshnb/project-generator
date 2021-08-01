@@ -4,36 +4,36 @@ import com.zshnb.projectgenerator.generator.entity.web.*
 
 /**
  * 窗口
- * @param items 组件
+ * @param frameItems 组件
  * */
 data class Frame(val entity: Entity?,
-                 val items: List<Item>)
+                 val frameItems: List<FrameItem>)
 
-open class Item(val className: String,
-                val field: Field?)
+open class FrameItem(val className: String,
+                     val field: Field?)
 
 /**
  * 输入框组件
  * */
-class TextFieldItem(className: String,
-                    field: Field?) : Item(className, field)
+class TextFieldFrameItem(field: Field?,
+                         className: String) : FrameItem(className, field)
 
 /**
  * 密码框组件
  * */
-class PasswordItem(className: String,
-                   field: Field?) : Item(className, field)
+class PasswordFrameItem(field: Field?,
+                        className: String) : FrameItem(className, field)
 
 /**
  * 单选框组件
  * */
-class RadioItem(className: String,
-                val options: List<Option>,
-                field: Field?) : Item(className, field)
+class RadioFrameItem(field: Field?,
+                     className: String,
+                     val options: List<Option>) : FrameItem(className, field)
 
 /**
  * 下拉框组件
  * */
-class SelectItem(className: String,
-                 val options: List<Option>,
-                 field: Field?) : Item(className, field)
+class SelectFrameItem(field: Field?,
+                      className: String,
+                      val options: List<Option>) : FrameItem(className, field)
