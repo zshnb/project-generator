@@ -56,8 +56,8 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
             .filter { it.parentId == 0 && !it.bind }
             .distinctBy { it.name }
         unBindMenus.forEach {
-            ioUtil.writeTemplate(emptyPageTemplate, it,
-                "${pathConfig.thymeleafPageDirPath(config)}${it.href}.html")
+            ioUtil.writeTemplate(emptyPageTemplate, mapOf("projectType" to "ssm"),
+                "${pathConfig.jspPageDir(config)}${it.href}.jsp")
         }
         ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
             "packageName" to config.controllerPackagePath(),

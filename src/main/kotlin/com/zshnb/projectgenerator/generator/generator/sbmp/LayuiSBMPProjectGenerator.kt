@@ -52,28 +52,12 @@ class LayuiSBMPProjectGenerator(private val backendParser: BackendParser,
         }.forEach {
             FileUtils.copyURLToFile(it.first, it.second)
         }
-//        resources.forEach {
-//            val url = it.url
-//            val filePath = url.path.substring(url.path.indexOf("layui") + 5)
-//            val destination = if (ReUtil.isMatch(".*?(css|images|js|lib).*?\\.[a-zA-Z0-9]*?$", url.path)) {
-//                File("${pathConfig.resourcesDirPath(config)}/static/$filePath")
-//            } else {
-//                if (ReUtil.isMatch(".*?(\\.html)$", it.filename!!)) {
-//                    File("${pathConfig.resourcesDirPath(config)}/templates/$filePath")
-//                } else {
-//                    File("")
-//                }
-//            }
-//            if (destination.name.isNotEmpty()) {
-//                FileUtils.copyURLToFile(url, destination)
-//            }
-//        }
 
         val unBindMenus = webProject.roles.flatMap { it.menus }
             .filter { it.parentId == 0 && !it.bind }
             .distinctBy { it.name }
         unBindMenus.forEach {
-            ioUtil.writeTemplate(emptyPageTemplate, it,
+            ioUtil.writeTemplate(emptyPageTemplate, mapOf("projectType" to "sbmp"),
                 "${pathConfig.thymeleafPageDirPath(config)}${it.href}.html")
         }
         ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
