@@ -4,10 +4,10 @@ import com.zshnb.projectgenerator.generator.entity.web.*
 
 /**
  * 窗口
- * @param frameItems 组件
+ * @param items 组件
  * */
 data class Frame(val entity: Entity?,
-                 val frameItems: List<FrameItem>)
+                 val items: List<FrameItem>)
 
 open class FrameItem(val className: String,
                      val field: Field?)

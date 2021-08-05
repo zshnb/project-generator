@@ -1,0 +1,88 @@
+{
+  "config": {
+    "groupId": "com.demo",
+    "artifactId": "demo",
+    "version": "1.0",
+    "rootPackageName": "com.demo.demo",
+    "entityPackageName": "entity",
+    "servicePackageName": "service",
+    "serviceImplPackageName": "serviceImpl",
+    "mapperPackageName": "mapper",
+    "controllerPackageName": "controller",
+    "jdbcHost": "localhost",
+    "jdbcPort": 3306,
+    "jdbcUser": "root",
+    "jdbcPassword": "root",
+    "jdbcDatabase": "db"
+  },
+  "table": {
+
+    "name": "depart",
+    "comment": "学院",
+    "columns": [
+      {
+        "name": "name",
+        "comment": "名称",
+        "type": "varchar",
+        "length": "255",
+        "searchable": true,
+        "repeatable": false
+      },
+      {
+        "name": "id",
+        "comment": "主键",
+        "type": "int",
+        "primary": true,
+        "enableFormItem": false,
+        "enableTableField": false
+      },
+      {
+        "name": "create_at",
+        "comment": "创建时间",
+        "type": "datetime",
+        "enableFormItem": false,
+        "enableTableField": false
+      },
+      {
+        "name": "update_at",
+        "comment": "更新时间",
+        "type": "datetime",
+        "enableFormItem": false,
+        "enableTableField": false
+      }
+    ],
+    "enablePage": true,
+    "permissions": [
+      {
+        "role": "admin",
+        "operations": [
+          {
+            "description": "添加",
+            "value": "add",
+            "position": "toolbar"
+          },
+          {
+            "description": "修改",
+            "value": "edit",
+            "position": "toolColumn"
+          },
+          {
+            "description": "详情",
+            "value": "detail",
+            "position": "toolColumn"
+          },
+          {
+            "description": "删除",
+            "value": "delete",
+            "position": "toolColumn"
+          }
+        ]
+      }
+    ]
+  },
+  "frames": [
+    {
+
+    }
+  ]
+}

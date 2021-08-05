@@ -36,4 +36,5 @@ class PathConfig(private val projectConfig: ProjectConfig) {
     fun exceptionDir(config: Config) = "${this.rootDir(config)}/exception"
     fun dtoDir(config: Config) = "${this.rootDir(config)}/dto"
     fun xmlDir(config: Config) = "${resourcesDirPath(config)}/xml"
+    fun frameDir(config: Config) = "${this.rootDir(config)}/frame"
 }
