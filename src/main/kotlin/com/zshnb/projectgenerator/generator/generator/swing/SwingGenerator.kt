@@ -30,7 +30,7 @@ class SwingGenerator(private val configuration: Configuration,
             ioUtil.writeTemplate(frameTemplate, mapOf(
                 "frame" to it,
                 "packageName" to config.framePackagePath()
-            ), "${pathConfig.frameDir(config)}/${it.entity!!.name.capitalize()}.java")
+            ), "${pathConfig.frameDir(config)}/${it.entity!!.name.capitalize()}Frame.java")
         }
 
         return project
