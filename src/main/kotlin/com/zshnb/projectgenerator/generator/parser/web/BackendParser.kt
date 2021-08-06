@@ -12,8 +12,22 @@ import org.springframework.stereotype.Component
 @Component
 class BackendParser(private val typeUtil: TypeUtil) {
     fun parseProject(webProject: WebProject): WebProject {
-        webProject.tables = webProject.tables + buildRoleAndMenuAndPermissionTable()
-        webProject.tables = webProject.tables.map {
+        webProject.tables = parseTables(webProject.tables)
+        webProject.roles.forEach { role ->
+            procedureMenus(role)
+        }
+        return webProject
+    }
+
+    fun procedureMenus(role: Role) {
+        role.menus.forEach {
+            it.role = role.name
+        }
+    }
+
+    fun parseTables(tables: List<Table>): List<Table> {
+        val resultTables = tables + buildRoleAndMenuAndPermissionTable()
+        return resultTables.map {
             val columns = if (it.bindUser != null) {
                 it.columns.toMutableList().apply {
                     add(Column("user_id", INT, "user外键", enableFormItem = false,
@@ -25,12 +39,6 @@ class BackendParser(private val typeUtil: TypeUtil) {
             Table(it.name, it.comment, columns, it.permissions, it.columns.any { column -> column.searchable },
                 it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles, it.bindUser)
         }
-        webProject.roles.forEach { role ->
-            role.menus.forEach {
-                it.role = role.name
-            }
-        }
-        return webProject
     }
 
     /**
