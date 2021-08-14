@@ -29,6 +29,70 @@
           "repeatable": false
         },
         {
+          "name": "type",
+          "comment": "类型",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true
+        },
+        {
+          "name": "sex",
+          "comment": "性别",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "comment": "用户",
+      "columns": [
+        {
+          "name": "username",
+          "comment": "用户名",
+          "type": "varchar",
+          "length": "255",
+          "repeatable": false,
+          "searchable": true
+        },
+        {
+          "name": "password",
+          "comment": "密码",
+          "type": "varchar",
+          "length": "255"
+        },
+        {
+          "name": "role",
+          "comment": "角色",
+          "type": "varchar",
+          "length": "255",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
           "name": "id",
           "comment": "主键",
           "type": "int",
@@ -51,7 +115,7 @@
           "enableTableField": false
         }
       ],
-      "enablePage": true,
+      "enablePage": false,
       "permissions": [
         {
           "role": "admin",
@@ -64,11 +128,6 @@
             {
               "description": "修改",
               "value": "edit",
-              "position": "toolColumn"
-            },
-            {
-              "description": "详情",
-              "value": "detail",
               "position": "toolColumn"
             },
             {
@@ -86,6 +145,83 @@
       "items": [
         {
           "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.RadioFrameItem",
+          "options": [
+            {
+              "title": "类型1"
+            },
+            {
+              "title": "类型2"
+            }
+          ]
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.SelectFrameItem",
+          "options": [
+            {
+              "title": "男"
+            },
+            {
+              "title": "女"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "description": "管理员",
+      "menus": [
+        {
+          "name": "学院管理",
+          "href": "/depart/tablePage",
+          "role": "admin"
+        },
+        {
+          "name": "班级管理",
+          "href": "/clazz/tablePage",
+          "role": "admin"
+        },
+        {
+          "name": "学生管理",
+          "href": "/student/tablePage",
+          "role": "admin"
+        },
+        {
+          "name": "课程管理",
+          "href": "/course/tablePage",
+          "role": "admin"
+        }
+      ]
+    },
+    {
+      "name": "teacher",
+      "description": "老师",
+      "menus": [
+        {
+          "name": "学生管理",
+          "href": "/student/tablePage",
+          "role": "teacher"
+        },
+        {
+          "name": "课程管理",
+          "href": "/course/tablePage",
+          "role": "teacher"
+        }
+      ]
+    },
+    {
+      "name": "student",
+      "description": "学生",
+      "menus": [
+        {
+          "name": "学生管理",
+          "href": "/student/tablePage",
+          "role": "student"
         }
       ]
     }

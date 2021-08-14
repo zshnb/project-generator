@@ -27,27 +27,51 @@
     </select>
 
     <insert id="insert" parameterType="${entityPackageName}.${name}">
+        <#assign columnNames>
+            <#list entity.fields?filter(it -> it.column.enableFormItem) as field>
+                ${field.column.name}<#if field_has_next>, </#if><#t>
+            </#list>
+        </#assign>
         <#assign parameters>
-            <#list entity.fields as field>
+            <#list entity.fields?filter(it -> it.column.enableFormItem) as field>
                 ${r"#{" + field.name + "}"}<#if field_has_next>, </#if><#t>
             </#list>
         </#assign>
-        insert into ${camelize(tableName)} values(${parameters})
+        insert into ${camelize(tableName)}(${columnNames}) values(${parameters})
     </insert>
 
     <update id="update" parameterType="${entityPackageName}.${name}">
+        <#assign columnNames>
+            <#list entity.fields?filter(it -> it.column.enableFormItem) as field>
+                ${field.column.name}<#if field_has_next>, </#if><#t>
+            </#list>
+        </#assign>
         <#assign parameters>
-            <#list entity.fields as field>
+            <#list entity.fields?filter(it -> it.column.enableFormItem) as field>
                 ${field.column.name} = ${r"#{" + field.name + "}"}<#if field_has_next>, </#if><#t>
             </#list>
         </#assign>
         update ${camelize(tableName)} set ${parameters} where ${primaryKey} = ${r"#{" + primaryKey + "}"}
     </update>
 
-    <select id="list" resultType="${entityPackageName}.${name}">
-        select *
-        from ${entity.name}
-    </select>
+    <#if name == "Menu">
+        <select id="list" resultType="${entityPackageName}.${name}">
+            select *
+            from menu
+            where role = ${r"#{role}"}
+        </select>
+    <#elseIf name = "Permission">
+        <select id="list" resultType="${entityPackageName}.${name}">
+            select *
+            from permission
+            where role = ${r"#{role}"} and model = ${r"#{model}"}
+        </select>
+    <#else>
+        <select id="list" resultType="${entityPackageName}.${name}">
+            select *
+            from ${entity.name}
+        </select>
+    </#if>
 
     <delete id="deleteById">
         delete from ${camelize(tableName)} where ${primaryKey} = ${r"#{" + primaryKey + "}"}

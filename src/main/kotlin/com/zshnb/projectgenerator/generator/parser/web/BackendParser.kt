@@ -58,33 +58,31 @@ class BackendParser(private val typeUtil: TypeUtil) {
      * */
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
-            Column("id", INT, "id主键", primary = true),
-            Column("create_at", DATETIME, "创建时间"),
-            Column("update_at", DATETIME, "更新时间"),
-            Column("name", VARCHAR, "名称", "255"),
-            Column("description", VARCHAR, "描述", "255")
-        )
-        val roleTable = Table("role", "角色", roleColumns)
+            Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
+            Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
+            Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
+            Column("name", VARCHAR, "名称", "255", enableFormItem = false, enableTableField = false),
+            Column("description", VARCHAR, "描述", "255", enableFormItem = false, enableTableField = false))
+        val roleTable = Table("role", "角色", roleColumns, enablePage = false)
         val menuColumns = listOf(
-            Column("id", INT, "id主键", primary = true),
-            Column("create_at", DATETIME, "创建时间"),
-            Column("update_at", DATETIME, "更新时间"),
-            Column("parent_id", INT, "父id"),
-            Column("name", VARCHAR, "名称", "255"),
-            Column("icon", VARCHAR, "图标", "255"),
-            Column("role", VARCHAR, "所属角色", "255"),
-            Column("href", VARCHAR, "地址", "255"))
-        val menuTable = Table("menu", "菜单", menuColumns)
+            Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
+            Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
+            Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
+            Column("parent_id", INT, "父id", enableFormItem = false, enableTableField = false),
+            Column("name", VARCHAR, "名称", "255", enableFormItem = false, enableTableField = false),
+            Column("icon", VARCHAR, "图标", "255", enableFormItem = false, enableTableField = false),
+            Column("role", VARCHAR, "所属角色", "255", enableFormItem = false, enableTableField = false),
+            Column("href", VARCHAR, "地址", "255", enableFormItem = false, enableTableField = false))
+        val menuTable = Table("menu", "菜单", menuColumns, enablePage = false)
 
         val permissionColumns = listOf(
-            Column("id", INT, "id主键", primary = true),
-            Column("create_at", DATETIME, "创建时间"),
-            Column("update_at", DATETIME, "更新时间"),
-            Column("role", VARCHAR, "角色", "255"),
-            Column("model", VARCHAR, "实体", "255"),
-            Column("operation", VARCHAR, "操作", "255")
-        )
-        val permissionTable = Table("permission", "权限", permissionColumns)
+            Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
+            Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
+            Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
+            Column("role", VARCHAR, "角色", "255", enableFormItem = false, enableTableField = false),
+            Column("model", VARCHAR, "实体", "255", enableFormItem = false, enableTableField = false),
+            Column("operation", VARCHAR, "操作", "255", enableFormItem = false, enableTableField = false))
+        val permissionTable = Table("permission", "权限", permissionColumns, enablePage = false)
         return listOf(roleTable, menuTable, permissionTable)
     }
 }
