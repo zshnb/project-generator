@@ -11,6 +11,8 @@ public interface ${name}Mapper {
     List<Menu> list(String role);
     <#elseif name == "Permission">
     List<Permission> list(@Param("role") String role, @Param("model") String model);
+    <#elseif name == "User">
+    User selectByUserNameAndPasswordAndRole(@Param("userName")String userName, @Param("password")String password, @Param("role")String role);
     <#else>
     List<${name}> list();
     </#if>

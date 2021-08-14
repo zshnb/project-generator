@@ -88,9 +88,7 @@
           "name": "role",
           "comment": "角色",
           "type": "varchar",
-          "length": "255",
-          "enableFormItem": false,
-          "enableTableField": false
+          "length": "255"
         },
         {
           "name": "id",

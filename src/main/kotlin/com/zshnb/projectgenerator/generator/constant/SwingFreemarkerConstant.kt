@@ -10,5 +10,7 @@ class SwingFreemarkerConstant {
         const val GLOBAL_SQL_SESSION_FACTORY_TEMPLATE: String = "swing/global-sql-session-factory.ftl"
         const val GLOBAL_SESSION_TEMPLATE: String = "swing/global-session.ftl"
         const val MYBATIS_CONFIG_TEMPLATE: String = "swing/mybatis-config.ftl"
+        const val LOGIN_FRAME_TEMPLATE: String = "swing/login-frame.ftl"
+        const val REGISTER_FRAME_TEMPLATE: String = "swing/register-frame.ftl"
     }
 }

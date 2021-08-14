@@ -25,6 +25,14 @@
         from ${entity.name}
         where ${primaryKey} = ${r"#{" + primaryKey + "}"}
     </select>
+    <#if entity.name == "user">
+        <select id="selectByUserNameAndPasswordAndRole" resultType="com.demo.demo.entity.User">
+            select *
+            from user u
+            inner join role r on u.role = r.name
+            where u.username = ${r"#{userName}"} and u.password = ${r"#{password}"} and r.description = ${r"#{role}"}
+        </select>
+    </#if>
 
     <insert id="insert" parameterType="${entityPackageName}.${name}">
         <#assign columnNames>

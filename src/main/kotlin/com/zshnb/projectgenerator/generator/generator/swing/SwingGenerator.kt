@@ -35,7 +35,21 @@ class SwingGenerator(private val configuration: Configuration,
         val globalSqlSessionFactoryTemplate = configuration.getTemplate(SwingFreemarkerConstant.GLOBAL_SQL_SESSION_FACTORY_TEMPLATE)
         val globalSessionTemplate = configuration.getTemplate(SwingFreemarkerConstant.GLOBAL_SESSION_TEMPLATE)
         val mybatisConfigTemplate = configuration.getTemplate(SwingFreemarkerConstant.MYBATIS_CONFIG_TEMPLATE)
+        val loginFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.LOGIN_FRAME_TEMPLATE)
+        val registerFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.REGISTER_FRAME_TEMPLATE)
 
+        ioUtil.writeTemplate(loginFrameTemplate, mapOf(
+            "configPackageName" to config.configPackagePath(),
+            "entityPackageName" to config.entityPackagePath(),
+            "mapperPackageName" to config.mapperPackagePath(),
+            "framePackageName" to config.framePackagePath()
+        ), "${pathConfig.frameDir(config)}/LoginFrame.java")
+        ioUtil.writeTemplate(registerFrameTemplate, mapOf(
+            "configPackageName" to config.configPackagePath(),
+            "entityPackageName" to config.entityPackagePath(),
+            "mapperPackageName" to config.mapperPackagePath(),
+            "framePackageName" to config.framePackagePath()
+        ), "${pathConfig.frameDir(config)}/RegisterFrame.java")
         ioUtil.writeTemplate(pomTemplate, config, "${projectConfig.projectDir}/${config.artifactId}/pom.xml")
         ioUtil.writeTemplate(globalSqlSessionFactoryTemplate, mapOf("configPackageName" to config.configPackagePath()),
             "${pathConfig.configDir(config)}/GlobalSqlSessionFactory.java")
