@@ -59,7 +59,7 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;" <#if projectType == "ssm"><%=((User)session.getAttribute("user")).getUsername()%><#else>th:text="${session.user.username}"</#if>></a>
+                    <a href="javascript:;" <#if projectType == "ssm"><%=((User)session.getAttribute("user")).getUsername()%><#else>th:text="${r"${session.user.username}"}"</#if>></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" class="logout">退出登录</a>
