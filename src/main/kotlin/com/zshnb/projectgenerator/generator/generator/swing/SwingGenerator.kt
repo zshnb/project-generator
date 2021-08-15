@@ -37,6 +37,7 @@ class SwingGenerator(private val configuration: Configuration,
         val mybatisConfigTemplate = configuration.getTemplate(SwingFreemarkerConstant.MYBATIS_CONFIG_TEMPLATE)
         val loginFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.LOGIN_FRAME_TEMPLATE)
         val registerFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.REGISTER_FRAME_TEMPLATE)
+        val mainFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.MAIN_FRAME_TEMPLATE)
 
         ioUtil.writeTemplate(loginFrameTemplate, mapOf(
             "configPackageName" to config.configPackagePath(),
@@ -105,17 +106,22 @@ class SwingGenerator(private val configuration: Configuration,
             .map {
                 Menu(initMenuId++, 0, it.name, it.icon, it.href, it.role, it.bind, it.child)
             }.toList()
+            .distinctBy { it.href }
 
-        val permissions = entities.map { entity ->
-            entity.table.permissions.map {
-                it.operations.map { op ->
-                    Triple(op.value, it.role, entity.name)
-                }
-            }
-        }.flatten().flatten()
-        ioUtil.writeTemplate(initDataTemplate,
-            mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
+        val permissions = backendParser.parsePermissions(entities)
+        ioUtil.writeTemplate(initDataTemplate, mapOf(
+            "roles" to roles,
+            "menus" to menus,
+            "permissions" to permissions,
+            "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")
+        ioUtil.writeTemplate(mainFrameTemplate, mapOf(
+            "menus" to menus,
+            "mapperPackageName" to config.mapperPackagePath(),
+            "entityPackageName" to config.entityPackagePath(),
+            "framePackageName" to config.framePackagePath(),
+            "configPackageName" to config.configPackagePath()),
+            "${pathConfig.frameDir(config)}/MainFrame.java")
 
         return project
     }

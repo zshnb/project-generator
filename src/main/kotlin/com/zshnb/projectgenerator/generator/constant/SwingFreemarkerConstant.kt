@@ -12,5 +12,6 @@ class SwingFreemarkerConstant {
         const val MYBATIS_CONFIG_TEMPLATE: String = "swing/mybatis-config.ftl"
         const val LOGIN_FRAME_TEMPLATE: String = "swing/login-frame.ftl"
         const val REGISTER_FRAME_TEMPLATE: String = "swing/register-frame.ftl"
+        const val MAIN_FRAME_TEMPLATE: String = "swing/main-frame.ftl"
     }
 }

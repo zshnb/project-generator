@@ -51,7 +51,6 @@ public class ${name}Frame {
         JFrame frame = new JFrame();
         frame.setLocation(10, 10);
         frame.setSize(600, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.add(parentPanel, BorderLayout.CENTER);
         frame.setVisible(true);

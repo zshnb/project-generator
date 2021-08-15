@@ -173,14 +173,7 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
                 }
             }.toList()
 
-        val permissions = entities.map { entity ->
-            entity.table.permissions.map {
-                it.operations.map { op ->
-                    Triple(op.value, it.role, entity.name)
-                }
-            }
-        }.flatten().flatten()
-
+        val permissions = backendParser.parsePermissions(entities)
         ioUtil.writeTemplate(initDataTemplate,
             mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")

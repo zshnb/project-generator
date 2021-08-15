@@ -53,6 +53,15 @@ class BackendParser(private val typeUtil: TypeUtil) {
         }
     }
 
+    fun parsePermissions(entities: List<Entity>): List<Triple<String, String, String>> =
+        entities.map { entity ->
+            entity.table.permissions.map {
+                it.operations.map { op ->
+                    Triple(op.value, it.role, entity.name)
+                }
+            }
+        }.flatten().flatten()
+
     /**
      * 创建角色，菜单，权限表
      * */
