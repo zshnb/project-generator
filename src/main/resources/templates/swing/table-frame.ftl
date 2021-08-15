@@ -12,7 +12,17 @@ import java.util.List;
 import java.util.Enumeration;
 import ${mapperPackageName}.*;
 import ${configPackageName}.*;
+import ${dtoPackageName}.*;
 import ${entityPackageName}.${name};
+<#function camelize(s)>
+    <#return s
+    ?replace('(^_+)|(_+$)', '', 'r')
+    ?replace('\\_+(\\w)?', ' $1', 'r')
+    ?replace('([A-Z])', ' $1', 'r')
+    ?capitalize
+    ?replace(' ' , '')
+    ?uncapFirst>
+</#function>
 
 public class ${name}Frame {
     JPanel parentPanel = new JPanel(new GridBagLayout());
@@ -202,25 +212,55 @@ public class ${name}Frame {
         leftPanel.add(operationPanel, new GridBagConstraints(0, ${frame.items?size}, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
     }
 
+    <#assign dataType>
+        <#if frame.entity.table.associate??>
+            ${name}Dto<#t>
+        <#else>
+            ${name}<#t>
+        </#if>
+    </#assign>
     // 初始化数据，放进table里
-    private void initData(List<${name}> ${name?uncapFirst}s) {
+    private void initData(List<${dataType}> ${name?uncapFirst}s) {
         <#assign columnNames>
-            <#list frame.entity.table.columns?filter(it -> it.enableTableField) as column>
-                "${column.comment}"<#if column_has_next>, </#if><#t>
-            </#list>
+            <#if frame.entity.table.associate??>
+                <#list frame.entity.table.columns?filter(it -> it.enableTableField) as column>
+                    "${column.comment}", <#t>
+                </#list>
+                <#list frame.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                    <#list column.associate.associateResultColumns as result>
+                        "${result.tableFieldTitle}"<#if result_has_next>, </#if><#t>
+                    </#list>
+                    <#if column_has_next>, </#if><#t>
+                </#list>
+            <#else>
+                <#list frame.entity.table.columns?filter(it -> it.enableTableField) as column>
+                    "${column.comment}"<#if column_has_next>, </#if><#t>
+                </#list>
+            </#if>
         </#assign>
         Object[] columnNames = new String[]{${columnNames}, ""};
         Object[][] data = new Object[${name?uncapFirst}s.size()][columnNames.length];
+        <#assign i = 0>
         for (int i = 0; i < ${name?uncapFirst}s.size(); i++) {
             <#list frame.entity.fields?filter(it -> it.column.enableTableField) as field>
-                data[i][${field_index}] = ${name?uncapFirst}s.get(i).get${field.name?capFirst}();
+                data[i][${i}] = ${name?uncapFirst}s.get(i).get${field.name?capFirst}();
+                <#assign i = i + 1>
             </#list>
-            data[i][${frame.entity.fields?filter(it -> it.column.enableTableField)?size}] = ${name?uncapFirst}s.get(i).getId();
+            <#if frame.entity.table.associate??>
+                <#list frame.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                    <#list column.associate.associateResultColumns as result>
+                        <#assign aliasColumnName = "${camelize(column.associate.targetTableName)?capFirst}${result.originColumnName?capFirst}">
+                        data[i][${i}] = ${name?uncapFirst}s.get(i).get${aliasColumnName}();
+                        <#assign i = i + 1>
+                    </#list>
+                </#list>
+            </#if>
+            data[i][${i}] = ${name?uncapFirst}s.get(i).getId();
         }
         TableModel tableModel = new DefaultTableModel(data, columnNames);
         jTable.setModel(tableModel);
-        jTable.getColumnModel().getColumn(${frame.entity.fields?filter(it -> it.column.enableTableField)?size}).setMinWidth(0);
-        jTable.getColumnModel().getColumn(${frame.entity.fields?filter(it -> it.column.enableTableField)?size}).setMaxWidth(0);
+        jTable.getColumnModel().getColumn(${i}).setMinWidth(0);
+        jTable.getColumnModel().getColumn(${i}).setMaxWidth(0);
         jTable.updateUI();
     }
 }

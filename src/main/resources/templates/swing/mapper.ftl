@@ -14,9 +14,12 @@ public interface ${name}Mapper {
     <#elseif name == "User">
     User selectByUserNameAndPasswordAndRole(@Param("userName")String userName, @Param("password")String password, @Param("role")String role);
     <#else>
-    List<${name}> list();
     </#if>
+    List<${name}> list();
     void insert(${name} ${name?uncap_first});
     void update(${name} ${name?uncap_first});
     void deleteById(int id);
+    <#if entity.table.associate>
+    List<${name}Dto> findDtos(<#if entity.table.searchable>@Param("request")List${name}Request request</#if><#if (entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
+    </#if>
 }

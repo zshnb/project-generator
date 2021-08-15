@@ -38,6 +38,7 @@ class SwingGenerator(private val configuration: Configuration,
         val loginFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.LOGIN_FRAME_TEMPLATE)
         val registerFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.REGISTER_FRAME_TEMPLATE)
         val mainFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.MAIN_FRAME_TEMPLATE)
+        val dtoTemplate = configuration.getTemplate(SwingFreemarkerConstant.DTO_TEMPLATE)
 
         ioUtil.writeTemplate(loginFrameTemplate, mapOf(
             "configPackageName" to config.configPackagePath(),
@@ -65,6 +66,7 @@ class SwingGenerator(private val configuration: Configuration,
                 "frame" to it,
                 "packageName" to config.framePackagePath(),
                 "entityPackageName" to config.entityPackagePath(),
+                "dtoPackageName" to config.dtoPackagePath(),
                 "configPackageName" to config.configPackagePath(),
                 "mapperPackageName" to config.mapperPackagePath()
             ), "${pathConfig.frameDir(config)}/${it.entity!!.name.capitalize()}Frame.java")
@@ -87,9 +89,15 @@ class SwingGenerator(private val configuration: Configuration,
             ioUtil.writeTemplate(mapperXmlTemplate, mapOf(
                 "entity" to it,
                 "packageName" to config.mapperPackagePath(),
+                "dtoPackageName" to config.dtoPackagePath(),
                 "entityPackageName" to config.entityPackagePath(),
                 "config" to config)
                 , "${pathConfig.xmlDir(config)}/${it.name.capitalize()}Mapper.xml")
+            if (it.table.associate) {
+                ioUtil.writeTemplate(dtoTemplate,
+                    mapOf("entity" to it, "packageName" to config.dtoPackagePath())
+                    , "${pathConfig.dtoDir(config)}/${it.name.capitalize()}Dto.java")
+            }
         }
         ioUtil.writeTemplate(initTableTemplate, mapOf(
             "tables" to tables,
@@ -128,6 +136,7 @@ class SwingGenerator(private val configuration: Configuration,
 
     private fun mkdirs(config: Config) {
         val entityDir = File(pathConfig.entityDir(config))
+        val dtoDir = File(pathConfig.dtoDir(config))
         val mapperDir = File(pathConfig.mapperDir(config))
         val mapperXmlDir = File(pathConfig.xmlDir(config))
         val configDir = File(pathConfig.configDir(config))
@@ -140,5 +149,6 @@ class SwingGenerator(private val configuration: Configuration,
         mapperXmlDir.mkdirs()
         configDir.mkdir()
         frameDir.mkdir()
+        dtoDir.mkdir()
     }
 }
