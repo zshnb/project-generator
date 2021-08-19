@@ -123,7 +123,6 @@ public class ${name}Frame {
                 id = (int) jTable.getValueAt(row, ${frame.entity.fields?filter(it -> it.column.enableTableField)?size});
             }
         });
-
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,14 +151,16 @@ public class ${name}Frame {
                         <#case "SelectFrameItem">
                             <#assign comboBox>
                                 <#if item.field.column.associate??>
-                                    ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                                    <#assign associateFieldVariableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                                    ${associateFieldVariableName}ComboBox<#t>
                                 <#else>
                                     ${item.field.name}ComboBox<#t>
                                 </#if>
                             </#assign>
-                            <#if frame.entity.table.associate>
-                                String ${item.field.name}Str = ${comboBox}.getSelectedItem().toString();
-                                int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${item.field.name}Str)).findAny().get().getId();
+                            <#if item.field.column.associate??>
+                                <#assign associateFieldVariableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                                String ${associateFieldVariableName} = ${comboBox}.getSelectedItem().toString();
+                                int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${associateFieldVariableName})).findAny().get().getId();
                             <#else>
                                 String ${item.field.name} = ${comboBox}.getSelectedItem().toString();
                             </#if>
@@ -175,7 +176,6 @@ public class ${name}Frame {
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
-
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -204,14 +204,16 @@ public class ${name}Frame {
                         <#case "SelectFrameItem">
                             <#assign comboBox>
                                 <#if item.field.column.associate??>
-                                    ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                                    <#assign associateFieldVariableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                                    ${associateFieldVariableName}ComboBox<#t>
                                 <#else>
                                     ${item.field.name}ComboBox<#t>
                                 </#if>
                             </#assign>
-                            <#if frame.entity.table.associate>
-                                String ${item.field.name}Str = ${comboBox}.getSelectedItem().toString();
-                                int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${item.field.name}Str)).findAny().get().getId();
+                            <#if item.field.column.associate??>
+                                <#assign associateFieldVariableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                                String ${associateFieldVariableName} = ${comboBox}.getSelectedItem().toString();
+                                int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${associateFieldVariableName})).findAny().get().getId();
                             <#else>
                                 String ${item.field.name} = ${comboBox}.getSelectedItem().toString();
                             </#if>
@@ -224,6 +226,13 @@ public class ${name}Frame {
                     </#list>
                 </#assign>
                 ${frame.entity.name}Mapper.update(new ${name}(id, ${params}));
+                initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ${mapper}.deleteById(id);
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
