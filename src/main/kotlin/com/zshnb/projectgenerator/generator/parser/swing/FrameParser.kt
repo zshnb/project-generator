@@ -7,10 +7,8 @@ import org.springframework.stereotype.Component
 import java.lang.RuntimeException
 
 @Component
-class FrameParser(private val backendParser: BackendParser) {
-    fun parseFrames(swingProject: SwingProject): List<Frame> {
-        val frames = swingProject.frames
-        val entities = backendParser.parseEntities(swingProject.tables)
+class FrameParser {
+    fun parseFrames(frames: List<Frame>, entities: List<Entity>): List<Frame> {
         return entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
             val frame = frames[index]
             val items = frame.items.mapIndexed { innerIndex, item ->

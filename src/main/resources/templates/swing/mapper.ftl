@@ -1,6 +1,8 @@
 package ${packageName};
 <#assign name>${entity.name?cap_first}</#assign>
 import ${entityPackageName}.*;
+import ${dtoPackageName}.*;
+import ${requestPackageName}.*;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import java.lang.String;

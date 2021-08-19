@@ -28,6 +28,7 @@ public class MainFrame {
                             new ${menu.href?cap_first}Frame();
                         }
                     });
+                    break;
                 }
                 </#list>
             }

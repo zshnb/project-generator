@@ -14,5 +14,6 @@ class SwingFreemarkerConstant {
         const val REGISTER_FRAME_TEMPLATE: String = "swing/register-frame.ftl"
         const val MAIN_FRAME_TEMPLATE: String = "swing/main-frame.ftl"
         const val DTO_TEMPLATE = "swing/dto.ftl"
+        const val LIST_REQUEST_TEMPLATE = "swing/list-request.ftl"
     }
 }

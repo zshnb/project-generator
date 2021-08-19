@@ -13,7 +13,8 @@ import java.util.Enumeration;
 import ${mapperPackageName}.*;
 import ${configPackageName}.*;
 import ${dtoPackageName}.*;
-import ${entityPackageName}.${name};
+import ${entityPackageName}.*;
+import ${requestPackageName}.*;
 <#function camelize(s)>
     <#return s
     ?replace('(^_+)|(_+$)', '', 'r')
@@ -36,7 +37,6 @@ public class ${name}Frame {
     private int id;
 
     <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
-        JLabel ${item.field.name}Label = new JLabel("${item.field.column.comment}");
         <#switch item.class.simpleName>
             <#case "TextFieldFrameItem">
                 JTextField ${item.field.name}TextField = new JTextField();
@@ -48,16 +48,29 @@ public class ${name}Frame {
                 ButtonGroup ${item.field.name}ButtonGroup =  new ButtonGroup();
                 <#break>
             <#case "SelectFrameItem">
-                JComboBox<String> ${item.field.name}ComboBox = new JComboBox<>();
+                <#assign comboBox>
+                    <#if item.field.column.associate??>
+                        ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                    <#else>
+                        ${item.field.name}ComboBox<#t>
+                    </#if>
+                </#assign>
+                JComboBox<String> ${comboBox} = new JComboBox<>();
                 <#break>
         </#switch>
     </#list>
     <#assign mapper = "${frame.entity.name}Mapper"/>
-    private final PermissionMapper permissionMapper = GlobalSqlSessionFactory.getSqlSession().getMapper(PermissionMapper.class);
     private final ${name}Mapper ${mapper} = GlobalSqlSessionFactory.getSqlSession().getMapper(${name}Mapper.class);
+    <#if frame.entity.table.associate>
+        <#list frame.entity.table.columns?filter(it -> it.associate??) as column>
+            <#assign associateClass = "${camelize(column.associate.targetTableName)?capFirst}"/>
+            private final ${associateClass}Mapper ${associateClass?uncapFirst}Mapper = GlobalSqlSessionFactory.getSqlSession().getMapper(${associateClass}Mapper.class);
+            private List<${associateClass}> ${associateClass?uncapFirst}s = ${associateClass?uncapFirst}Mapper.list();
+        </#list>
+    </#if>
     public ${name}Frame() {
         initUI();
-        initData(${mapper}.list());
+        initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
         JFrame frame = new JFrame();
         frame.setLocation(10, 10);
         frame.setSize(600, 600);
@@ -70,10 +83,12 @@ public class ${name}Frame {
             public void mouseClicked(MouseEvent e) {
                 int row = jTable.getSelectedRow();
                 <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
-                    String ${item.field.name} = (String) jTable.getValueAt(row, ${item_index});
+                    <#if !item.field.column.associate??>
+                        ${item.field.type} ${item.field.name} = (${item.field.type}) jTable.getValueAt(row, ${item_index});
+                    </#if>
                     <#switch item.class.simpleName>
                     <#case "TextFieldFrameItem">
-                        ${item.field.name}TextField.setText(${item.field.name});
+                        ${item.field.name}TextField.setText(String.valueOf(${item.field.name}));
                         <#break>
                     <#case "PasswordFieldFrameItem">
                         <#break>
@@ -88,7 +103,20 @@ public class ${name}Frame {
                         }
                         <#break>
                     <#case "SelectFrameItem">
-                        ${item.field.name}ComboBox.setSelectedItem(${item.field.name});
+                        <#assign comboBox>
+                            <#if item.field.column.associate??>
+                                ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                            <#else>
+                                ${item.field.name}ComboBox<#t>
+                            </#if>
+                        </#assign>
+                        <#if item.field.column.associate??>
+                            <#assign variableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                            String ${variableName} = (String) jTable.getValueAt(row, ${item_index});
+                            ${comboBox}.setSelectedItem(${variableName});
+                        <#else>
+                            ${comboBox}.setSelectedItem(${item.field.name});
+                        </#if>
                         <#break>
                     </#switch>
                 </#list>
@@ -102,7 +130,11 @@ public class ${name}Frame {
                 <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
                     <#switch item.class.simpleName>
                         <#case "TextFieldFrameItem">
-                            String ${item.field.name} = ${item.field.name}TextField.getText();
+                            <#if item.field.type == "String">
+                                String ${item.field.name} = ${item.field.name}TextField.getText();
+                            <#elseIf item.field.type == "Integer">
+                                Integer ${item.field.name} = Integer.valueOf(${item.field.name}TextField.getText());
+                            </#if>
                             <#break>
                         <#case "PasswordFieldFrameItem">
                             String ${item.field.name} = passwordField.getText();
@@ -113,12 +145,24 @@ public class ${name}Frame {
                             while (${item.field.name}ButtonGroupIterator.hasMoreElements()) {
                                 AbstractButton abstractButton = ${item.field.name}ButtonGroupIterator.nextElement();
                                 if (abstractButton.isSelected()) {
-                                    type = abstractButton.getText();
+                                    ${item.field.name} = abstractButton.getText();
                                 }
                             }
                             <#break>
                         <#case "SelectFrameItem">
-                            String ${item.field.name} = ${item.field.name}ComboBox.getSelectedItem().toString();
+                            <#assign comboBox>
+                                <#if item.field.column.associate??>
+                                    ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                                <#else>
+                                    ${item.field.name}ComboBox<#t>
+                                </#if>
+                            </#assign>
+                            <#if frame.entity.table.associate>
+                                String ${item.field.name}Str = ${comboBox}.getSelectedItem().toString();
+                                int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${item.field.name}Str)).findAny().get().getId();
+                            <#else>
+                                String ${item.field.name} = ${comboBox}.getSelectedItem().toString();
+                            </#if>
                             <#break>
                     </#switch>
                 </#list>
@@ -128,8 +172,7 @@ public class ${name}Frame {
                     </#list>
                 </#assign>
                 ${frame.entity.name}Mapper.insert(new ${name}(${params}));
-                List<${name}> ${name?uncapFirst}s = ${mapper}.list();
-                initData(${name?uncapFirst}s);
+                initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
 
@@ -139,7 +182,11 @@ public class ${name}Frame {
                 <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
                     <#switch item.class.simpleName>
                         <#case "TextFieldFrameItem">
-                            String ${item.field.name} = ${item.field.name}TextField.getText();
+                            <#if item.field.type == "String">
+                                String ${item.field.name} = ${item.field.name}TextField.getText();
+                            <#elseIf item.field.type == "Integer">
+                                Integer ${item.field.name} = Integer.valueOf(${item.field.name}TextField.getText());
+                            </#if>
                             <#break>
                         <#case "PasswordFieldFrameItem">
                             String ${item.field.name} = passwordField.getText();
@@ -150,12 +197,24 @@ public class ${name}Frame {
                             while (${item.field.name}ButtonGroupIterator.hasMoreElements()) {
                                 AbstractButton abstractButton = ${item.field.name}ButtonGroupIterator.nextElement();
                                 if (abstractButton.isSelected()) {
-                                    type = abstractButton.getText();
+                                    ${item.field.name} = abstractButton.getText();
                                 }
                             }
                             <#break>
                         <#case "SelectFrameItem">
-                            String ${item.field.name} = ${item.field.name}ComboBox.getSelectedItem().toString();
+                            <#assign comboBox>
+                                <#if item.field.column.associate??>
+                                    ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                                <#else>
+                                    ${item.field.name}ComboBox<#t>
+                                </#if>
+                            </#assign>
+                            <#if frame.entity.table.associate>
+                                String ${item.field.name}Str = ${comboBox}.getSelectedItem().toString();
+                                int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${item.field.name}Str)).findAny().get().getId();
+                            <#else>
+                                String ${item.field.name} = ${comboBox}.getSelectedItem().toString();
+                            </#if>
                             <#break>
                     </#switch>
                 </#list>
@@ -165,8 +224,7 @@ public class ${name}Frame {
                     </#list>
                 </#assign>
                 ${frame.entity.name}Mapper.update(new ${name}(id, ${params}));
-                List<${name}> ${name?uncapFirst}s = ${mapper}.list();
-                initData(${name?uncapFirst}s);
+                initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
     }
@@ -179,7 +237,7 @@ public class ${name}Frame {
 
         <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
             JPanel jPanel${item_index} = new JPanel(new GridBagLayout());
-            jPanel${item_index}.add(${item.field.name}Label, new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+            jPanel${item_index}.add(new JLabel("${item.field.column.comment}"), new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
             <#switch item.class.simpleName>
                 <#case "TextFieldFrameItem">
                     jPanel${item_index}.add(${item.field.name}TextField, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
@@ -195,12 +253,21 @@ public class ${name}Frame {
                     </#list>
                     <#break>
                 <#case "SelectFrameItem">
+                    <#assign comboBox>
+                        <#if item.field.column.associate??>
+                            ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                        <#else>
+                            ${item.field.name}ComboBox<#t>
+                        </#if>
+                    </#assign>
                     <#if !item.field.column.associate??>
                         <#list item.options as option>
                             ${item.field.name}ComboBox.addItem("${option.title}");
                         </#list>
+                    <#else>
+                        ${camelize(item.field.column.associate.targetTableName)}s.forEach(it -> ${comboBox}.addItem(it.get${item.field.column.associate.formItemColumnName?capFirst}()));
                     </#if>
-                    jPanel${item_index}.add(${item.field.name}ComboBox, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+                    jPanel${item_index}.add(${comboBox}, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
                     <#break>
             </#switch>
             leftPanel.add(jPanel${item_index}, new GridBagConstraints(0, ${item_index}, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
@@ -213,7 +280,7 @@ public class ${name}Frame {
     }
 
     <#assign dataType>
-        <#if frame.entity.table.associate??>
+        <#if frame.entity.table.associate>
             ${name}Dto<#t>
         <#else>
             ${name}<#t>
@@ -222,8 +289,8 @@ public class ${name}Frame {
     // 初始化数据，放进table里
     private void initData(List<${dataType}> ${name?uncapFirst}s) {
         <#assign columnNames>
-            <#if frame.entity.table.associate??>
-                <#list frame.entity.table.columns?filter(it -> it.enableTableField) as column>
+            <#if frame.entity.table.associate>
+                <#list frame.entity.table.columns?filter(it -> it.enableTableField && !it.associate??) as column>
                     "${column.comment}", <#t>
                 </#list>
                 <#list frame.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
@@ -233,7 +300,7 @@ public class ${name}Frame {
                     <#if column_has_next>, </#if><#t>
                 </#list>
             <#else>
-                <#list frame.entity.table.columns?filter(it -> it.enableTableField) as column>
+                <#list frame.entity.table.columns?filter(it -> it.enableTableField && !it.associate??) as column>
                     "${column.comment}"<#if column_has_next>, </#if><#t>
                 </#list>
             </#if>
@@ -242,7 +309,7 @@ public class ${name}Frame {
         Object[][] data = new Object[${name?uncapFirst}s.size()][columnNames.length];
         <#assign i = 0>
         for (int i = 0; i < ${name?uncapFirst}s.size(); i++) {
-            <#list frame.entity.fields?filter(it -> it.column.enableTableField) as field>
+            <#list frame.entity.fields?filter(it -> it.column.enableTableField && !it.column.associate??) as field>
                 data[i][${i}] = ${name?uncapFirst}s.get(i).get${field.name?capFirst}();
                 <#assign i = i + 1>
             </#list>

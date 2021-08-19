@@ -181,7 +181,7 @@
         {
           "name": "sex",
           "comment": "性别",
-          "type": "int",
+          "type": "varchar",
           "searchable": true
         },
         {
