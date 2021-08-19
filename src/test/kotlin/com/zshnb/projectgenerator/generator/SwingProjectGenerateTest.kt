@@ -2,11 +2,8 @@ package com.zshnb.projectgenerator.generator
 
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
-import com.zshnb.projectgenerator.generator.entity.c.CProject
 import com.zshnb.projectgenerator.generator.entity.swing.SwingProject
-import com.zshnb.projectgenerator.generator.entity.web.WebProject
-import com.zshnb.projectgenerator.generator.generator.c.CProjectGenerator
-import com.zshnb.projectgenerator.generator.generator.swing.SwingGenerator
+import com.zshnb.projectgenerator.generator.generator.swing.SwingProjectGenerator
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +15,7 @@ import java.nio.charset.StandardCharsets
 @SpringBootTest
 class SwingProjectGenerateTest {
     @Autowired
-    private lateinit var generator: SwingGenerator
+    private lateinit var generator: SwingProjectGenerator
 
     @Autowired
     private lateinit var moshi: Moshi

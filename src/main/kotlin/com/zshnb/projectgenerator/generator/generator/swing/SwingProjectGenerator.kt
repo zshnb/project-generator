@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component
 import java.io.File
 
 @Component
-class SwingGenerator(private val configuration: Configuration,
-                     private val projectConfig: ProjectConfig,
-                     private val ioUtil: IOUtil,
-                     private val pathConfig: PathConfig,
-                     private val frameParser: FrameParser,
-                     private val backendParser: BackendParser) : BaseGenerator {
+class SwingProjectGenerator(private val configuration: Configuration,
+                            private val projectConfig: ProjectConfig,
+                            private val ioUtil: IOUtil,
+                            private val pathConfig: PathConfig,
+                            private val frameParser: FrameParser,
+                            private val backendParser: BackendParser) : BaseGenerator {
     override fun generateProject(project: Project): Project {
         val swingProject = project.swingProject!!
         val config = swingProject.config
