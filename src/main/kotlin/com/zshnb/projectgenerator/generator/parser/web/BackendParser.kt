@@ -12,8 +12,22 @@ import org.springframework.stereotype.Component
 @Component
 class BackendParser(private val typeUtil: TypeUtil) {
     fun parseProject(webProject: WebProject): WebProject {
-        webProject.tables = webProject.tables + buildRoleAndMenuAndPermissionTable()
-        webProject.tables = webProject.tables.map {
+        webProject.tables = parseTables(webProject.tables)
+        webProject.roles.forEach { role ->
+            procedureMenus(role)
+        }
+        return webProject
+    }
+
+    fun procedureMenus(role: Role) {
+        role.menus.forEach {
+            it.role = role.name
+        }
+    }
+
+    fun parseTables(tables: List<Table>): List<Table> {
+        val resultTables = tables + buildRoleAndMenuAndPermissionTable()
+        return resultTables.map {
             val columns = if (it.bindUser != null) {
                 it.columns.toMutableList().apply {
                     add(Column("user_id", INT, "user外键", enableFormItem = false,
@@ -25,12 +39,6 @@ class BackendParser(private val typeUtil: TypeUtil) {
             Table(it.name, it.comment, columns, it.permissions, it.columns.any { column -> column.searchable },
                 it.enablePage, it.columns.any { column -> column.associate != null }, it.bindRoles, it.bindUser)
         }
-        webProject.roles.forEach { role ->
-            role.menus.forEach {
-                it.role = role.name
-            }
-        }
-        return webProject
     }
 
     /**
@@ -45,38 +53,45 @@ class BackendParser(private val typeUtil: TypeUtil) {
         }
     }
 
+    fun parsePermissions(entities: List<Entity>): List<Triple<String, String, String>> =
+        entities.map { entity ->
+            entity.table.permissions.map {
+                it.operations.map { op ->
+                    Triple(op.value, it.role, entity.name)
+                }
+            }
+        }.flatten().flatten()
+
     /**
      * 创建角色，菜单，权限表
      * */
     private fun buildRoleAndMenuAndPermissionTable(): List<Table> {
         val roleColumns = listOf(
-            Column("id", INT, "id主键", primary = true),
-            Column("create_at", DATETIME, "创建时间"),
-            Column("update_at", DATETIME, "更新时间"),
-            Column("name", VARCHAR, "名称", "255"),
-            Column("description", VARCHAR, "描述", "255")
-        )
-        val roleTable = Table("role", "角色", roleColumns)
+            Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
+            Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
+            Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
+            Column("name", VARCHAR, "名称", "255", enableFormItem = false, enableTableField = false),
+            Column("description", VARCHAR, "描述", "255", enableFormItem = false, enableTableField = false))
+        val roleTable = Table("role", "角色", roleColumns, enablePage = false)
         val menuColumns = listOf(
-            Column("id", INT, "id主键", primary = true),
-            Column("create_at", DATETIME, "创建时间"),
-            Column("update_at", DATETIME, "更新时间"),
-            Column("parent_id", INT, "父id"),
-            Column("name", VARCHAR, "名称", "255"),
-            Column("icon", VARCHAR, "图标", "255"),
-            Column("role", VARCHAR, "所属角色", "255"),
-            Column("href", VARCHAR, "地址", "255"))
-        val menuTable = Table("menu", "菜单", menuColumns)
+            Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
+            Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
+            Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
+            Column("parent_id", INT, "父id", enableFormItem = false, enableTableField = false),
+            Column("name", VARCHAR, "名称", "255", enableFormItem = false, enableTableField = false),
+            Column("icon", VARCHAR, "图标", "255", enableFormItem = false, enableTableField = false),
+            Column("role", VARCHAR, "所属角色", "255", enableFormItem = false, enableTableField = false),
+            Column("href", VARCHAR, "地址", "255", enableFormItem = false, enableTableField = false))
+        val menuTable = Table("menu", "菜单", menuColumns, enablePage = false)
 
         val permissionColumns = listOf(
-            Column("id", INT, "id主键", primary = true),
-            Column("create_at", DATETIME, "创建时间"),
-            Column("update_at", DATETIME, "更新时间"),
-            Column("role", VARCHAR, "角色", "255"),
-            Column("model", VARCHAR, "实体", "255"),
-            Column("operation", VARCHAR, "操作", "255")
-        )
-        val permissionTable = Table("permission", "权限", permissionColumns)
+            Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
+            Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
+            Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
+            Column("role", VARCHAR, "角色", "255", enableFormItem = false, enableTableField = false),
+            Column("model", VARCHAR, "实体", "255", enableFormItem = false, enableTableField = false),
+            Column("operation", VARCHAR, "操作", "255", enableFormItem = false, enableTableField = false))
+        val permissionTable = Table("permission", "权限", permissionColumns, enablePage = false)
         return listOf(roleTable, menuTable, permissionTable)
     }
 }

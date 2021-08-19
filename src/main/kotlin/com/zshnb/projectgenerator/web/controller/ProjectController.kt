@@ -6,6 +6,7 @@ import com.zshnb.projectgenerator.generator.entity.web.WebProjectType.SBMP
 import com.zshnb.projectgenerator.generator.generator.c.CProjectGenerator
 import com.zshnb.projectgenerator.generator.generator.sbmp.*
 import com.zshnb.projectgenerator.generator.generator.ssm.LayuiSSMProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.swing.SwingProjectGenerator
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import com.zshnb.projectgenerator.web.request.AddOrUpdateProjectRequest
@@ -22,6 +23,7 @@ class ProjectController(
     private val layuiSBMPProjectGenerator: LayuiSBMPProjectGenerator,
     private val layuiSSMProjectGenerator: LayuiSSMProjectGenerator,
     private val cProjectGenerator: CProjectGenerator,
+    private val swingProjectGenerator: SwingProjectGenerator,
     private val zipFileWriter: ZipFileWriter,
     private val projectConfig: ProjectConfig,
     private val moshi: Moshi,
@@ -50,6 +52,14 @@ class ProjectController(
                 FileUtils.deleteQuietly(file)
                 cProjectGenerator.generateProject(project)
                 file to fileName
+            }
+            project.swingProject != null -> {
+                val filePath = "${projectConfig.projectDir}/${project.swingProject.config.artifactId}"
+                FileUtils.deleteDirectory(File(filePath))
+                val fileName = "$filePath.zip"
+                swingProjectGenerator.generateProject(project)
+                zipFileWriter.createZipFile(fileName, filePath)
+                File(fileName) to project.swingProject.config.artifactId
             }
             else -> File("") to ""
         }

@@ -1,6 +1,7 @@
 package com.zshnb.projectgenerator.generator.config
 
 import com.squareup.moshi.*
+import com.zshnb.projectgenerator.generator.entity.swing.*
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.util.TypeUtil
 import org.springframework.stereotype.Component
@@ -83,6 +84,50 @@ class AssociateResultColumnAdapter(private val typeUtil: TypeUtil) : JsonAdapter
     }
 
     override fun toJson(p0: JsonWriter, p1: AssociateResultColumn?) {
+        TODO("Not yet implemented")
+    }
+}
+
+@Component
+class SwingFrameItemAdapter : JsonAdapter<FrameItem>() {
+    override fun fromJson(reader: JsonReader): FrameItem? {
+        reader.beginObject()
+        var className = ""
+        val options = mutableListOf<Option>()
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "className" -> className = reader.nextString()
+                "options" -> {
+                    reader.beginArray()
+                    while (reader.hasNext()) {
+                        var title = ""
+                        var value = ""
+                        reader.beginObject()
+                        while (reader.hasNext()) {
+                            when (reader.nextName()) {
+                                "title" -> title = reader.nextString()
+                                "value" -> value = reader.nextString()
+                                else -> reader.skipValue()
+                            }
+                        }
+                        reader.endObject()
+                        options.add(Option(title, value))
+                    }
+                    reader.endArray()
+                }
+            }
+        }
+        reader.endObject()
+        return when (className) {
+            TextFieldFrameItem::class.qualifiedName -> TextFieldFrameItem(null, className)
+            PasswordFrameItem::class.qualifiedName -> PasswordFrameItem(null, className)
+            RadioFrameItem::class.qualifiedName -> RadioFrameItem(null, className, options)
+            SelectFrameItem::class.qualifiedName -> SelectFrameItem(null, className, options)
+            else -> null
+        }
+    }
+
+    override fun toJson(writer: JsonWriter, value: FrameItem?) {
         TODO("Not yet implemented")
     }
 }

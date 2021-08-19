@@ -14,7 +14,7 @@ data class Table(val name: String,
                  val columns: List<Column> = emptyList(),
                  val permissions: List<Permission> = emptyList(),
                  val searchable: Boolean = false,
-                 val enablePage: Boolean = false,
+                 val enablePage: Boolean = true,
                  val associate: Boolean = false,
                  val bindRoles: List<String> = emptyList(),
                  val bindUser: String? = null)

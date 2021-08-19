@@ -1,0 +1,602 @@
+{
+  "config": {
+    "groupId": "com.demo",
+    "artifactId": "demo",
+    "version": "1.0",
+    "rootPackageName": "com.demo.demo",
+    "entityPackageName": "entity",
+    "servicePackageName": "service",
+    "serviceImplPackageName": "serviceImpl",
+    "mapperPackageName": "mapper",
+    "controllerPackageName": "controller",
+    "jdbcHost": "localhost",
+    "jdbcPort": 3306,
+    "jdbcUser": "root",
+    "jdbcPassword": "root",
+    "jdbcDatabase": "db"
+  },
+  "tables": [
+    {
+      "name": "depart",
+      "comment": "学院",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "名称",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true,
+          "repeatable": false
+        },
+        {
+          "name": "type",
+          "comment": "类型",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true
+        },
+        {
+          "name": "sex",
+          "comment": "性别",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ]
+    },
+    {
+      "name": "clazz",
+      "comment": "班级",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "名称",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true,
+          "repeatable": false
+        },
+        {
+          "name": "student_count",
+          "comment": "班级人数",
+          "type": "int",
+          "enableFormItem": true,
+          "enableTableField": true
+        },
+        {
+          "name": "depart_id",
+          "comment": "学院",
+          "type": "int",
+          "enableFormItem": true,
+          "enableTableField": true,
+          "searchable": true,
+          "associate": {
+            "targetTableName": "depart",
+            "targetColumnName": "id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "name",
+                "tableFieldTitle": "学院名",
+                "columnType": "varchar"
+              }
+            ],
+            "formItemColumnName": "name"
+          }
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "student",
+      "comment": "学生",
+      "bindUser": "name",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "名称",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true,
+          "repeatable": false
+        },
+        {
+          "name": "number",
+          "comment": "学号",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true,
+          "repeatable": false
+        },
+        {
+          "name": "sex",
+          "comment": "性别",
+          "type": "varchar",
+          "searchable": true
+        },
+        {
+          "name": "clazz_id",
+          "comment": "班级",
+          "type": "int",
+          "searchable": true,
+          "associate": {
+            "targetTableName": "clazz",
+            "targetColumnName": "id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "name",
+                "tableFieldTitle": "班级名",
+                "columnType": "varchar"
+              }
+            ],
+            "formItemColumnName": "name"
+          }
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        },
+        {
+          "role": "teacher",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "course",
+      "comment": "课程",
+      "columns": [
+        {
+          "name": "name",
+          "comment": "名称",
+          "type": "varchar",
+          "length": "255",
+          "searchable": true,
+          "repeatable": false
+        },
+        {
+          "name": "description",
+          "comment": "描述",
+          "type": "text"
+        },
+        {
+          "name": "user_id",
+          "comment": "老师id",
+          "type": "int",
+          "searchable": true,
+          "associate": {
+            "targetTableName": "user",
+            "targetColumnName": "id",
+            "associateResultColumns": [
+              {
+                "originColumnName": "username",
+                "tableFieldTitle": "老师名",
+                "columnType": "varchar"
+              }
+            ],
+            "formItemColumnName": "username"
+          }
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ],
+      "enablePage": true,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "详情",
+              "value": "detail",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            },
+            {
+              "description": "审核",
+              "value": "review-status",
+              "position": "toolColumn",
+              "custom": true,
+              "type": "AJAX",
+              "detail": {
+                "httpMethod": "PUT",
+                "pathVariable": true
+              }
+            },
+            {
+              "description": "打开新页面",
+              "value": "open-new-page",
+              "position": "toolColumn",
+              "custom": true,
+              "type": "NEW_PAGE",
+              "detail": {
+                "httpMethod": "GET",
+                "pathVariable": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "comment": "用户",
+      "columns": [
+        {
+          "name": "username",
+          "comment": "用户名",
+          "type": "varchar",
+          "length": "255",
+          "repeatable": false,
+          "searchable": true
+        },
+        {
+          "name": "password",
+          "comment": "密码",
+          "type": "varchar",
+          "length": "255"
+        },
+        {
+          "name": "role",
+          "comment": "角色",
+          "type": "varchar",
+          "length": "255"
+        },
+        {
+          "name": "id",
+          "comment": "主键",
+          "type": "int",
+          "primary": true,
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "create_at",
+          "comment": "创建时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        },
+        {
+          "name": "update_at",
+          "comment": "更新时间",
+          "type": "datetime",
+          "enableFormItem": false,
+          "enableTableField": false
+        }
+      ],
+      "enablePage": false,
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add",
+              "position": "toolbar"
+            },
+            {
+              "description": "修改",
+              "value": "edit",
+              "position": "toolColumn"
+            },
+            {
+              "description": "删除",
+              "value": "delete",
+              "position": "toolColumn"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "items": [
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.RadioFrameItem",
+          "options": [
+            {
+              "title": "类型1"
+            },
+            {
+              "title": "类型2"
+            }
+          ]
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.SelectFrameItem",
+          "options": [
+            {
+              "title": "男"
+            },
+            {
+              "title": "女"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.SelectFrameItem",
+          "options": []
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.RadioFrameItem",
+          "options": [
+            {
+              "title": "男"
+            },
+            {
+              "title": "女"
+            }
+          ]
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.SelectFrameItem",
+          "options": []
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.TextFieldFrameItem"
+        },
+        {
+          "className": "com.zshnb.projectgenerator.generator.entity.swing.SelectFrameItem",
+          "options": []
+        }
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "description": "管理员",
+      "menus": [
+        {
+          "name": "学院管理",
+          "href": "depart",
+          "role": "admin"
+        },
+        {
+          "name": "班级管理",
+          "href": "clazz",
+          "role": "admin"
+        },
+        {
+          "name": "学生管理",
+          "href": "student",
+          "role": "admin"
+        },
+        {
+          "name": "课程管理",
+          "href": "course",
+          "role": "admin"
+        }
+      ]
+    },
+    {
+      "name": "teacher",
+      "description": "老师",
+      "menus": [
+        {
+          "name": "学生管理",
+          "href": "student",
+          "role": "teacher"
+        },
+        {
+          "name": "课程管理",
+          "href": "course",
+          "role": "teacher"
+        }
+      ]
+    },
+    {
+      "name": "student",
+      "description": "学生",
+      "menus": [
+        {
+          "name": "学生管理",
+          "href": "student",
+          "role": "student"
+        }
+      ]
+    }
+  ]
+}
