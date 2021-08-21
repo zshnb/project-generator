@@ -26,7 +26,7 @@
         where ${primaryKey} = ${r"#{" + primaryKey + "}"}
     </select>
     <#if entity.name == "user">
-        <select id="selectByUserNameAndPasswordAndRole" resultType="com.demo.demo.entity.User">
+        <select id="selectByUserNameAndPasswordAndRole" resultType="${entityPackageName}.User">
             select *
             from user u
             inner join role r on u.role = r.name
