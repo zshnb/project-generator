@@ -123,7 +123,6 @@ class SwingProjectGenerator(private val configuration: Configuration,
             .map {
                 Menu(initMenuId++, 0, it.name, it.icon, it.href, it.role, it.bind, it.child)
             }.toList()
-            .distinctBy { it.href }
 
         val permissions = backendParser.parsePermissions(entities)
         ioUtil.writeTemplate(initDataTemplate, mapOf(
@@ -133,7 +132,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
             "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")
         ioUtil.writeTemplate(mainFrameTemplate, mapOf(
-            "menus" to menus,
+            "menus" to menus.distinctBy { it.href },
             "mapperPackageName" to config.mapperPackagePath(),
             "entityPackageName" to config.entityPackagePath(),
             "framePackageName" to config.framePackagePath(),

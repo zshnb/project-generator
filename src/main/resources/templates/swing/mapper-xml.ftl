@@ -22,7 +22,7 @@
 <mapper namespace="${packageName}.${name}Mapper">
     <select id="selectById" resultType="${entityPackageName}.${name}">
         select *
-        from ${entity.name}
+        from ${literalize(tableName)}
         where ${primaryKey} = ${r"#{" + primaryKey + "}"}
     </select>
     <#if entity.name == "user">
@@ -45,7 +45,7 @@
                 ${r"#{" + field.name + "}"}<#if field_has_next>, </#if><#t>
             </#list>
         </#assign>
-        insert into ${camelize(tableName)}(${columnNames}) values(${parameters})
+        insert into ${literalize(tableName)}(${columnNames}) values(${parameters})
     </insert>
 
     <update id="update" parameterType="${entityPackageName}.${name}">
@@ -59,7 +59,7 @@
                 ${field.column.name} = ${r"#{" + field.name + "}"}<#if field_has_next>, </#if><#t>
             </#list>
         </#assign>
-        update ${camelize(tableName)} set ${parameters} where ${primaryKey} = ${r"#{" + primaryKey + "}"}
+        update ${literalize(tableName)} set ${parameters} where ${primaryKey} = ${r"#{" + primaryKey + "}"}
     </update>
 
     <#if name == "Menu">
@@ -77,12 +77,12 @@
     <#else>
         <select id="list" resultType="${entityPackageName}.${name}">
             select *
-            from ${entity.name}
+            from ${literalize(tableName)}
         </select>
     </#if>
 
     <delete id="deleteById">
-        delete from ${camelize(tableName)} where ${primaryKey} = ${r"#{" + primaryKey + "}"}
+        delete from ${literalize(tableName)} where ${primaryKey} = ${r"#{" + primaryKey + "}"}
     </delete>
 
     <#if entity.table.associate>
