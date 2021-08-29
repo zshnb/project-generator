@@ -36,7 +36,7 @@ public class List${entity.name?cap_first}Request extends PageRequest {
             }
         <#elseif field.type == "LocalDateTime">
             @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-            private LocalDateTime ${fieldName};
+            private LocalDateTime ${fieldName} = null;
             public LocalDateTime get${fieldName?cap_first}() {
                 return ${fieldName};
             }
@@ -45,7 +45,7 @@ public class List${entity.name?cap_first}Request extends PageRequest {
             }
         <#elseif field.type == "LocalDate">
             @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
-            private LocalDate ${fieldName};
+            private LocalDate ${fieldName} = null;
             public LocalDate get${fieldName?cap_first}() {
                 return ${fieldName};
             }
