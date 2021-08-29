@@ -190,6 +190,8 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
                         queryWrapper.like(!${getField}.isEmpty(), "${literalize(field.column.name)}", ${getField});
                     <#elseIf field.type == "Integer">
                         queryWrapper.eq(${getField} != 0, "${literalize(field.column.name)}", ${getField});
+                    <#elseIf field.type == "LocalDate" || field.type == "LocalDateTime">
+                        queryWrapper.eq(${getField} != null, "${literalize(field.column.name)}", ${getField});
                     </#if>
                 </#if>
             </#list>
