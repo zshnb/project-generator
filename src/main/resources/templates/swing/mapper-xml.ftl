@@ -32,6 +32,12 @@
             inner join role r on u.role = r.name
             where u.username = ${r"#{userName}"} and u.password = ${r"#{password}"} and r.description = ${r"#{role}"}
         </select>
+    <#elseIf name == "Role">
+        <select id="selectByDescription" resultType="${entityPackageName}.Role">
+            select *
+            from role
+            where description = ${r"#{description}"}
+        </select>
     </#if>
 
     <insert id="insert" parameterType="${entityPackageName}.${name}">

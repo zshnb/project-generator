@@ -26,7 +26,7 @@ public class RegisterFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 String userName = userNameTextField.getText();
                 String password = String.valueOf(passwordField.getPassword());
-                String role = (String) roleComboBox.getSelectedItem();
+                String role = roleMapper.selectByDescription((String) roleComboBox.getSelectedItem()).getName();
                 userMapper.insert(new User(userName, password, role));
                 JOptionPane.showMessageDialog(null, "注册成功");
             }
