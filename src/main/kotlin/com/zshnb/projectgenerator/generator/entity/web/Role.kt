@@ -82,4 +82,4 @@ enum class OperationPosition(val code: Int, val description: String) {
  * @param role 拥有权限的角色
  * @param model 前端概念中的页面
  * */
-data class Permission(val operations: List<Operation>, val role: String, val model: String?)
+data class Permission(val operations: List<Operation>, val role: String)

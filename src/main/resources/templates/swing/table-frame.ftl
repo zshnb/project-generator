@@ -68,6 +68,9 @@ public class ${name}Frame {
             private List<${associateClass}> ${associateClass?uncapFirst}s = ${associateClass?uncapFirst}Mapper.list();
         </#list>
     </#if>
+    private final PermissionMapper permissionMapper = GlobalSqlSessionFactory.getSqlSession().getMapper(PermissionMapper.class);
+    private List<String> permissions = permissionMapper.list(GlobalSession.user.getRole(), "${frame.entity.name}")
+        .stream().map(Permission::getOperation).collect(Collectors.toList());
     public ${name}Frame() {
         initUI();
         initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
@@ -282,6 +285,11 @@ public class ${name}Frame {
             leftPanel.add(jPanel${item_index}, new GridBagConstraints(0, ${item_index}, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         </#list>
         JPanel operationPanel = new JPanel(new GridBagLayout());
+        <#list frame.operation as operation>
+            if (permissions.contains("add")) {
+                operationPanel.add(addButton, new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+            }
+        </#list>
         operationPanel.add(addButton, new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
         operationPanel.add(updateButton, new GridBagConstraints(0, 1, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
         operationPanel.add(deleteButton, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
