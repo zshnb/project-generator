@@ -143,6 +143,7 @@ int current = 0;
                 {
                     ${entity.name}s[i] = ${entity.name}s[i + 1];
                 }
+                current--;
                 printf("删除成功\n");
             }
         </#list>

@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Enumeration;
+import java.util.stream.Collectors;
 import ${mapperPackageName}.*;
 import ${configPackageName}.*;
 import ${dtoPackageName}.*;
@@ -31,9 +32,9 @@ public class ${name}Frame {
     JPanel rightPanel = new JPanel(new GridBagLayout());
     JScrollPane scrollPane = new JScrollPane();
     JTable jTable = new JTable();
-    private JButton addButton = new JButton("添加");
-    private JButton updateButton = new JButton("修改");
-    private JButton deleteButton = new JButton("删除");
+    <#list frame.operations as operation>
+        private JButton ${operation.value}Button = new JButton("${operation.description}");
+    </#list>
     private int id;
 
     <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
@@ -126,6 +127,7 @@ public class ${name}Frame {
                 id = (int) jTable.getValueAt(row, ${frame.entity.fields?filter(it -> it.column.enableTableField)?size});
             }
         });
+        <#if (frame.operations?filter(it -> it.value == "add")?size > 0)>
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,7 +181,9 @@ public class ${name}Frame {
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
-        updateButton.addActionListener(new ActionListener() {
+        </#if>
+        <#if (frame.operations?filter(it -> it.value == "edit")?size > 0)>
+        editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
@@ -232,6 +236,8 @@ public class ${name}Frame {
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
+        </#if>
+        <#if (frame.operations?filter(it -> it.value == "delete")?size > 0)>
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -239,6 +245,7 @@ public class ${name}Frame {
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
+        </#if>
     }
 
     private void initUI() {
@@ -285,14 +292,18 @@ public class ${name}Frame {
             leftPanel.add(jPanel${item_index}, new GridBagConstraints(0, ${item_index}, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         </#list>
         JPanel operationPanel = new JPanel(new GridBagLayout());
-        <#list frame.operation as operation>
-            if (permissions.contains("add")) {
-                operationPanel.add(addButton, new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+        <#assign x = 0/>
+        <#assign y = 0/>
+        <#list frame.operations as operation>
+            <#if y == 2>
+                <#assign y = 0>
+                <#assign x = x + 1>
+            </#if>
+            if (permissions.contains("${operation.value}")) {
+                operationPanel.add(${operation.value}Button, new GridBagConstraints(${x}, ${y}, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
             }
+            <#assign y = y + 1>
         </#list>
-        operationPanel.add(addButton, new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-        operationPanel.add(updateButton, new GridBagConstraints(0, 1, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-        operationPanel.add(deleteButton, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
         leftPanel.add(operationPanel, new GridBagConstraints(0, ${frame.items?size}, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
     }
 

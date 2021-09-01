@@ -39,7 +39,7 @@ data class Menu(
  * */
 data class Operation(val description: String,
                      val value: String,
-                     val position: OperationPosition,
+                     val position: OperationPosition = OperationPosition.TOOL_COLUMN,
                      val custom: Boolean = false,
                      val type: OperationType?,
                      val detail: OperationDetail?)

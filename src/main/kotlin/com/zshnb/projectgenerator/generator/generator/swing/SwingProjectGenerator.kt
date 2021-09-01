@@ -97,15 +97,20 @@ class SwingProjectGenerator(private val configuration: Configuration,
 
         val frames = frameParser.parseFrames(swingProject.frames, entities)
         frames.forEach {
+            val operations = it.entity!!.table.permissions.asSequence().map { it.operations }
+                .flatten()
+                .distinctBy { it.value }
+                .toList()
             ioUtil.writeTemplate(frameTemplate, mapOf(
                 "frame" to it,
+                "operations" to operations,
                 "packageName" to config.framePackagePath(),
                 "entityPackageName" to config.entityPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "requestPackageName" to config.requestPackagePath(),
                 "configPackageName" to config.configPackagePath(),
                 "mapperPackageName" to config.mapperPackagePath()
-            ), "${pathConfig.frameDir(config)}/${it.entity!!.name.capitalize()}Frame.java")
+            ), "${pathConfig.frameDir(config)}/${it.entity.name.capitalize()}Frame.java")
         }
 
         ioUtil.writeTemplate(initTableTemplate, mapOf(

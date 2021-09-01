@@ -7,7 +7,8 @@ import com.zshnb.projectgenerator.generator.entity.web.*
  * @param items 组件
  * */
 data class Frame(val entity: Entity?,
-                 val items: List<FrameItem>)
+                 val items: List<FrameItem>,
+                 val operations: List<Operation> = emptyList())
 
 open class FrameItem(val className: String,
                      val field: Field?)
