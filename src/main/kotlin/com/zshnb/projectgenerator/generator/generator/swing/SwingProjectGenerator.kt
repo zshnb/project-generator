@@ -126,7 +126,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
         val menus = roles.map { it.menus }
             .flatten()
             .map {
-                Menu(initMenuId++, 0, it.name, it.icon, it.href, it.role, it.bind, it.child)
+                Menu(initMenuId++, it.name, it.href, it.role, it.bind)
             }.toList()
 
         val permissions = backendParser.parsePermissions(entities)

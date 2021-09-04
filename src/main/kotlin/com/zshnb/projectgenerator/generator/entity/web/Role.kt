@@ -19,12 +19,12 @@ data class Role(val name: String, val description: String, val menus: List<Menu>
  * */
 data class Menu(
     val id: Int = 0,
-    var parentId: Int = 0,
     val name: String,
-    val icon: String = "",
     val href: String,
     var role: String,
-    val bind: Boolean = true,
+    val bind: Boolean,
+    var parentId: Int = 0,
+    val icon: String = "",
     val child: List<Menu> = emptyList()
 )
 
