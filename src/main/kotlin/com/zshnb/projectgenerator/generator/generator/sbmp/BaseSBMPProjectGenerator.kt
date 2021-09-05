@@ -169,15 +169,8 @@ open class BaseSBMPProjectGenerator(private val backendParser: BackendParser,
         val roles = webProject.roles
         val menus = roles.asSequence().map { it.menus }
             .flatten()
-            .map { getChildMenus(it) }
-            .flatten()
             .map {
-                Menu(initMenuId++, it.parentId, it.name, it.icon, it.href, it.role, it.bind, it.child).apply {
-                    child.forEach { childMenu ->
-                        childMenu.parentId = id
-                        childMenu.role = role
-                    }
-                }
+                Menu(initMenuId++, it.name, it.href, it.role, it.bind)
             }.toList()
 
         val permissions = backendParser.parsePermissions(entities)

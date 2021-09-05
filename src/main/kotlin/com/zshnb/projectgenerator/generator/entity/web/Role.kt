@@ -19,12 +19,12 @@ data class Role(val name: String, val description: String, val menus: List<Menu>
  * */
 data class Menu(
     val id: Int = 0,
-    var parentId: Int = 0,
     val name: String,
-    val icon: String = "",
     val href: String,
     var role: String,
-    val bind: Boolean = true,
+    val bind: Boolean = false,
+    var parentId: Int = 0,
+    val icon: String = "",
     val child: List<Menu> = emptyList()
 )
 
@@ -39,7 +39,7 @@ data class Menu(
  * */
 data class Operation(val description: String,
                      val value: String,
-                     val position: OperationPosition,
+                     val position: OperationPosition = OperationPosition.TOOL_COLUMN,
                      val custom: Boolean = false,
                      val type: OperationType?,
                      val detail: OperationDetail?)
@@ -82,4 +82,4 @@ enum class OperationPosition(val code: Int, val description: String) {
  * @param role 拥有权限的角色
  * @param model 前端概念中的页面
  * */
-data class Permission(val operations: List<Operation>, val role: String, val model: String?)
+data class Permission(val operations: List<Operation>, val role: String)

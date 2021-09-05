@@ -64,6 +64,25 @@
           "enableFormItem": false,
           "enableTableField": false
         }
+      ],
+      "permissions": [
+        {
+          "role": "admin",
+          "operations": [
+            {
+              "description": "添加",
+              "value": "add"
+            },
+            {
+              "description": "修改",
+              "value": "edit"
+            },
+            {
+              "description": "删除",
+              "value": "delete"
+            }
+          ]
+        }
       ]
     },
     {
@@ -135,23 +154,15 @@
           "operations": [
             {
               "description": "添加",
-              "value": "add",
-              "position": "toolbar"
+              "value": "add"
             },
             {
               "description": "修改",
-              "value": "edit",
-              "position": "toolColumn"
-            },
-            {
-              "description": "详情",
-              "value": "detail",
-              "position": "toolColumn"
+              "value": "edit"
             },
             {
               "description": "删除",
-              "value": "delete",
-              "position": "toolColumn"
+              "value": "delete"
             }
           ]
         }
@@ -232,48 +243,15 @@
           "operations": [
             {
               "description": "添加",
-              "value": "add",
-              "position": "toolbar"
+              "value": "add"
             },
             {
               "description": "修改",
-              "value": "edit",
-              "position": "toolColumn"
-            },
-            {
-              "description": "详情",
-              "value": "detail",
-              "position": "toolColumn"
+              "value": "edit"
             },
             {
               "description": "删除",
-              "value": "delete",
-              "position": "toolColumn"
-            }
-          ]
-        },
-        {
-          "role": "teacher",
-          "operations": [
-            {
-              "description": "添加",
-              "value": "add",
-              "position": "toolbar"
-            },
-            {
-              "description": "修改",
-              "value": "edit",
-              "position": "toolColumn"
-            },
-            {
-              "description": "详情",
-              "value": "detail",
-              "position": "toolColumn"
-            },
-            {
-              "description": "删除",
-              "value": "delete",
-              "position": "toolColumn"
+              "value": "delete"
             }
           ]
         }
@@ -344,45 +322,24 @@
           "operations": [
             {
               "description": "添加",
-              "value": "add",
-              "position": "toolbar"
+              "value": "add"
             },
             {
               "description": "修改",
-              "value": "edit",
-              "position": "toolColumn"
-            },
-            {
-              "description": "详情",
-              "value": "detail",
-              "position": "toolColumn"
+              "value": "edit"
             },
             {
               "description": "删除",
-              "value": "delete",
-              "position": "toolColumn"
-            },
+              "value": "delete"
+            }
+          ]
+        },
+        {
+          "role": "teacher",
+          "operations": [
             {
-              "description": "审核",
-              "value": "review-status",
-              "position": "toolColumn",
-              "custom": true,
-              "type": "AJAX",
-              "detail": {
-                "httpMethod": "PUT",
-                "pathVariable": true
-              }
-            },
-            {
-              "description": "打开新页面",
-              "value": "open-new-page",
-              "position": "toolColumn",
-              "custom": true,
-              "type": "NEW_PAGE",
-              "detail": {
-                "httpMethod": "GET",
-                "pathVariable": true
-              }
+              "description": "自定义按钮",
+              "value": "custom"
             }
           ]
         }
@@ -442,18 +399,15 @@
           "operations": [
             {
               "description": "添加",
-              "value": "add",
-              "position": "toolbar"
+              "value": "add"
             },
             {
               "description": "修改",
-              "value": "edit",
-              "position": "toolColumn"
+              "value": "edit"
             },
             {
               "description": "删除",
-              "value": "delete",
-              "position": "toolColumn"
+              "value": "delete"
             }
           ]
         }

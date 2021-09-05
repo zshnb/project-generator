@@ -97,15 +97,20 @@ class SwingProjectGenerator(private val configuration: Configuration,
 
         val frames = frameParser.parseFrames(swingProject.frames, entities)
         frames.forEach {
+            val operations = it.entity!!.table.permissions.asSequence().map { it.operations }
+                .flatten()
+                .distinctBy { it.value }
+                .toList()
             ioUtil.writeTemplate(frameTemplate, mapOf(
                 "frame" to it,
+                "operations" to operations,
                 "packageName" to config.framePackagePath(),
                 "entityPackageName" to config.entityPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "requestPackageName" to config.requestPackagePath(),
                 "configPackageName" to config.configPackagePath(),
                 "mapperPackageName" to config.mapperPackagePath()
-            ), "${pathConfig.frameDir(config)}/${it.entity!!.name.capitalize()}Frame.java")
+            ), "${pathConfig.frameDir(config)}/${it.entity.name.capitalize()}Frame.java")
         }
 
         ioUtil.writeTemplate(initTableTemplate, mapOf(
@@ -121,7 +126,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
         val menus = roles.map { it.menus }
             .flatten()
             .map {
-                Menu(initMenuId++, 0, it.name, it.icon, it.href, it.role, it.bind, it.child)
+                Menu(initMenuId++, it.name, it.href, it.role, it.bind)
             }.toList()
 
         val permissions = backendParser.parsePermissions(entities)

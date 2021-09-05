@@ -14,7 +14,10 @@ class FrameParser {
             val items = frame.items.mapIndexed { innerIndex, item ->
                 getFrameItem(item, entity.fields, innerIndex)
             }
-            Frame(entity, items)
+            val operations = entity.table.permissions.map { it.operations }
+                .flatten()
+                .distinctBy { it.value }
+            Frame(entity, items, operations)
         }
 
     }
