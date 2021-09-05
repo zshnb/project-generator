@@ -22,7 +22,7 @@ data class Menu(
     val name: String,
     val href: String,
     var role: String,
-    val bind: Boolean,
+    val bind: Boolean = false,
     var parentId: Int = 0,
     val icon: String = "",
     val child: List<Menu> = emptyList()
