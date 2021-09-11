@@ -28,7 +28,7 @@
     <#if entity.name == "user">
         <select id="selectByUserNameAndPasswordAndRole" resultType="${entityPackageName}.User">
             select *
-            from user u
+            from ${literalize(r"user")} u
             inner join role r on u.role = r.name
             where u.username = ${r"#{userName}"} and u.password = ${r"#{password}"} and r.description = ${r"#{role}"}
         </select>
@@ -97,7 +97,8 @@
             ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
             <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
                 <#list column.associate.associateResultColumns as associateColumn>
-                    <#assign aliasColumnName = "${literalize(column.associate.targetTableName + associateColumn.originColumnName?capFirst)}">
+                    <#assign camelizeColumnName = camelize(column.associate.targetTableName + "_" + associateColumn.originColumnName)/>
+                    <#assign aliasColumnName = "${literalize(camelizeColumnName)}">
                     ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${aliasColumnName}<#if associateColumn_has_next>,</#if>
                 </#list>
                 <#if column_has_next>,</#if>

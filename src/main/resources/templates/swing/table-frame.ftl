@@ -42,7 +42,7 @@ public class ${name}Frame {
             <#case "TextFieldFrameItem">
                 JTextField ${item.field.name}TextField = new JTextField();
                 <#break>
-            <#case "PasswordFieldFrameItem">
+            <#case "PasswordFrameItem">
                 JPasswordField passwordField = new JPasswordField();
                 <#break>
             <#case "RadioFrameItem">
@@ -85,6 +85,17 @@ public class ${name}Frame {
         jTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                <#assign i = 0/>
+                <#list frame.entity.fields?filter(it -> it.column.enableTableField && !it.column.associate??) as field>
+                    <#assign i = i + 1>
+                </#list>
+                <#if frame.entity.table.associate??>
+                    <#list frame.entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                        <#list column.associate.associateResultColumns as result>
+                            <#assign i = i + 1>
+                        </#list>
+                    </#list>
+                </#if>
                 int row = jTable.getSelectedRow();
                 <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
                     <#if !item.field.column.associate??>
@@ -94,7 +105,7 @@ public class ${name}Frame {
                     <#case "TextFieldFrameItem">
                         ${item.field.name}TextField.setText(String.valueOf(${item.field.name}));
                         <#break>
-                    <#case "PasswordFieldFrameItem">
+                    <#case "PasswordFrameItem">
                         <#break>
                     <#case "RadioFrameItem">
                         Enumeration<AbstractButton> ${item.field.name}ButtonGroupIterator = ${item.field.name}ButtonGroup.getElements();
@@ -124,7 +135,8 @@ public class ${name}Frame {
                         <#break>
                     </#switch>
                 </#list>
-                id = (int) jTable.getValueAt(row, ${frame.entity.fields?filter(it -> it.column.enableTableField)?size});
+
+                id = (int) jTable.getValueAt(row, ${i});
             }
         });
         <#if (frame.operations?filter(it -> it.value == "add")?size > 0)>
