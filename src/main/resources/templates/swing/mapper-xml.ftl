@@ -40,7 +40,7 @@
         </select>
     </#if>
 
-    <insert id="insert" parameterType="${entityPackageName}.${name}">
+    <insert id="insert" parameterType="${entityPackageName}.${name}" useGeneratedKeys="true" keyProperty="id">
         <#assign columnNames>
             <#list entity.fields?filter(it -> it.column.enableFormItem) as field>
                 ${field.column.name}<#if field_has_next>, </#if><#t>
