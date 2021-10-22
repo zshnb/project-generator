@@ -5,13 +5,6 @@ import java.time.LocalDateTime;
     ${entity.table.comment}
 */
 public class ${entity.name?cap_first} {
-    <#if entity.name == "user">
-        public User(String username, String password, String role) {
-            this.username = username;
-            this.password = password;
-            this.role = role;
-        }
-    </#if>
     <#if entity.table.enablePage>
     public ${entity.name?cap_first}() {}
     <#if (entity.fields?filter(it -> it.column.enableFormItem)?size > 0)>
