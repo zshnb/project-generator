@@ -253,6 +253,7 @@ public class ${name}Frame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                JOptionPane.showMessageDialog(null, "删除成功");
                 ${mapper}.deleteById(id);
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }

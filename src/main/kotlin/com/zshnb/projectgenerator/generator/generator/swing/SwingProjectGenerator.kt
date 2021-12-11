@@ -89,6 +89,10 @@ class SwingProjectGenerator(private val configuration: Configuration,
                 "entity" to it),
                 "${pathConfig.requestDir(config)}/List${it.name.capitalize()}Request.java")
             if (it.table.associate) {
+                val dtoDir = File(pathConfig.dtoDir(config))
+                if (!dtoDir.exists()) {
+                    dtoDir.mkdir()
+                }
                 ioUtil.writeTemplate(dtoTemplate,
                     mapOf("entity" to it, "packageName" to config.dtoPackagePath())
                     , "${pathConfig.dtoDir(config)}/${it.name.capitalize()}Dto.java")
@@ -149,7 +153,6 @@ class SwingProjectGenerator(private val configuration: Configuration,
 
     private fun mkdirs(config: Config) {
         val entityDir = File(pathConfig.entityDir(config))
-        val dtoDir = File(pathConfig.dtoDir(config))
         val mapperDir = File(pathConfig.mapperDir(config))
         val mapperXmlDir = File(pathConfig.xmlDir(config))
         val configDir = File(pathConfig.configDir(config))
@@ -163,7 +166,6 @@ class SwingProjectGenerator(private val configuration: Configuration,
         mapperXmlDir.mkdirs()
         configDir.mkdir()
         frameDir.mkdir()
-        dtoDir.mkdir()
         requestDir.mkdir()
     }
 }

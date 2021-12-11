@@ -27,8 +27,13 @@ public class RegisterFrame {
                 String userName = userNameTextField.getText();
                 String password = String.valueOf(passwordField.getPassword());
                 String role = roleMapper.selectByDescription((String) roleComboBox.getSelectedItem()).getName();
-                userMapper.insert(new User(userName, password, role));
-                JOptionPane.showMessageDialog(null, "注册成功");
+                User user = userMapper.selectByUserNameAndPasswordAndRole(userName, password, role);
+                if (user != null) {
+                    JOptionPane.showMessageDialog(null, "用户已存在");
+                } else {
+                    userMapper.insert(new User(userName, password, role));
+                    JOptionPane.showMessageDialog(null, "注册成功");
+                }
             }
         });
         JFrame frame = new JFrame();
