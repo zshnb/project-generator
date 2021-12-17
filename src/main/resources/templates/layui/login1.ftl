@@ -34,7 +34,7 @@
         .login-form .layui-form-item {position:relative;}
         .login-form .layui-form-item label {position:absolute;left:1px;top:1px;width:38px;line-height:36px;text-align:center;color:#d2d2d2;}
         .login-form .layui-form-item input {padding-left:36px;}
-        .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
+        .captcha-img img { border:1px solid #e6e6e6;height:36px;width:100%;}
     </style>
 </head>
 <body th:style="'background:url(' + @{/images/background.jpg} + ');'">
@@ -43,15 +43,15 @@
         <div class="layui-form login-form">
             <form class="layui-form" action="">
                 <div class="layui-form-item logo-title">
-                    <h1>注册页面</h1>
+                    <h1>登录页面</h1>
                 </div>
                 <div class="layui-form-item">
-                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名"
-                           autocomplete="off" class="layui-input" lay-reqtext="用户名不能为空">
+                    <input type="text" name="username" lay-verify="required|account"
+                           placeholder="用户名" autocomplete="off" class="layui-input" lay-reqtext="用户名不能为空">
                 </div>
                 <div class="layui-form-item">
-                    <input type="password" name="password" lay-verify="required|password" placeholder="密码"
-                           autocomplete="off" class="layui-input" lay-reqtext="密码不能为空">
+                    <input type="password" name="password" lay-verify="required|password"
+                           placeholder="密码" autocomplete="off" class="layui-input" lay-reqtext="密码不能为空">
                 </div>
                 <div class="layui-form-item">
                     <select name="role" lay-filter="role" lay-verify="required" lay-reqtext="请选择角色">
@@ -59,9 +59,10 @@
                     </select>
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="register">注 册</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 录</button>
                 </div>
             </form>
+            <button class="layui-btn layui-btn-normal layui-btn-fluid register-btn">注 册</button>
         </div>
     </div>
 </div>
@@ -100,20 +101,24 @@
         });
 
         // 进行登录操作
-        form.on('submit(register)', function (data) {
+        form.on('submit(login)', function (data) {
             $.ajax({
-                url: '/user/add',
+                url: '/login',
                 type: 'post',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',
                 success: function () {
-                    window.location.href = 'http://localhost:8081/loginPage'
+                    window.location.href = ${r"`http://localhost:${window.location.port}`"}
                 },
-                error: function (error) {
-                    layer.msg(error.responseJSON.message)
+                error: function (data) {
+                    layer.msg('用户名或密码错误')
                 }
             });
             return false;
         });
+
+        $('.register-btn').click(function () {
+            window.location.href = ${r"`http://${window.location.host}/registerPage`"}
+        })
     });
 </script>
