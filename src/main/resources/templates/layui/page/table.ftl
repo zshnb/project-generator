@@ -139,6 +139,8 @@
         </#list>
     </div>
 </div>
+</body>
+</html>
 <#if projectType == "ssm">
     <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
 <#else>
@@ -239,7 +241,14 @@
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,
-            skin: 'line'
+            skin: 'line',
+            done: function () {
+              $('.layui-btn').each(function (index) {
+                if ($(this).text().trim() === '') {
+                  $(this).remove()
+                }
+              })
+            }
         })
 
         // 监听搜索操作
@@ -401,5 +410,3 @@
         })
     })
 </script>
-</body>
-</html>

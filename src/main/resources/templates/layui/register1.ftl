@@ -6,7 +6,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>后台管理-登录</title>
+    <title>后台管理-注册</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -34,7 +34,7 @@
         .login-form .layui-form-item {position:relative;}
         .login-form .layui-form-item label {position:absolute;left:1px;top:1px;width:38px;line-height:36px;text-align:center;color:#d2d2d2;}
         .login-form .layui-form-item input {padding-left:36px;}
-        .captcha-img img { border:1px solid #e6e6e6;height:36px;width:100%;}
+        .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
     </style>
 </head>
 <body th:style="'background:url(' + @{/images/background.jpg} + ');'">
@@ -43,15 +43,15 @@
         <div class="layui-form login-form">
             <form class="layui-form" action="">
                 <div class="layui-form-item logo-title">
-                    <h1>登录页面</h1>
+                    <h1>注册页面</h1>
                 </div>
                 <div class="layui-form-item">
-                    <input type="text" name="username" lay-verify="required|account"
-                           placeholder="用户名" autocomplete="off" class="layui-input" lay-reqtext="用户名不能为空">
+                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名"
+                           autocomplete="off" class="layui-input" lay-reqtext="用户名不能为空">
                 </div>
                 <div class="layui-form-item">
-                    <input type="password" name="password" lay-verify="required|password"
-                           placeholder="密码" autocomplete="off" class="layui-input" lay-reqtext="密码不能为空">
+                    <input type="password" name="password" lay-verify="required|password" placeholder="密码"
+                           autocomplete="off" class="layui-input" lay-reqtext="密码不能为空">
                 </div>
                 <div class="layui-form-item">
                     <select name="role" lay-filter="role" lay-verify="required" lay-reqtext="请选择角色">
@@ -59,13 +59,14 @@
                     </select>
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 录</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="register">注 册</button>
                 </div>
             </form>
-            <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid register-btn">注 册</button>
         </div>
     </div>
 </div>
+</body>
+</html>
 <#if projectType == "ssm">
     <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
     <script src="<%=request.getContextPath() %>/static/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
@@ -99,26 +100,20 @@
         });
 
         // 进行登录操作
-        form.on('submit(login)', function (data) {
+        form.on('submit(register)', function (data) {
             $.ajax({
-                url: '/login',
+                url: '/user/add',
                 type: 'post',
                 data: JSON.stringify(data.field),
                 contentType: 'application/json',
                 success: function () {
-                    window.location.href = 'http://localhost:8081'
+                    window.location.href = ${r"`http://${window.location.host}/loginPage`"}
                 },
-                error: function (data) {
-                    layer.msg('用户名或密码错误')
+                error: function (error) {
+                    layer.msg(error.responseJSON.message)
                 }
             });
             return false;
         });
-
-        $('.register-btn').click(function () {
-            window.location.href = 'http://localhost:8081/registerPage'
-        })
     });
 </script>
-</body>
-</html>

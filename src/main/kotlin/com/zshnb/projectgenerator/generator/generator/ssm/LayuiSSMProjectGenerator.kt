@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils
 import org.springframework.core.io.support.*
 import org.springframework.stereotype.Component
 import java.io.*
+import kotlin.random.Random
 
 @Component
 class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
@@ -30,14 +31,14 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
         val indexPageControllerTemplate =
             configuration.getTemplate(SSMBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
         val webXmlTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.WEB_XML)
-        val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_INDEX_PAGE)
-        val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_LOGIN_PAGE)
-        val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_REGISTER_PAGE)
-        val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_ADD_PAGE)
-        val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EDIT_PAGE)
-        val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_DETAIL_PAGE)
-        val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
-        val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EMPTY_PAGE)
+        val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_INDEX_PAGE)
+        val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_LOGIN_PAGES[Random.nextInt(3)])
+        val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_REGISTER_PAGES[Random.nextInt(3)])
+        val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_ADD_PAGE)
+        val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_EDIT_PAGE)
+        val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_DETAIL_PAGE)
+        val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_TABLE_PAGE)
+        val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_EMPTY_PAGE)
 
         val config = webProject.config
         val resourceResolver = PathMatchingResourcePatternResolver()
