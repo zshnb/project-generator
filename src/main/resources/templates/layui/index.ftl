@@ -132,7 +132,7 @@
         var options = {
             iniUrl: '/menu/list',    // 初始化接口
             urlHashLocation: true,      // 是否打开hash定位
-            bgColorDefault: false,      // 主题默认配置
+            bgColorDefault: ${theme},      // 主题默认配置
             multiModule: false,          // 是否开启多模块
             menuChildOpen: false,       // 是否默认展开菜单
             loadingTime: 0,             // 初始化加载时间

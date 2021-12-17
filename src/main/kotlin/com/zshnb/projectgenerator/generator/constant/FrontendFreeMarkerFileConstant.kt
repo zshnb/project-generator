@@ -1,7 +1,5 @@
 package com.zshnb.projectgenerator.generator.constant
 
-import kotlin.random.Random
-
 class FrontendFreeMarkerFileConstant {
     companion object {
         const val LAY_UI_INDEX_PAGE = "layui/index.ftl"
