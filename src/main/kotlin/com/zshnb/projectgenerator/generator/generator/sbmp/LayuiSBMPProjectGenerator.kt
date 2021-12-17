@@ -30,14 +30,14 @@ class LayuiSBMPProjectGenerator(private val backendParser: BackendParser,
         val pageControllerTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
         val indexPageControllerTemplate =
             configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
-        val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_INDEX_PAGE)
+        val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_INDEX_PAGE)
         val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_LOGIN_PAGES[Random.nextInt(3)])
         val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_REGISTER_PAGES[Random.nextInt(3)])
-        val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_ADD_PAGE)
-        val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EDIT_PAGE)
-        val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_DETAIL_PAGE)
-        val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_TABLE_PAGE)
-        val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAY_UI_EMPTY_PAGE)
+        val addPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_ADD_PAGE)
+        val editPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_EDIT_PAGE)
+        val detailPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_DETAIL_PAGE)
+        val tablePageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_TABLE_PAGE)
+        val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_EMPTY_PAGE)
 
         val pages = frontendParser.parsePages(webProject)
         val config = webProject.config
