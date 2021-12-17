@@ -66,6 +66,8 @@
         </div>
     </div>
 </div>
+</body>
+</html>
 <#if projectType == "ssm">
     <script src="<%=request.getContextPath() %>/static/lib/layui/layui.js" charset="utf-8"></script>
     <script src="<%=request.getContextPath() %>/static/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
@@ -120,5 +122,3 @@
         })
     });
 </script>
-</body>
-</html>
