@@ -45,6 +45,7 @@ public class LoginFrame {
             }
         });
         JFrame frame = new JFrame();
+        frame.setTitle("登录");
         frame.setLocation(10, 10);
         frame.setSize(600, 600);
         frame.setLayout(new BorderLayout());

@@ -71,13 +71,13 @@ int current = 0;
                 printf("请输入${field.comment}: ");
                 <#switch field.type>
                     <#case "INT">
-                        scanf("%d", &${entity.name}s[current].${field.name});
+                        scanf("%d", &${entity.name}s[index].${field.name});
                         <#break>
                     <#case "STRING">
-                        scanf("%s", ${entity.name}s[current].${field.name});
+                        scanf("%s", ${entity.name}s[index].${field.name});
                         <#break>
                     <#case "CHAR">
-                        scanf("%c", &${entity.name}s[current].${field.name});
+                        scanf("%c", &${entity.name}s[index].${field.name});
                         <#break>
 
                 </#switch>

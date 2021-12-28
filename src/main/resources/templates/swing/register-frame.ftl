@@ -37,6 +37,7 @@ public class RegisterFrame {
             }
         });
         JFrame frame = new JFrame();
+        frame.setTitle("注册");
         frame.setLocation(10, 10);
         frame.setSize(600, 600);
         frame.setLayout(new BorderLayout());

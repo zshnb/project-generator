@@ -27,7 +27,7 @@
     </select>
     <#if entity.name == "user">
         <select id="selectByUserNameAndPasswordAndRole" resultType="${entityPackageName}.User">
-            select *
+            select u.*
             from ${literalize(r"user")} u
             inner join role r on u.role = r.name
             where u.username = ${r"#{userName}"} and u.password = ${r"#{password}"} and r.description = ${r"#{role}"}
@@ -51,7 +51,14 @@
                 ${r"#{" + field.name + "}"}<#if field_has_next>, </#if><#t>
             </#list>
         </#assign>
-        insert into ${literalize(tableName)}(${columnNames}) values(${parameters})
+        <#assign nowFunction>
+            <#if config.database == "MYSQL">
+                now()<#t>
+            <#elseIf config.database == "SQLSERVER">
+                getdate()<#t>
+            </#if>
+        </#assign>
+        insert into ${literalize(tableName)}(${columnNames}, create_at, update_at) values(${parameters}, ${nowFunction}, ${nowFunction})
     </insert>
 
     <update id="update" parameterType="${entityPackageName}.${name}">

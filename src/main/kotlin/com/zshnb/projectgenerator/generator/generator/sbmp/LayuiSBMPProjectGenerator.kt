@@ -84,8 +84,10 @@ class LayuiSBMPProjectGenerator(private val backendParser: BackendParser,
                 "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
         }
 
-        ioUtil.writeTemplate(indexPageTemplate, mapOf("config" to config, "projectType" to "sbmp"),
-            "${pathConfig.thymeleafTemplateDirPath(config)}/index.html")
+        ioUtil.writeTemplate(indexPageTemplate, mapOf("config" to config,
+            "projectType" to "sbmp",
+            "theme" to Random.nextInt(10)
+        ), "${pathConfig.thymeleafTemplateDirPath(config)}/index.html")
         ioUtil.writeTemplate(loginPageTemplate, mapOf("projectType" to "sbmp"),
             "${pathConfig.thymeleafTemplateDirPath(config)}/login.html")
         ioUtil.writeTemplate(registerPageTemplate, mapOf("projectType" to "sbmp"),

@@ -37,6 +37,7 @@ public class MainFrame {
             parentPanel.add(jPanel0, new GridBagConstraints(0, i, 2, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
         }
         JFrame frame = new JFrame();
+        frame.setTitle("主菜单");
         frame.setLocation(10, 10);
         frame.setSize(600, 600);
         frame.setLayout(new BorderLayout());

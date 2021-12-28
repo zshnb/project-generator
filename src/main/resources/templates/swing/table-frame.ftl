@@ -76,6 +76,7 @@ public class ${name}Frame {
         initUI();
         initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
         JFrame frame = new JFrame();
+        frame.setTitle("${frame.entity.table.comment}界面");
         frame.setLocation(10, 10);
         frame.setSize(600, 600);
         frame.setLayout(new BorderLayout());
@@ -140,6 +141,7 @@ public class ${name}Frame {
             }
         });
         <#if (frame.operations?filter(it -> it.value == "add")?size > 0)>
+        // 添加按钮事件
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -195,6 +197,7 @@ public class ${name}Frame {
         });
         </#if>
         <#if (frame.operations?filter(it -> it.value == "edit")?size > 0)>
+        // 编辑按钮事件
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -250,6 +253,7 @@ public class ${name}Frame {
         });
         </#if>
         <#if (frame.operations?filter(it -> it.value == "delete")?size > 0)>
+        // 删除按钮事件
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -261,6 +265,7 @@ public class ${name}Frame {
         </#if>
     }
 
+    // 初始化窗口控件
     private void initUI() {
         parentPanel.add(leftPanel, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         parentPanel.add(rightPanel, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
