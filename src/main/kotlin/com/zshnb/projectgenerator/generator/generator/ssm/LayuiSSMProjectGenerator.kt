@@ -85,7 +85,10 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
 
         ioUtil.writeTemplate(webXmlTemplate, emptyMap<Int, Int>(),
             "${pathConfig.webappDirPath(config)}/WEB-INF/web.xml")
-        ioUtil.writeTemplate(indexPageTemplate, mapOf("projectType" to "ssm", "config" to config),
+        ioUtil.writeTemplate(indexPageTemplate, mapOf(
+            "projectType" to "ssm",
+            "theme" to Random.nextInt(10),
+            "config" to config),
             "${pathConfig.jspPageDir(config)}/index.jsp")
         ioUtil.writeTemplate(loginPageTemplate, mapOf("projectType" to "ssm"),
             "${pathConfig.jspPageDir(config)}/login.jsp")
