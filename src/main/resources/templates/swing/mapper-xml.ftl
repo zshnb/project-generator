@@ -91,6 +91,26 @@
         <select id="list" resultType="${entityPackageName}.${name}">
             select *
             from ${literalize(tableName)}
+            <where>
+                <#list entity.fields?filter(f -> f.column.searchable) as field>
+                    <#switch field.type>
+                        <#case "String">
+                            <#assign defaultValue>''</#assign>
+                            <#break>
+                        <#case "Integer">
+                            <#assign defaultValue>0</#assign>
+                            <#break>
+                        <#case "LocalDate">
+                        <#case "LocalDateTime">
+                            <#assign defaultValue>null</#assign>
+                            <#break>
+                    </#switch>
+                    <#assign paramField>${camelize(field.column.name)}</#assign>
+                    <if test="request.${paramField} != null<#if defaultValue != 'null'> and request.${paramField} != ${defaultValue}</#if>">
+                        and ${literalize(tableName)}.${literalize(field.column.name)} = ${r'#{request.' + field.name + '}'}
+                    </if>
+                </#list>
+            </where>
         </select>
     </#if>
 
