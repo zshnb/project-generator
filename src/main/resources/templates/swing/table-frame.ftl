@@ -25,13 +25,6 @@ import ${requestPackageName}.*;
     ?replace(' ' , '')
     ?uncapFirst>
 </#function>
-<#assign searchable>
-    <#if (frame.entity.fields?filter(f -> f.column.searchable)?size > 0)>
-        true
-    <#else>
-        false
-    </#if>
-</#assign>
 
 public class ${name}Frame {
     JPanel parentPanel = new JPanel(new GridBagLayout());
@@ -42,7 +35,7 @@ public class ${name}Frame {
     <#list frame.operations as operation>
         private JButton ${operation.value}Button = new JButton("${operation.description}");
     </#list>
-    <#if searchable??>
+    <#if frame.entity.table.searchable>
         private JButton searchButton = new JButton("搜索");
     </#if>
     private int id;
@@ -288,7 +281,7 @@ public class ${name}Frame {
             }
         });
         </#if>
-        <#if searchable??>
+        <#if frame.entity.table.searchable>
             // 搜索按钮事件
             searchButton.addActionListener(new ActionListener() {
                 @Override
@@ -321,7 +314,7 @@ public class ${name}Frame {
                                 <#break>
                         </#switch>
                     </#list>
-                    initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>request)</#if>)<#else>${mapper}.list(<#if frame.entity.table.searchable>request)</#if>)</#if>;
+                    initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>request</#if>))<#else>${mapper}.listByRequest(<#if frame.entity.table.searchable>request</#if>))</#if>;
                 }
             });
         </#if>

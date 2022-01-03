@@ -88,7 +88,8 @@
             where role = ${r"#{role}"} and model = ${r"#{model}"}
         </select>
     <#else>
-        <select id="list" resultType="${entityPackageName}.${name}">
+        <#if entity.table.searchable>
+        <select id="listByRequest" resultType="${entityPackageName}.${name}">
             select *
             from ${literalize(tableName)}
             <where>
@@ -111,6 +112,11 @@
                     </if>
                 </#list>
             </where>
+        </select>
+        </#if>
+        <select id="list" resultType="${entityPackageName}.${name}">
+            select *
+            from ${literalize(tableName)}
         </select>
     </#if>
 
