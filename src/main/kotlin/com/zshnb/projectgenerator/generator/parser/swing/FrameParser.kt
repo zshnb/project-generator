@@ -12,7 +12,7 @@ class FrameParser {
         return entities.filter { it.table.enablePage }.mapIndexed { index, entity ->
             val frame = frames[index]
             val items = frame.items.mapIndexed { innerIndex, item ->
-                getFrameItem(item, entity.fields, innerIndex)
+                getFrameItem(item, entity.fields.filter { it.column.enableFormItem }, innerIndex)
             }
             val operations = entity.table.permissions.map { it.operations }
                 .flatten()

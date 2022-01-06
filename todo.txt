@@ -18,3 +18,6 @@
 31. [bug]根package和对应类的生成不对，在修改包名时
 32. [bug]swing默认user表无法生成frame
 33. [feature]swing查看按钮生成窗体
+34. [feature]swing可以多个查看框， update直接更新查询出来的实体，不要传new对象了
+35. [feature]swing增加表关联当前登录用户数据(用户只能查看自己的数据
+36. [fix]swing需要把关联的列手动放最后面，这样在点击和table的顺序可以对上

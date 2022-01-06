@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
     ${entity.table.comment}
 */
 public class ${entity.name?cap_first} {
-    <#if entity.table.name == "user">
+    <#if entity.table.name == "user" && !entity.table.enablePage>
         public User() {
         }
         public User(String username, String password, String role) {

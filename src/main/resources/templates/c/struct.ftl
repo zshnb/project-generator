@@ -133,7 +133,7 @@ int current = 0;
             void delete_${entity.name}_by_${field.name}()
             {
                 int index = find_${entity.name}_by_${field.name}();
-                int i = 0;
+                int i = index;
                 if (index == -1)
                 {
                     printf("记录不存在\n");

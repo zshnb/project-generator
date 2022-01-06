@@ -193,6 +193,7 @@
           "name": "sex",
           "comment": "性别",
           "type": "varchar",
+          "length": "255",
           "searchable": true
         },
         {

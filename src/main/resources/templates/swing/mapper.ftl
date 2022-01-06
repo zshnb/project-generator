@@ -19,6 +19,7 @@ public interface ${name}Mapper {
     Role selectByDescription(String description);
     <#else>
     </#if>
+    <#if entity.table.searchable>List<${name}> listByRequest(@Param("request")List${name}Request request);</#if>
     List<${name}> list();
     void insert(${name} ${name?uncap_first});
     void update(${name} ${name?uncap_first});

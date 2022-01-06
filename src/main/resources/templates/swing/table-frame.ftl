@@ -35,28 +35,42 @@ public class ${name}Frame {
     <#list frame.operations as operation>
         private JButton ${operation.value}Button = new JButton("${operation.description}");
     </#list>
+    <#if frame.entity.table.searchable>
+        private JButton searchButton = new JButton("搜索");
+    </#if>
     private int id;
 
     <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
         <#switch item.class.simpleName>
             <#case "TextFieldFrameItem">
+                <#if item.field.column.searchable>
+                    JTextField search${item.field.name?capFirst}TextField = new JTextField();
+                </#if>
                 JTextField ${item.field.name}TextField = new JTextField();
                 <#break>
             <#case "PasswordFrameItem">
                 JPasswordField passwordField = new JPasswordField();
                 <#break>
             <#case "RadioFrameItem">
+                <#if item.field.column.searchable>
+                    ButtonGroup search${item.field.name?capFirst}ButtonGroup = new ButtonGroup();
+                </#if>
                 ButtonGroup ${item.field.name}ButtonGroup =  new ButtonGroup();
                 <#break>
             <#case "SelectFrameItem">
-                <#assign comboBox>
-                    <#if item.field.column.associate??>
-                        ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
-                    <#else>
-                        ${item.field.name}ComboBox<#t>
+                <#if item.field.column.associate??>
+                    <#assign comboxName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox"/>
+                    JComboBox<String> ${comboxName} = new JComboBox<>();
+                    <#if item.field.column.searchable>
+                        JComboBox<String> search${comboxName?capFirst} = new JComboBox<>();
                     </#if>
-                </#assign>
-                JComboBox<String> ${comboBox} = new JComboBox<>();
+                <#else>
+                    <#assign comboxName = "${item.field.name}ComboBox"/>
+                    JComboBox<String> ${comboxName} = new JComboBox<>();
+                    <#if item.field.column.searchable>
+                        JComboBox<String> search${comboxName?capFirst} = new JComboBox<>();
+                    </#if>
+                </#if>
                 <#break>
         </#switch>
     </#list>
@@ -103,37 +117,38 @@ public class ${name}Frame {
                         ${item.field.type} ${item.field.name} = (${item.field.type}) jTable.getValueAt(row, ${item_index});
                     </#if>
                     <#switch item.class.simpleName>
-                    <#case "TextFieldFrameItem">
-                        ${item.field.name}TextField.setText(String.valueOf(${item.field.name}));
-                        <#break>
-                    <#case "PasswordFrameItem">
-                        <#break>
-                    <#case "RadioFrameItem">
-                        Enumeration<AbstractButton> ${item.field.name}ButtonGroupIterator = ${item.field.name}ButtonGroup.getElements();
-                        while (${item.field.name}ButtonGroupIterator.hasMoreElements()) {
-                            AbstractButton abstractButton = ${item.field.name}ButtonGroupIterator.nextElement();
-                            if (abstractButton.getText().equals(${item.field.name})) {
-                                abstractButton.setSelected(true);
-                                break;
-                            }
-                        }
-                        <#break>
-                    <#case "SelectFrameItem">
-                        <#assign comboBox>
+                        <#case "SelectFrameItem">
+                            <#assign comboBox>
+                                <#if item.field.column.associate??>
+                                    ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                                <#else>
+                                    ${item.field.name}ComboBox<#t>
+                                </#if>
+                            </#assign>
                             <#if item.field.column.associate??>
-                                ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                                <#assign variableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                                String ${variableName} = (String) jTable.getValueAt(row, ${item_index});
+                                ${comboBox}.setSelectedItem(${variableName});
                             <#else>
-                                ${item.field.name}ComboBox<#t>
+                                ${comboBox}.setSelectedItem(${item.field.name});
                             </#if>
-                        </#assign>
-                        <#if item.field.column.associate??>
-                            <#assign variableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
-                            String ${variableName} = (String) jTable.getValueAt(row, ${item_index});
-                            ${comboBox}.setSelectedItem(${variableName});
-                        <#else>
-                            ${comboBox}.setSelectedItem(${item.field.name});
-                        </#if>
-                        <#break>
+                            <#break>
+                        <#case "TextFieldFrameItem">
+                            ${item.field.name}TextField.setText(String.valueOf(${item.field.name}));
+                            <#break>
+                        <#case "PasswordFrameItem">
+                            passwordField.setText(String.valueOf(${item.field.name}));
+                            <#break>
+                        <#case "RadioFrameItem">
+                            Enumeration<AbstractButton> ${item.field.name}ButtonGroupIterator = ${item.field.name}ButtonGroup.getElements();
+                            while (${item.field.name}ButtonGroupIterator.hasMoreElements()) {
+                                AbstractButton abstractButton = ${item.field.name}ButtonGroupIterator.nextElement();
+                                if (abstractButton.getText().equals(${item.field.name})) {
+                                    abstractButton.setSelected(true);
+                                    break;
+                                }
+                            }
+                            <#break>
                     </#switch>
                 </#list>
 
@@ -154,7 +169,7 @@ public class ${name}Frame {
                                 Integer ${item.field.name} = Integer.valueOf(${item.field.name}TextField.getText());
                             </#if>
                             <#break>
-                        <#case "PasswordFieldFrameItem">
+                        <#case "PasswordFrameItem">
                             String ${item.field.name} = passwordField.getText();
                             <#break>
                         <#case "RadioFrameItem">
@@ -201,6 +216,10 @@ public class ${name}Frame {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (id == 0) {
+                    JOptionPane.showMessageDialog(null, "请先选择记录");
+                    return;
+                }
                 <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
                     <#switch item.class.simpleName>
                         <#case "TextFieldFrameItem">
@@ -210,7 +229,7 @@ public class ${name}Frame {
                                 Integer ${item.field.name} = Integer.valueOf(${item.field.name}TextField.getText());
                             </#if>
                             <#break>
-                        <#case "PasswordFieldFrameItem">
+                        <#case "PasswordFrameItem">
                             String ${item.field.name} = passwordField.getText();
                             <#break>
                         <#case "RadioFrameItem">
@@ -242,12 +261,11 @@ public class ${name}Frame {
                             <#break>
                     </#switch>
                 </#list>
-                <#assign params>
-                    <#list frame.entity.fields?filter(it -> it.column.enableFormItem) as field>
-                        ${field.name}<#if field_has_next>, </#if><#t>
-                    </#list>
-                </#assign>
-                ${frame.entity.name}Mapper.update(new ${name}(id, ${params}));
+                ${name} ${name?uncapFirst} = ${mapper}.selectById(id);
+                <#list frame.entity.fields?filter(it -> it.column.enableFormItem) as field>
+                    ${name?uncapFirst}.set${field.name?capFirst}(${field.name});
+                </#list>
+                ${frame.entity.name}Mapper.update(${name?uncapFirst});
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);
             }
         });
@@ -263,6 +281,43 @@ public class ${name}Frame {
             }
         });
         </#if>
+        <#if frame.entity.table.searchable>
+            // 搜索按钮事件
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    List${frame.entity.name?capFirst}Request request = new List${frame.entity.name?capFirst}Request();
+                    <#list frame.items?filter(it -> it.field.column.searchable) as item>
+                        <#switch item.class.simpleName>
+                            <#case "TextFieldFrameItem">
+                                request.set${item.field.name?capFirst}(search${item.field.name?capFirst}TextField.getText());
+                                <#break>
+                            <#case "RadioFrameItem">
+                                String ${item.field.name} = "";
+                                Enumeration<AbstractButton> ${item.field.name}ButtonGroupIterator = search${item.field.name?capFirst}ButtonGroup.getElements();
+                                while (${item.field.name}ButtonGroupIterator.hasMoreElements()) {
+                                    AbstractButton abstractButton = ${item.field.name}ButtonGroupIterator.nextElement();
+                                    if (abstractButton.isSelected()) {
+                                        request.set${item.field.name?capFirst}(abstractButton.getText());
+                                    }
+                                }
+                                <#break>
+                            <#case "SelectFrameItem">
+                                <#if item.field.column.associate??>
+                                    <#assign associateFieldVariableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
+                                    String ${associateFieldVariableName} = search${associateFieldVariableName?capFirst}ComboBox.getSelectedItem().toString();
+                                    int ${item.field.name} = ${camelize(item.field.column.associate.targetTableName)}s.stream().filter(it -> it.get${item.field.column.associate.formItemColumnName?capFirst}().equals(${associateFieldVariableName})).findAny().get().getId();
+                                    request.set${item.field.name?capFirst}(${item.field.name});
+                                <#else>
+                                    request.set${item.field.name?capFirst}(search${item.field.name?capFirst}ComboBox.getSelectedItem().toString());
+                                </#if>
+                                <#break>
+                        </#switch>
+                    </#list>
+                    initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>request</#if>))<#else>${mapper}.listByRequest(<#if frame.entity.table.searchable>request</#if>))</#if>;
+                }
+            });
+        </#if>
     }
 
     // 初始化窗口控件
@@ -271,6 +326,49 @@ public class ${name}Frame {
         parentPanel.add(rightPanel, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         rightPanel.add(scrollPane, new GridBagConstraints(0, 0, 1, 1, 0.5, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         scrollPane.setViewportView(jTable);
+        <#if (frame.entity.fields?filter(f -> f.column.searchable)?size > 0)>
+            <#assign j = 1/>
+            <#list frame.items?filter(it -> it.field.column.searchable) as item>
+            JPanel search${item.field.name?capFirst}Panel = new JPanel(new GridBagLayout());
+            search${item.field.name?capFirst}Panel.add(new JLabel("${item.field.column.comment}"),
+                new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+            <#switch item.class.simpleName>
+                <#case "TextFieldFrameItem">
+                    search${item.field.name?capFirst}Panel.add(search${item.field.name?capFirst}TextField,
+                        new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+                    <#break>
+                <#case "RadioFrameItem">
+                    <#list item.options as option>
+                        JRadioButton search${item.field.name?capFirst}JRadioButton${option_index} = new JRadioButton("${option.title}");
+                        search${item.field.name?capFirst}ButtonGroup.add(search${item.field.name?capFirst}JRadioButton${option_index});
+                        search${item.field.name?capFirst}Panel.add(search${item.field.name?capFirst}JRadioButton${option_index}, new GridBagConstraints(${option_index + 1}, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+                    </#list>
+                    <#break>
+                <#case "SelectFrameItem">
+                    <#assign comboBox>
+                        <#if item.field.column.associate??>
+                            ${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}ComboBox<#t>
+                        <#else>
+                            ${item.field.name}ComboBox<#t>
+                        </#if>
+                    </#assign>
+                    <#if !item.field.column.associate??>
+                        <#list item.options as option>
+                            ${item.field.name}ComboBox.addItem("${option.title}");
+                        </#list>
+                    <#else>
+                        ${camelize(item.field.column.associate.targetTableName)}s.forEach(it -> search${comboBox?capFirst}.addItem(it.get${item.field.column.associate.formItemColumnName?capFirst}()));
+                    </#if>
+                    search${item.field.name?capFirst}Panel.add(search${comboBox?capFirst}, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+                    <#break>
+                </#switch>
+                rightPanel.add(search${item.field.name?capFirst}Panel,
+                    new GridBagConstraints(0, ${j}, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+                <#assign j = j + 1/>
+            </#list>
+            rightPanel.add(searchButton,
+                new GridBagConstraints(0, ${j}, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        </#if>
 
         <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
             JPanel jPanel${item_index} = new JPanel(new GridBagLayout());
@@ -279,7 +377,7 @@ public class ${name}Frame {
                 <#case "TextFieldFrameItem">
                     jPanel${item_index}.add(${item.field.name}TextField, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
                     <#break>
-                <#case "PasswordFieldFrameItem">
+                <#case "PasswordFrameItem">
                     jPanel${item_index}.add(passwordField, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
                     <#break>
                 <#case "RadioFrameItem">
