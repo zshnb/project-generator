@@ -36,8 +36,8 @@
           "searchable": true
         },
         {
-          "name": "sex",
-          "comment": "性别",
+          "name": "address",
+          "comment": "地址",
           "type": "varchar",
           "length": "255",
           "searchable": true
