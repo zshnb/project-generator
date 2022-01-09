@@ -125,6 +125,23 @@
     </delete>
 
     <#if entity.table.associate>
+        <select id="findDtoById" resultType="${dtoPackageName + "." + name}Dto">
+            select
+            ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                <#list column.associate.associateResultColumns as associateColumn>
+                    <#assign camelizeColumnName = camelize(column.associate.targetTableName + "_" + associateColumn.originColumnName)/>
+                    <#assign aliasColumnName = "${literalize(camelizeColumnName)}">
+                    ${literalize(column.associate.targetTableName)}.${literalize(associateColumn.originColumnName)} as ${aliasColumnName}<#if associateColumn_has_next>,</#if>
+                </#list>
+                <#if column_has_next>,</#if>
+            </#list>
+            from ${literalize(tableName)}
+            <#list entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0) as column>
+                inner join ${literalize(column.associate.targetTableName)} on ${literalize(column.associate.targetTableName)}.${literalize(column.associate.targetColumnName)} = ${literalize(tableName)}.${literalize(column.name)}
+            </#list>
+            where ${literalize(tableName)}.id = ${r'#{id}'}
+        </select>
         <select id="findDtos" resultType="${dtoPackageName + "." + name}Dto">
             select
             ${literalize(tableName)}.* <#if (entity.table.columns?filter(c -> c.associate?? && c.associate.associateResultColumns?size > 0)?size > 0)>,</#if>

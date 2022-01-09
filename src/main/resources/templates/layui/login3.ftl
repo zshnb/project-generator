@@ -82,9 +82,15 @@
                     <input type="password" name="password" lay-verify="required"  placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
+                <div class="item">
+                    <select name="role" lay-filter="role" lay-verify="required" lay-reqtext="请选择角色">
+                        <option value="">请选择角色</option>
+                    </select>
+                </div>
             </div>
             <div class="layui-form-item" style="text-align:center; width:100%;height:100%;margin:0px;">
                 <button class="login-btn" lay-submit="" lay-filter="login">立即登录</button>
+                <button class="register-btn" lay-submit="" lay-filter="register">注册</button>
             </div>
         </form>
     </div>

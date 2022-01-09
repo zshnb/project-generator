@@ -13,9 +13,10 @@ import java.util.Enumeration;
 import java.util.stream.Collectors;
 import ${mapperPackageName}.*;
 import ${configPackageName}.*;
-import ${dtoPackageName}.*;
+<#if frame.entity.table.associate>
+    import ${dtoPackageName}.*;
+</#if>
 import ${entityPackageName}.*;
-import ${requestPackageName}.*;
 <#function camelize(s)>
     <#return s
     ?replace('(^_+)|(_+$)', '', 'r')
@@ -34,23 +35,16 @@ import ${requestPackageName}.*;
 </#assign>
 public class ${name}DetailFrame {
     JPanel parentPanel = new JPanel(new GridBagLayout());
-    JScrollPane scrollPane = new JScrollPane();
 
     <#list frame.items?filter(it -> it.field.column.enableFormItem) as item>
         <#switch item.class.simpleName>
             <#case "TextFieldFrameItem">
-                <#if item.field.column.searchable>
-                    JTextField search${item.field.name?capFirst}TextField = new JTextField();
-                </#if>
                 JTextField ${item.field.name}TextField = new JTextField();
                 <#break>
             <#case "PasswordFrameItem">
                 JPasswordField passwordField = new JPasswordField();
                 <#break>
             <#case "RadioFrameItem">
-                <#if item.field.column.searchable>
-                    ButtonGroup search${item.field.name?capFirst}ButtonGroup = new ButtonGroup();
-                </#if>
                 ButtonGroup ${item.field.name}ButtonGroup =  new ButtonGroup();
                 <#break>
             <#case "SelectFrameItem">
@@ -82,6 +76,7 @@ public class ${name}DetailFrame {
     private ${dataType} ${name?uncapFirst};
 
     public ${name}DetailFrame(${dataType} ${name?uncapFirst}) {
+        this.${name?uncapFirst} = ${name?uncapFirst};
         initUI();
         JFrame frame = new JFrame();
         frame.setTitle("${frame.entity.table.comment}界面");
@@ -99,7 +94,7 @@ public class ${name}DetailFrame {
             jPanel${item_index}.add(new JLabel("${item.field.column.comment}"), new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
             <#switch item.class.simpleName>
                 <#case "TextFieldFrameItem">
-                    ${item.field.name}TextField.setText(${name?uncapFirst}.get${item.field.name?capFirst}());
+                    ${item.field.name}TextField.setText(${name?uncapFirst}.get${item.field.name?capFirst}().toString());
                     jPanel${item_index}.add(${item.field.name}TextField, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
                     <#break>
                 <#case "PasswordFrameItem">
@@ -137,7 +132,7 @@ public class ${name}DetailFrame {
                     <#else>
                         ${camelize(item.field.column.associate.targetTableName)}s.forEach(it -> ${comboBox}.addItem(it.get${item.field.column.associate.formItemColumnName?capFirst}()));
                         <#assign variableName = "${camelize(item.field.column.associate.targetTableName)}${item.field.column.associate.formItemColumnName?capFirst}"/>
-                        ${comboBox}.setSelectedItem(${name?uncapFirst}.get${variableName}());
+                        ${comboBox}.setSelectedItem(${name?uncapFirst}.get${variableName?capFirst}());
                     </#if>
                     jPanel${item_index}.add(${comboBox}, new GridBagConstraints(1, 0, 1, 1, 1, 0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
                     <#break>

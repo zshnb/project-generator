@@ -80,6 +80,10 @@
             {
               "description": "删除",
               "value": "delete"
+            },
+            {
+              "description": "查看",
+              "value": "detail"
             }
           ]
         }
@@ -163,6 +167,10 @@
             {
               "description": "删除",
               "value": "delete"
+            },
+            {
+              "description": "查看",
+              "value": "detail"
             }
           ]
         }

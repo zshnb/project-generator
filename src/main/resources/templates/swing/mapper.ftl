@@ -1,7 +1,9 @@
 package ${packageName};
 <#assign name>${entity.name?cap_first}</#assign>
 import ${entityPackageName}.*;
-import ${dtoPackageName}.*;
+<#if frame.entity.table.associate>
+    import ${dtoPackageName}.*;
+</#if>
 import ${requestPackageName}.*;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -25,6 +27,7 @@ public interface ${name}Mapper {
     void update(${name} ${name?uncap_first});
     void deleteById(int id);
     <#if entity.table.associate>
+        ${name}Dto findDtoById(int id);
     List<${name}Dto> findDtos(<#if entity.table.searchable>@Param("request")List${name}Request request</#if><#if (entity.table.bindRoles?size > 0)>, @Param("user")User user</#if>);
     </#if>
 }
