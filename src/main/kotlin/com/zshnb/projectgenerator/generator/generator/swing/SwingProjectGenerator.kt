@@ -25,6 +25,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
         val swingProject = project.swingProject!!
         val config = swingProject.config
         mkdirs(config)
+        createOtherDirs(swingProject.tables.filter { it.enablePage }.map { it.name }, config)
         val frameTemplate = configuration.getTemplate(SwingFreemarkerConstant.TABLE_FRAME_TEMPLATE)
         val pomTemplate = configuration.getTemplate(SwingFreemarkerConstant.POM_TEMPLATE)
         val entityTemplate = configuration.getTemplate(SwingFreemarkerConstant.ENTITY_TEMPLATE)
@@ -40,6 +41,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
         val mainFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.MAIN_FRAME_TEMPLATE)
         val dtoTemplate = configuration.getTemplate(SwingFreemarkerConstant.DTO_TEMPLATE)
         val listRequestTemplate = configuration.getTemplate(SwingFreemarkerConstant.LIST_REQUEST_TEMPLATE)
+        val detailFrameTemplate = configuration.getTemplate(SwingFreemarkerConstant.DETAIL_FRAME_TEMPLATE)
 
         ioUtil.writeTemplate(loginFrameTemplate, mapOf(
             "configPackageName" to config.configPackagePath(),
@@ -108,13 +110,21 @@ class SwingProjectGenerator(private val configuration: Configuration,
             ioUtil.writeTemplate(frameTemplate, mapOf(
                 "frame" to it,
                 "operations" to operations,
-                "packageName" to config.framePackagePath(),
+                "packageName" to "${config.framePackagePath()}.${it.entity.name}",
                 "entityPackageName" to config.entityPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "requestPackageName" to config.requestPackagePath(),
                 "configPackageName" to config.configPackagePath(),
                 "mapperPackageName" to config.mapperPackagePath()
-            ), "${pathConfig.frameDir(config)}/${it.entity.name.capitalize()}Frame.java")
+            ), "${pathConfig.frameDir(config)}/${it.entity.name}/${it.entity.name.capitalize()}Frame.java")
+            ioUtil.writeTemplate(detailFrameTemplate, mapOf(
+                "frame" to it,
+                "packageName" to "${config.framePackagePath()}.${it.entity.name}",
+                "entityPackageName" to config.entityPackagePath(),
+                "dtoPackageName" to config.dtoPackagePath(),
+                "configPackageName" to config.configPackagePath(),
+                "mapperPackageName" to config.mapperPackagePath()
+            ), "${pathConfig.frameDir(config)}/${it.entity.name}/${it.entity.name.capitalize()}DetailFrame.java")
         }
 
         ioUtil.writeTemplate(initTableTemplate, mapOf(
@@ -145,7 +155,9 @@ class SwingProjectGenerator(private val configuration: Configuration,
             "mapperPackageName" to config.mapperPackagePath(),
             "entityPackageName" to config.entityPackagePath(),
             "framePackageName" to config.framePackagePath(),
-            "configPackageName" to config.configPackagePath()),
+            "configPackageName" to config.configPackagePath(),
+            "dependencies" to entities.filter { it.table.enablePage }.map { "${config.framePackagePath()}.${it.name}" }
+            ),
             "${pathConfig.frameDir(config)}/MainFrame.java")
 
         return project
@@ -167,5 +179,11 @@ class SwingProjectGenerator(private val configuration: Configuration,
         configDir.mkdir()
         frameDir.mkdir()
         requestDir.mkdir()
+    }
+
+    private fun createOtherDirs(dirs: List<String>, config: Config) {
+        dirs.forEach {
+            File("${pathConfig.frameDir(config)}/$it").mkdirs()
+        }
     }
 }

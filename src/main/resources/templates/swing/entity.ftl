@@ -22,12 +22,6 @@ public class ${entity.name?cap_first} {
                 ${field.type} ${field.name}<#if field_has_next>, </#if><#t>
             </#list>
         </#assign>
-        public ${entity.name?cap_first}(int id, ${params}) {
-        this.id = id;
-        <#list entity.fields?filter(it -> it.column.enableFormItem) as field>
-            this.${field.name} = ${field.name};
-        </#list>
-        }
 
         public ${entity.name?cap_first}(${params}) {
         <#list entity.fields?filter(it -> it.column.enableFormItem) as field>

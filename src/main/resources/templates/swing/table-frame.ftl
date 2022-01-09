@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
 import ${mapperPackageName}.*;
+<#if frame.entity.table.associate>
+    import ${dtoPackageName}.*;
+</#if>
 import ${configPackageName}.*;
-import ${dtoPackageName}.*;
 import ${entityPackageName}.*;
 import ${requestPackageName}.*;
 <#function camelize(s)>
@@ -270,11 +272,35 @@ public class ${name}Frame {
             }
         });
         </#if>
+        <#if (frame.operations?filter(it -> it.value == "detail")?size > 0)>
+        // 查看按钮事件
+        detailButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                <#assign param>
+                    <#if frame.entity.table.associate>
+                        ${mapper}.findDtoById(id)<#t>
+                    <#else>
+                        ${mapper}.selectById(id)<#t>
+                    </#if>
+                </#assign>
+                if (id == 0) {
+                    JOptionPane.showMessageDialog(null, "请先选择记录");
+                    return;
+                }
+                new ${name}DetailFrame(${param});
+            }
+        });
+        </#if>
         <#if (frame.operations?filter(it -> it.value == "delete")?size > 0)>
         // 删除按钮事件
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                if (id == 0) {
+                    JOptionPane.showMessageDialog(null, "请先选择记录");
+                    return;
+                }
                 JOptionPane.showMessageDialog(null, "删除成功");
                 ${mapper}.deleteById(id);
                 initData(<#if frame.entity.table.associate>${mapper}.findDtos(<#if frame.entity.table.searchable>new List${name}Request()</#if>)<#else>${mapper}.list()</#if>);

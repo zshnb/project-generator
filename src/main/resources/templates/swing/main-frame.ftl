@@ -4,6 +4,9 @@ import ${configPackageName}.GlobalSession;
 import ${configPackageName}.GlobalSqlSessionFactory;
 import ${mapperPackageName}.MenuMapper;
 import ${entityPackageName}.Menu;
+<#list dependencies as d>
+    import ${d}.*;
+</#list>
 
 import javax.swing.*;
 import java.awt.*;

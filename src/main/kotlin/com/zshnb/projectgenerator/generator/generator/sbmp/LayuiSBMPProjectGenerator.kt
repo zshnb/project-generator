@@ -64,7 +64,6 @@ class LayuiSBMPProjectGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
             "packageName" to webProject.config.controllerPackagePath(),
             "dependencies" to listOf(webProject.config.entityPackagePath(), webProject.config.serviceImplPackagePath(),
-                "theme" to Random.nextInt(12),
                 webProject.config.commonPackagePath(), webProject.config.requestPackagePath()),
             "unBindMenus" to unBindMenus),
             "${pathConfig.controllerDir(config)}/IndexController.java")
