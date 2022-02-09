@@ -66,7 +66,7 @@
 <div class="main-body">
     <div class="login-main">
         <div class="login-top">
-            <span>登录页面</span>
+            <span>注册页面</span>
             <span class="bg1"></span>
             <span class="bg2"></span>
         </div>
@@ -74,7 +74,7 @@
             <div class="center">
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name="username" lay-verify="required"  placeholder="请输入登录账号" maxlength="24"/>
+                    <input type="text" name="username" lay-verify="required"  placeholder="请输入账号" maxlength="24"/>
                 </div>
 
                 <div class="item">

@@ -62,10 +62,9 @@
                     </select>
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn admin-button" lay-submit="" lay-filter="login">登 录</button>
+                    <button class="layui-btn admin-button" lay-submit="" lay-filter="register">注 册</button>
                 </div>
             </form>
-            <button class="layui-btn admin-button register-btn">注 册</button>
         </div>
     </div>
 </div>
