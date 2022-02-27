@@ -11,6 +11,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+* 项目使用Java swing图形界面技术，数据库连接部分在resources/mybatis-config.xml，entity为实体类，对应数据库表
+* frame为窗体代码包，每个功能分别有表格窗体和详情窗体，对应增删改查，LoginFrame（登录窗体）RegisterFrame（注册窗体）
+* MainFrame（菜单窗体）mapper包为操作数据库的接口，config包是公共配置类，dto包是组合数据类
+*/
 public class LoginFrame {
     private JPanel parentPanel = new JPanel(new GridBagLayout());
     private JTextField userNameTextField = new JTextField();

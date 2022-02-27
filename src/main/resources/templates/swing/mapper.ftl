@@ -1,7 +1,7 @@
 package ${packageName};
 <#assign name>${entity.name?cap_first}</#assign>
 import ${entityPackageName}.*;
-<#if frame.entity.table.associate>
+<#if entity.table.associate>
     import ${dtoPackageName}.*;
 </#if>
 import ${requestPackageName}.*;
