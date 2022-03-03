@@ -174,14 +174,6 @@ open class BaseSSMProjectGenerator(private val backendParser: BackendParser,
         return Project(webProject = webProject)
     }
 
-    private fun getChildMenus(menu: Menu): List<Menu> {
-        val menus = mutableListOf(menu)
-        if (menu.child.isNotEmpty()) {
-            menus.addAll(menu.child.map { getChildMenus(it) }.flatten())
-        }
-        return menus
-    }
-
     open fun mkdirs(config: Config) {
         val entityDir = File(pathConfig.entityDir(config))
         val serviceDir = File(pathConfig.serviceDir(config))

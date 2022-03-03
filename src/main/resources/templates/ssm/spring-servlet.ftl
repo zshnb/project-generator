@@ -29,6 +29,11 @@
         <property name="password" value="${jdbcPassword}"/>
     </bean>
 
+    <bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+        <property name="metaObjectHandler">
+            <bean class="${rootPackageName}.config.LocalDateTimeMetaObjectHandler" />
+        </property>
+    </bean>
     <!-- SqlSessionFactory Config -->
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>

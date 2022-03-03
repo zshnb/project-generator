@@ -116,7 +116,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">${label}</label>
                 <div class="layui-upload">
-                    <button type="button" class="layui-btn layui-btn-normal" id="upload-${formItem.field.name}">选择文件</button>
+                    <button type="button" class="layui-btn layui-btn-normal" id="upload-${formItemName}">选择文件</button>
                     <div class="layui-upload-list">
                         <table class="layui-table">
                             <thead>
@@ -130,7 +130,7 @@
                             <tbody id="file-list-${formItem.field.name}"></tbody>
                         </table>
                     </div>
-                    <button type="button" class="layui-btn" id="upload-btn-${formItem.field.name}">开始上传</button>
+                    <button type="button" class="layui-btn" id="upload-btn-${formItemName}">开始上传</button>
                 </div>
                 <input name="${formItemName}" type="text" hidden>
             </div>
