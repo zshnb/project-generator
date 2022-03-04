@@ -235,7 +235,7 @@ int current = 0;
     {
         <#assign format>
             <#list entity.fields as field>
-                ${field.name}: <#t>
+                ${field.comment}: <#t>
                 <#switch field.type>
                     <#case "INT">
                         %d<#t>
