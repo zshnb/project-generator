@@ -3,7 +3,7 @@
         insert into role(name, description) values('${role.name}', '${role.description}');
     </#list>
     <#list menus as menu>
-        insert into menu(id, parent_id, name, icon, href, role) values(${menu.id}, ${menu.parentId}, '${menu.name}', '${menu.icon}', '${menu.href}', '${menu.role}');
+        insert into menu(id, name, icon, href, role) values(${menu.id}, '${menu.name}', '${menu.icon}', '${menu.href}', '${menu.role}');
     </#list>
 
     <#list permissions as permission>
@@ -18,7 +18,7 @@
         insert into role(name, description) values('${role.name}', '${role.description}');
     </#list>
     <#list menus as menu>
-        insert into menu(parent_id, name, icon, href, role) values(${menu.parentId}, '${menu.name}', '${menu.icon}', '${menu.href}', '${menu.role}');
+        insert into menu(name, icon, href, role) values('${menu.name}', '${menu.icon}', '${menu.href}', '${menu.role}');
     </#list>
 
     <#list permissions as permission>

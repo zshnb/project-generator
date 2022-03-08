@@ -4,9 +4,11 @@ import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProjectType.SBMP
 import com.zshnb.projectgenerator.generator.generator.c.CProjectGenerator
-import com.zshnb.projectgenerator.generator.generator.sbmp.*
-import com.zshnb.projectgenerator.generator.generator.ssm.LayuiSSMProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMBackendGenerator
 import com.zshnb.projectgenerator.generator.generator.swing.SwingProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.sbmp.LayuiSBMPBackendGenerator
+import com.zshnb.projectgenerator.generator.generator.web.sbmp.SBMPBackendGenerator
+import com.zshnb.projectgenerator.generator.generator.web.ssm.SSMBackendGenerator
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import com.zshnb.projectgenerator.web.request.AddOrUpdateProjectRequest
@@ -20,8 +22,10 @@ import java.io.*
 @RestController
 @RequestMapping("/api/project")
 class ProjectController(
-    private val layuiSBMPProjectGenerator: LayuiSBMPProjectGenerator,
-    private val layuiSSMProjectGenerator: LayuiSSMProjectGenerator,
+    private val layuiSBMPProjectGenerator: LayuiSBMPBackendGenerator,
+    private val layuiSSMProjectGenerator: LayuiSSMBackendGenerator,
+    private val ssmBackendGenerator: SSMBackendGenerator,
+    private val sbmpBackendGenerator: SBMPBackendGenerator,
     private val cProjectGenerator: CProjectGenerator,
     private val swingProjectGenerator: SwingProjectGenerator,
     private val zipFileWriter: ZipFileWriter,
@@ -39,8 +43,10 @@ class ProjectController(
                 FileUtils.deleteDirectory(File(filePath))
                 val fileName = "$filePath.zip"
                 if (project.webProject.type == SBMP) {
+                    sbmpBackendGenerator.generateProject(project)
                     layuiSBMPProjectGenerator.generateProject(project)
                 } else {
+                    ssmBackendGenerator.generateProject(project)
                     layuiSSMProjectGenerator.generateProject(project)
                 }
                 zipFileWriter.createZipFile(fileName, filePath)
@@ -51,7 +57,7 @@ class ProjectController(
                 val file = File(projectConfig.projectDir, fileName)
                 FileUtils.deleteQuietly(file)
                 cProjectGenerator.generateProject(project)
-                file to fileName
+                file to project.cProject.name
             }
             project.swingProject != null -> {
                 val filePath = "${projectConfig.projectDir}/${project.swingProject.config.artifactId}"
@@ -61,7 +67,7 @@ class ProjectController(
                 zipFileWriter.createZipFile(fileName, filePath)
                 File(fileName) to project.swingProject.config.artifactId
             }
-            else -> File("") to ""
+            else -> throw RuntimeException("unknown project type")
         }
 
         val resource = InputStreamResource(FileInputStream(file))

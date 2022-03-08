@@ -15,7 +15,6 @@ data class Role(val name: String, val description: String, val menus: List<Menu>
  * @param name 名称
  * @param href 路径
  * @param bind 是否与实体绑定，绑定会根据实体名称生成菜单，否则使用用户填写的路径，并对应生成空页面
- * @param child 子菜单
  * */
 data class Menu(
     val id: Int = 0,
@@ -23,9 +22,7 @@ data class Menu(
     val href: String,
     var role: String,
     val bind: Boolean = true,
-    var parentId: Int = 0,
     val icon: String = "",
-    val child: List<Menu> = emptyList()
 )
 
 /**

@@ -13,10 +13,9 @@ class CProjectGenerator(private val ioUtil: IOUtil,
                         private val projectConfig: ProjectConfig,
                         private val configuration: Configuration
 ) : BaseGenerator {
-    override fun generateProject(project: Project): Project {
+    override fun generateProject(project: Project) {
         val cProject = project.cProject!!
         val structTemplate = configuration.getTemplate(CFreemarkerFileConstant.STRUCT_TEMPLATE)
         ioUtil.writeTemplate(structTemplate, cProject, "${projectConfig.projectDir}/${cProject.name}.c")
-        return project
     }
 }

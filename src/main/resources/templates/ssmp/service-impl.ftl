@@ -119,38 +119,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     <#if name == "menu">
     @Override
-    public ListResponse<MenuDto> list(String role) {
+    public ListResponse<Menu> list(String role) {
         List<Menu> menus = list(new QueryWrapper<Menu>()
-            .eq("role", role)
-            .eq("parent_id", 0));
-        List<MenuDto> menuDtos = menus.stream().map(it -> {
-            MenuDto menuDto = new MenuDto();
-            menuDto.setId(it.getId());
-            menuDto.setName(it.getName());
-            menuDto.setHref(it.getHref());
-            menuDto.setIcon(it.getIcon());
-            menuDto.setRole(it.getRole());
-            setChildMenu(menuDto);
-            return menuDto;
-        }).collect(Collectors.toList());
-        return new ListResponse<>(menuDtos, menuDtos.size());
-    }
-    private void setChildMenu(MenuDto menu) {
-        List<MenuDto> child = list(new QueryWrapper<Menu>()
-            .eq("parent_id", menu.getId()))
-            .stream()
-            .map(it -> {
-        MenuDto menuDto = new MenuDto();
-        menuDto.setId(it.getId());
-        menuDto.setName(it.getName());
-        menuDto.setHref(it.getHref());
-        menuDto.setIcon(it.getIcon());
-        menuDto.setRole(it.getRole());
-        return menuDto;
-        }).collect(Collectors.toList());
-        menu.setChild(child);
-
-        menu.getChild().forEach(this::setChildMenu);
+            .eq("role", role));
+        return new ListResponse<>(menus, menus.size());
     }
     <#else>
     <#assign returnClass>

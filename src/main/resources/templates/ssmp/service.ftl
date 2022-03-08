@@ -21,7 +21,7 @@ public interface I${name?cap_first}Service extends IService<${name?cap_first}> {
     ${name?cap_first} detail(int id);
     void delete(int id);
     <#if name == "menu">
-    ListResponse<MenuDto> list(String role);
+    ListResponse<Menu> list(String role);
     <#else>
     <#assign returnClass>
         <#if entity.table.associate>

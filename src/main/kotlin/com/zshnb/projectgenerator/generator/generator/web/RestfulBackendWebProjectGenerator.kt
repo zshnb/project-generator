@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.generator.sbmp
+package com.zshnb.projectgenerator.generator.generator.web
 
 //@Component
 //class RestfulBackendWebProjectGenerator(private val backendParser: BackendParser,

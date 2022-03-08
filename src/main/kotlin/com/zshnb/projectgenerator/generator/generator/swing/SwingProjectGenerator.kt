@@ -21,7 +21,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
                             private val pathConfig: PathConfig,
                             private val frameParser: FrameParser,
                             private val backendParser: BackendParser) : BaseGenerator {
-    override fun generateProject(project: Project): Project {
+    override fun generateProject(project: Project) {
         val swingProject = project.swingProject!!
         val config = swingProject.config
         mkdirs(config)
@@ -160,10 +160,9 @@ class SwingProjectGenerator(private val configuration: Configuration,
             ),
             "${pathConfig.frameDir(config)}/MainFrame.java")
 
-        return project
     }
 
-    private fun mkdirs(config: Config) {
+    override fun mkdirs(config: Config) {
         val entityDir = File(pathConfig.entityDir(config))
         val mapperDir = File(pathConfig.mapperDir(config))
         val mapperXmlDir = File(pathConfig.xmlDir(config))

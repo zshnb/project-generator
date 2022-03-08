@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.generator.ssm
+package com.zshnb.projectgenerator.generator.generator.web.ssm
 
 import cn.hutool.core.util.ReUtil
 import com.zshnb.projectgenerator.generator.config.PathConfig
@@ -6,9 +6,9 @@ import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
+import com.zshnb.projectgenerator.generator.generator.BaseGenerator
 import com.zshnb.projectgenerator.generator.parser.web.*
 import com.zshnb.projectgenerator.generator.util.*
-import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.core.io.support.*
@@ -17,19 +17,12 @@ import java.io.*
 import kotlin.random.Random
 
 @Component
-class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
-                               private val configuration: Configuration,
-                               private val projectConfig: ProjectConfig,
+class LayuiSSMBackendGenerator(private val configuration: Configuration,
                                private val pathConfig: PathConfig,
                                private val frontendParser: FrontendParser,
-                               private val ioUtil: IOUtil) :
-    BaseSSMProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(project: Project): Project {
-        val baseProject = super.generateProject(project)
-        val webProject = baseProject.webProject!!
-        val pageControllerTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
-        val indexPageControllerTemplate =
-            configuration.getTemplate(SSMBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
+                               private val ioUtil: IOUtil) : BaseGenerator {
+    override fun generateProject(project: Project) {
+        val webProject = project.webProject!!
         val webXmlTemplate = configuration.getTemplate(SSMBackendFreeMarkerFileConstant.WEB_XML)
         val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_INDEX_PAGE)
         val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_LOGIN_PAGES[Random.nextInt(3)])
@@ -53,34 +46,10 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
             FileUtils.copyURLToFile(it.first, it.second)
         }
 
-        val unBindMenus = webProject.roles.flatMap { it.menus }
-            .filter { it.parentId == 0 && !it.bind }
-            .distinctBy { it.name }
+        val unBindMenus = webProject.listUnbindMenus()
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, mapOf("projectType" to "ssm"),
                 "${pathConfig.jspPageDir(config)}${it.href}.jsp")
-        }
-        ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
-            "packageName" to config.controllerPackagePath(),
-            "dependencies" to listOf(config.entityPackagePath(), config.serviceImplPackagePath(),
-                config.commonPackagePath(), config.requestPackagePath()),
-            "unBindMenus" to unBindMenus),
-            "${pathConfig.controllerDir(config)}/IndexController.java")
-
-        val entities = backendParser.parseEntities(webProject.tables)
-        entities.forEach { entity ->
-            val operations = entity.table.permissions.asSequence().map { it.operations }
-                .flatten()
-                .distinctBy { it.value }
-                .filter { it.custom }
-                .toList()
-            ioUtil.writeTemplate(pageControllerTemplate, mapOf(
-                "entity" to entity,
-                "operations" to operations,
-                "packageName" to config.controllerPackagePath(),
-                "dependencies" to listOf(config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
-                    config.commonPackagePath(), config.requestPackagePath())),
-                "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
         }
 
         ioUtil.writeTemplate(webXmlTemplate, emptyMap<Int, Int>(),
@@ -101,6 +70,7 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
             it.entity!!
             ioUtil.writeTemplate(addPageTemplate, mapOf(
                 "page" to it,
+                "entityPackageName" to config.entityPackagePath(),
                 "projectType" to "ssm"
             ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/add.jsp")
             ioUtil.writeTemplate(editPageTemplate, mapOf(
@@ -116,11 +86,9 @@ class LayuiSSMProjectGenerator(private val backendParser: BackendParser,
                 "projectType" to "ssm"
             ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/table.jsp")
         }
-        return baseProject
     }
 
     override fun mkdirs(config: Config) {
-        super.mkdirs(config)
         val pageDir = File(pathConfig.jspPageDir(config))
         pageDir.mkdirs()
     }
