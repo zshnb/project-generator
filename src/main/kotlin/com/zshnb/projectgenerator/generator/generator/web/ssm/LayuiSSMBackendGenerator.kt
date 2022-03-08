@@ -19,7 +19,7 @@ import kotlin.random.Random
 @Component
 class LayuiSSMBackendGenerator(private val backendParser: BackendParser,
                                private val configuration: Configuration,
-                               private val projectConfig: ProjectConfig,
+                               projectConfig: ProjectConfig,
                                private val pathConfig: PathConfig,
                                private val frontendParser: FrontendParser,
                                private val ioUtil: IOUtil) :
@@ -101,6 +101,7 @@ class LayuiSSMBackendGenerator(private val backendParser: BackendParser,
             it.entity!!
             ioUtil.writeTemplate(addPageTemplate, mapOf(
                 "page" to it,
+                "entityPackageName" to config.entityPackagePath(),
                 "projectType" to "ssm"
             ), "${pathConfig.jspPageDir(config)}/page/${it.entity.name}/add.jsp")
             ioUtil.writeTemplate(editPageTemplate, mapOf(

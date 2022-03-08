@@ -1,4 +1,5 @@
 <#if projectType == "ssm">
+<%@ page import="${entityPackageName}.User" %>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page isELIgnored="true" %>
 </#if>
