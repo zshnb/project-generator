@@ -77,7 +77,6 @@ class BackendParser(private val typeUtil: TypeUtil) {
             Column("id", INT, "id主键", primary = true, enableFormItem = false, enableTableField = false),
             Column("create_at", DATETIME, "创建时间", enableFormItem = false, enableTableField = false),
             Column("update_at", DATETIME, "更新时间", enableFormItem = false, enableTableField = false),
-            Column("parent_id", INT, "父id", enableFormItem = false, enableTableField = false),
             Column("name", VARCHAR, "名称", "255", enableFormItem = false, enableTableField = false),
             Column("icon", VARCHAR, "图标", "255", enableFormItem = false, enableTableField = false),
             Column("role", VARCHAR, "所属角色", "255", enableFormItem = false, enableTableField = false),

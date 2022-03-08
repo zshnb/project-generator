@@ -21,7 +21,6 @@ class SBMPBackendFreeMarkerFileConstant {
         const val APPLICATION_TEMPLATE = "ssmp/application.ftl"
         const val MYBATIS_PLUS_CONFIG_TEMPLATE = "ssmp/mybatis-plus-config.ftl"
         const val INIT_DATA_TEMPLATE = "ssmp/init-data.ftl"
-        const val MENU_DTO_TEMPLATE = "ssmp/menu-dto.ftl"
         const val LOGIN_REQUEST_TEMPLATE = "ssmp/login-request.ftl"
         const val STATIC_RESOURCE_CONTROLLER_TEMPLATE = "ssmp/static-resource-controller.ftl"
         const val LOCAL_DATE_TIME_META_OBJECT_HANDLER_TEMPLATE = "ssmp/local-date-time-meta-object-handler.ftl"

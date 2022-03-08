@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProject
 import com.zshnb.projectgenerator.generator.generator.web.sbmp.LayuiSBMPBackendGenerator
+import com.zshnb.projectgenerator.generator.generator.web.sbmp.SBMPBackendGenerator
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +19,9 @@ class SBMPWebProjectGenerateTest {
     private lateinit var layuiGenerator: LayuiSBMPBackendGenerator
 
     @Autowired
+    private lateinit var sbmpBackendGenerator: SBMPBackendGenerator
+
+    @Autowired
     private lateinit var moshi: Moshi
 
     @BeforeEach
@@ -30,7 +34,8 @@ class SBMPWebProjectGenerateTest {
         val resource = ClassPathResource("sbmp/mysql-project.json")
         val json = FileUtils.readLines(resource.file, StandardCharsets.UTF_8).joinToString(separator = "")
         val adapter = moshi.adapter(WebProject::class.java)
-        layuiGenerator.generateProject(project = Project(webProject = adapter.fromJson(json)))
+        sbmpBackendGenerator.generateProject(Project(webProject = adapter.fromJson(json)))
+        layuiGenerator.generateProject(Project(webProject = adapter.fromJson(json)))
     }
 
     @Test
@@ -38,6 +43,7 @@ class SBMPWebProjectGenerateTest {
         val resource = ClassPathResource("sbmp/sqlserver-project.json")
         val json = FileUtils.readLines(resource.file, StandardCharsets.UTF_8).joinToString(separator = "")
         val adapter = moshi.adapter(WebProject::class.java)
-        layuiGenerator.generateProject(project = Project(webProject = adapter.fromJson(json)))
+        sbmpBackendGenerator.generateProject(Project(webProject = adapter.fromJson(json)))
+        layuiGenerator.generateProject(Project(webProject = adapter.fromJson(json)))
     }
 }

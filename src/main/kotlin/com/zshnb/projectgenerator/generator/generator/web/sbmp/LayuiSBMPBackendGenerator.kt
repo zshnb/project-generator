@@ -6,9 +6,9 @@ import com.zshnb.projectgenerator.generator.constant.*
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.*
 import com.zshnb.projectgenerator.generator.extension.*
+import com.zshnb.projectgenerator.generator.generator.BaseGenerator
 import com.zshnb.projectgenerator.generator.parser.web.*
 import com.zshnb.projectgenerator.generator.util.*
-import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.apache.commons.io.FileUtils
 import org.springframework.core.io.support.*
@@ -17,19 +17,12 @@ import java.io.*
 import kotlin.random.Random
 
 @Component
-class LayuiSBMPBackendGenerator(private val backendParser: BackendParser,
-                                private val configuration: Configuration,
-                                private val projectConfig: ProjectConfig,
-                                private val pathConfig: PathConfig,
-                                private val frontendParser: FrontendParser,
-                                private val ioUtil: IOUtil) :
-    SBMPBackendGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(project: Project): Project {
-        val baseProject = super.generateProject(project)
-        val webProject = baseProject.webProject!!
-        val pageControllerTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
-        val indexPageControllerTemplate =
-            configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
+class LayuiSBMPBackendGenerator( private val configuration: Configuration,
+                                 private val pathConfig: PathConfig,
+                                 private val frontendParser: FrontendParser,
+                                 private val ioUtil: IOUtil) : BaseGenerator {
+    override fun generateProject(project: Project) {
+        val webProject = project.webProject!!
         val indexPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_INDEX_PAGE)
         val loginPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_LOGIN_PAGES[Random.nextInt(3)])
         val registerPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_REGISTER_PAGES[Random.nextInt(3)])
@@ -54,33 +47,10 @@ class LayuiSBMPBackendGenerator(private val backendParser: BackendParser,
             FileUtils.copyURLToFile(it.first, it.second)
         }
 
-        val unBindMenus = webProject.roles.flatMap { it.menus }
-            .filter { it.parentId == 0 && !it.bind }
-            .distinctBy { it.name }
+        val unBindMenus = webProject.listUnbindMenus()
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, mapOf("projectType" to "sbmp"),
                 "${pathConfig.thymeleafPageDirPath(config)}${it.href}.html")
-        }
-        ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
-            "packageName" to webProject.config.controllerPackagePath(),
-            "dependencies" to listOf(webProject.config.entityPackagePath(), webProject.config.serviceImplPackagePath(),
-                webProject.config.commonPackagePath(), webProject.config.requestPackagePath()),
-            "unBindMenus" to unBindMenus),
-            "${pathConfig.controllerDir(config)}/IndexController.java")
-        val entities = backendParser.parseEntities(webProject.tables)
-        entities.forEach { entity ->
-            val operations = entity.table.permissions.asSequence().map { it.operations }
-                .flatten()
-                .distinctBy { it.value }
-                .filter { it.custom }
-                .toList()
-            ioUtil.writeTemplate(pageControllerTemplate, mapOf(
-                "entity" to entity,
-                "operations" to operations,
-                "packageName" to config.controllerPackagePath(),
-                "dependencies" to listOf(config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
-                    config.commonPackagePath(), config.requestPackagePath())),
-                "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
         }
 
         ioUtil.writeTemplate(indexPageTemplate, mapOf("config" to config,
@@ -110,11 +80,9 @@ class LayuiSBMPBackendGenerator(private val backendParser: BackendParser,
                 "projectType" to "sbmp"
             ), "${pathConfig.thymeleafPageDirPath(config)}/${it.entity.name}/table.html")
         }
-        return baseProject
     }
 
     override fun mkdirs(config: Config) {
-        super.mkdirs(config)
 
         val pageDir = File(pathConfig.thymeleafPageDirPath(config))
         pageDir.mkdirs()

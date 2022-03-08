@@ -20,8 +20,8 @@ open class SSMBackendGenerator(backendParser: BackendParser,
                                private val projectConfig: ProjectConfig,
                                private val pathConfig: PathConfig,
                                private val configuration: Configuration)
-    : BaseGenerator, BaseWebProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration) {
-    override fun generateProject(project: Project): Project {
+    : BaseGenerator, BaseWebProjectGenerator(backendParser, ioUtil, pathConfig, configuration) {
+    override fun generateProject(project: Project) {
         super.generateProject(project)
         val config = project.webProject!!.config
 
@@ -31,6 +31,5 @@ open class SSMBackendGenerator(backendParser: BackendParser,
         ioUtil.writeTemplate(springServletTemplate, config,
             "${pathConfig.resourcesDirPath(config)}/spring-servlet.xml")
         ioUtil.writeTemplate(pomTemplate, config, "${projectConfig.projectDir}/${config.artifactId}/pom.xml")
-        return project
     }
 }

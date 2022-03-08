@@ -20,8 +20,8 @@ open class SBMPBackendGenerator(backendParser: BackendParser,
                                 private val projectConfig: ProjectConfig,
                                 private val pathConfig: PathConfig,
                                 private val configuration: Configuration) :
-    BaseGenerator, BaseWebProjectGenerator(backendParser, ioUtil, projectConfig, pathConfig, configuration){
-    override fun generateProject(project: Project): Project {
+    BaseGenerator, BaseWebProjectGenerator(backendParser, ioUtil, pathConfig, configuration){
+    override fun generateProject(project: Project) {
         super.generateProject(project)
         val config = project.webProject!!.config
         val pomTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.POM_TEMPLATE)
@@ -39,6 +39,5 @@ open class SBMPBackendGenerator(backendParser: BackendParser,
 
         ioUtil.writeTemplate(applicationTemplate, config,
             "${pathConfig.resourcesDirPath(config)}/application.yml")
-        return project
     }
 }

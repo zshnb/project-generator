@@ -10,7 +10,6 @@ import com.zshnb.projectgenerator.generator.extension.*
 import com.zshnb.projectgenerator.generator.generator.BaseGenerator
 import com.zshnb.projectgenerator.generator.parser.web.BackendParser
 import com.zshnb.projectgenerator.generator.util.IOUtil
-import com.zshnb.projectgenerator.web.config.ProjectConfig
 import freemarker.template.Configuration
 import org.springframework.stereotype.Component
 import java.io.File
@@ -18,10 +17,9 @@ import java.io.File
 @Component
 open class BaseWebProjectGenerator(private val backendParser: BackendParser,
                                    private val ioUtil: IOUtil,
-                                   private val projectConfig: ProjectConfig,
                                    private val pathConfig: PathConfig,
                                    private val configuration: Configuration) : BaseGenerator {
-    override fun generateProject(project: Project): Project {
+    override fun generateProject(project: Project) {
         val webProject = backendParser.parseProject(project.webProject!!)
         val config = webProject.config
         mkdirs(config)
@@ -39,7 +37,6 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
         val mybatisPlusConfigTemplate =
             configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.MYBATIS_PLUS_CONFIG_TEMPLATE)
         val initDataTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.INIT_DATA_TEMPLATE)
-        val menuDtoTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.MENU_DTO_TEMPLATE)
         val loginRequestTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.LOGIN_REQUEST_TEMPLATE)
         val staticResourceControllerTemplate =
             configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.STATIC_RESOURCE_CONTROLLER_TEMPLATE)
@@ -49,6 +46,8 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
         val dtoTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.DTO_TEMPLATE)
         val invalidArgumentExceptionTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.INVALID_ARGUMENT_EXCEPTION_TEMPLATE)
         val globalExceptionControllerTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.GLOBAL_EXCEPTION_CONTROLLER_TEMPLATE)
+        val pageControllerTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_CONTROLLER_TEMPLATE)
+        val indexPageControllerTemplate = configuration.getTemplate(SBMPBackendFreeMarkerFileConstant.PAGE_INDEX_CONTROLLER_TEMPLATE)
 
         ioUtil.writeTemplate(initTableTemplate,
             webProject,
@@ -59,49 +58,49 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
         ), "${pathConfig.controllerDir(config)}/StaticResourceController.java")
 
         val entities = backendParser.parseEntities(webProject.tables)
-        entities.forEach {
-            val operations = it.table.permissions.asSequence().map { it.operations }
+        entities.forEach { entity ->
+            val operations = entity.table.permissions.asSequence().map { it.operations }
                 .flatten()
                 .distinctBy { it.value }
                 .filter { it.custom && it.type == OperationType.AJAX }
                 .toList()
             ioUtil.writeTemplate(entityTemplate, mapOf(
-                "entity" to it,
+                "entity" to entity,
                 "packageName" to config.entityPackagePath(),
                 "config" to config),
-                "${pathConfig.entityDir(config)}/${it.name.capitalize()}.java")
+                "${pathConfig.entityDir(config)}/${entity.name.capitalize()}.java")
             ioUtil.writeTemplate(listRequestTemplate, mapOf(
                 "packageName" to config.requestPackagePath(),
-                "entity" to it,
+                "entity" to entity,
                 "commonPackageName" to config.commonPackagePath()),
-                "${pathConfig.requestDir(config)}/List${it.name.capitalize()}Request.java")
+                "${pathConfig.requestDir(config)}/List${entity.name.capitalize()}Request.java")
             ioUtil.writeTemplate(mapperTemplate, mapOf(
-                "entity" to it,
+                "entity" to entity,
                 "packageName" to config.mapperPackagePath(),
                 "entityPackageName" to config.entityPackagePath(),
                 "requestPackageName" to config.requestPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "config" to config)
-                , "${pathConfig.mapperDir(config)}/${it.name.capitalize()}Mapper.java")
+                , "${pathConfig.mapperDir(config)}/${entity.name.capitalize()}Mapper.java")
 
             ioUtil.writeTemplate(mapperXmlTemplate, mapOf(
-                "entity" to it,
+                "entity" to entity,
                 "packageName" to config.mapperPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "config" to config)
-                , "${pathConfig.xmlDir(config)}/${it.name.capitalize()}Mapper.xml")
+                , "${pathConfig.xmlDir(config)}/${entity.name.capitalize()}Mapper.xml")
 
             ioUtil.writeTemplate(serviceTemplate, mapOf(
-                "entity" to it,
+                "entity" to entity,
                 "operations" to operations,
                 "packageName" to config.servicePackagePath(),
                 "dependencies" to listOf(
                     config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath()
                 )),
-                "${pathConfig.serviceDir(config)}/I${it.name.capitalize()}Service.java")
+                "${pathConfig.serviceDir(config)}/I${entity.name.capitalize()}Service.java")
 
             ioUtil.writeTemplate(serviceImplTemplate, mapOf(
-                "entity" to it,
+                "entity" to entity,
                 "operations" to operations,
                 "packageName" to config.serviceImplPackagePath(),
                 "servicePackageName" to config.servicePackagePath(),
@@ -111,13 +110,32 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
                     config.exceptionPackagePath(), config.mapperPackagePath()
                 ),
                 "config" to config),
-                "${pathConfig.serviceImplDir(config)}/${it.name.capitalize()}ServiceImpl.java")
-            if (it.table.associate) {
+                "${pathConfig.serviceImplDir(config)}/${entity.name.capitalize()}ServiceImpl.java")
+            if (entity.table.associate) {
                 ioUtil.writeTemplate(dtoTemplate,
-                    mapOf("entity" to it, "packageName" to config.dtoPackagePath())
-                    , "${pathConfig.dtoDir(config)}/${it.name.capitalize()}Dto.java")
+                    mapOf("entity" to entity, "packageName" to config.dtoPackagePath())
+                    , "${pathConfig.dtoDir(config)}/${entity.name.capitalize()}Dto.java")
+            }
+            if (webProject.type.split) {
+                // todo 前后端分离项目
+            } else {
+                ioUtil.writeTemplate(pageControllerTemplate, mapOf(
+                    "entity" to entity,
+                    "operations" to operations,
+                    "packageName" to config.controllerPackagePath(),
+                    "dependencies" to listOf(config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
+                        config.commonPackagePath(), config.requestPackagePath())),
+                    "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
             }
         }
+
+        val unBindMenus = webProject.listUnbindMenus()
+        ioUtil.writeTemplate(indexPageControllerTemplate, mapOf(
+            "packageName" to config.controllerPackagePath(),
+            "dependencies" to listOf(config.entityPackagePath(), config.serviceImplPackagePath(),
+                config.commonPackagePath(), config.requestPackagePath()),
+            "unBindMenus" to unBindMenus),
+            "${pathConfig.controllerDir(config)}/IndexController.java")
 
         ioUtil.writeTemplate(pageRequestTemplate, config.commonPackagePath().packageName(),
             "${pathConfig.commonDir(config)}/PageRequest.java")
@@ -131,10 +149,6 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(mybatisPlusConfigTemplate,
             mapOf("config" to config, "packageName" to config.configPackagePath()),
             "${pathConfig.configDir(config)}/MybatisPlusConfig.java")
-
-        ioUtil.writeTemplate(menuDtoTemplate, config.dtoPackagePath().packageName(),
-            "${pathConfig.dtoDir(config)}/MenuDto.java")
-
         ioUtil.writeTemplate(loginRequestTemplate, config.requestPackagePath().packageName(),
             "${pathConfig.requestDir(config)}/LoginRequest.java")
 
@@ -165,11 +179,9 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
         ioUtil.writeTemplate(initDataTemplate,
             mapOf("roles" to roles, "menus" to menus, "permissions" to permissions, "config" to config),
             "${pathConfig.resourcesDirPath(config)}/initData.sql")
-
-        return Project(webProject = webProject)
     }
 
-    open fun mkdirs(config: Config) {
+    override fun mkdirs(config: Config) {
         val entityDir = File(pathConfig.entityDir(config))
         val serviceDir = File(pathConfig.serviceDir(config))
         val serviceImplDir = File(pathConfig.serviceImplDir(config))

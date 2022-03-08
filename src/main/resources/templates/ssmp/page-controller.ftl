@@ -45,7 +45,7 @@ public class ${className}Controller {
     <#if name == "menu">
     @PostMapping("/list")
     @ResponseBody
-    public ListResponse<MenuDto> list(HttpSession session) {
+    public ListResponse<Menu> listMenu(HttpSession session) {
         String role = ((User) session.getAttribute("user")).getRole();
         return menuService.list(role);
     }
@@ -155,6 +155,7 @@ public class ${className}Controller {
         model.addAttribute("${name}", ${name});
         return "page/${name}/detail";
     }
+    </#if>
 
     <#list operations?filter(it -> it.type == "NEW_PAGE") as operation>
     @GetMapping("/${operation.value}<#if operation.detail.pathVariable>/{id}</#if>")
@@ -162,5 +163,4 @@ public class ${className}Controller {
         return "page/${name}";
     }
     </#list>
-    </#if>
 }
