@@ -3,7 +3,7 @@ package com.zshnb.projectgenerator.generator
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProject
-import com.zshnb.projectgenerator.generator.generator.sbmp.LayuiSBMPProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.sbmp.LayuiSBMPProjectGenerator
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired

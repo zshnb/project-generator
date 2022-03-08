@@ -4,9 +4,9 @@ import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProjectType.SBMP
 import com.zshnb.projectgenerator.generator.generator.c.CProjectGenerator
-import com.zshnb.projectgenerator.generator.generator.sbmp.*
-import com.zshnb.projectgenerator.generator.generator.ssm.LayuiSSMProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMProjectGenerator
 import com.zshnb.projectgenerator.generator.generator.swing.SwingProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.sbmp.LayuiSBMPProjectGenerator
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import com.zshnb.projectgenerator.web.request.AddOrUpdateProjectRequest

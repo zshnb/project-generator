@@ -1,4 +1,4 @@
-package com.zshnb.projectgenerator.generator.generator.ssm
+package com.zshnb.projectgenerator.generator.generator.web.ssm
 
 import com.zshnb.projectgenerator.generator.config.PathConfig
 import com.zshnb.projectgenerator.generator.constant.*
