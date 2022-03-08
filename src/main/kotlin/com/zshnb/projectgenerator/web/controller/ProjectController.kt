@@ -4,9 +4,9 @@ import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProjectType.SBMP
 import com.zshnb.projectgenerator.generator.generator.c.CProjectGenerator
-import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMBackendGenerator
 import com.zshnb.projectgenerator.generator.generator.swing.SwingProjectGenerator
-import com.zshnb.projectgenerator.generator.generator.web.sbmp.LayuiSBMPProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.sbmp.LayuiSBMPBackendGenerator
 import com.zshnb.projectgenerator.generator.io.ZipFileWriter
 import com.zshnb.projectgenerator.web.config.ProjectConfig
 import com.zshnb.projectgenerator.web.request.AddOrUpdateProjectRequest
@@ -20,8 +20,8 @@ import java.io.*
 @RestController
 @RequestMapping("/api/project")
 class ProjectController(
-    private val layuiSBMPProjectGenerator: LayuiSBMPProjectGenerator,
-    private val layuiSSMProjectGenerator: LayuiSSMProjectGenerator,
+    private val layuiSBMPProjectGenerator: LayuiSBMPBackendGenerator,
+    private val layuiSSMProjectGenerator: LayuiSSMBackendGenerator,
     private val cProjectGenerator: CProjectGenerator,
     private val swingProjectGenerator: SwingProjectGenerator,
     private val zipFileWriter: ZipFileWriter,

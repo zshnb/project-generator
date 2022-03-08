@@ -27,7 +27,7 @@
 <div class="layui-form layuimini-form">
     <#if (page.entity.table.columns?filter(c -> c.associate?? && c.name == "user_id")?size > 0)>
         <#if projectType == "ssm">
-            <input type="text" name="userId" value="${r"<%=((User)session.getAttribute(\"user\")).getId()%>"}" hidden/>
+            <input type="text" name="userId" value="${r'<%=((User)session.getAttribute("user")).getId()%>'}" hidden/>
         <#else>
             <input type="text" name="userId" th:value="${r"${session.user.id}"}" hidden/>
         </#if>

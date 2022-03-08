@@ -3,7 +3,7 @@ package com.zshnb.projectgenerator.generator
 import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProject
-import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMProjectGenerator
+import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMBackendGenerator
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets
 @SpringBootTest
 class SSMWebProjectGenerateTest {
     @Autowired
-    private lateinit var layuiGenerator: LayuiSSMProjectGenerator
+    private lateinit var layuiGenerator: LayuiSSMBackendGenerator
 
     @Autowired
     private lateinit var moshi: Moshi
