@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 <#if (tables?filter(it -> it.bindUser??)?size > 0)>
     import org.springframework.transaction.annotation.Transactional;
 </#if>
+<#if entity.table.associate>
+    import ${dtoPackageName}.*;
+</#if>
 import java.util.List;
 import java.util.stream.Collectors;
 import ${servicePackageName}.I${className}Service;

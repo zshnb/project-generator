@@ -94,8 +94,9 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
                 "entity" to entity,
                 "operations" to operations,
                 "packageName" to config.servicePackagePath(),
+                "dtoPackageName" to config.dtoPackagePath(),
                 "dependencies" to listOf(
-                    config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath()
+                    config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath()
                 )),
                 "${pathConfig.serviceDir(config)}/I${entity.name.capitalize()}Service.java")
 
@@ -105,8 +106,9 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
                 "packageName" to config.serviceImplPackagePath(),
                 "servicePackageName" to config.servicePackagePath(),
                 "tables" to webProject.tables,
+                "dtoPackageName" to config.dtoPackagePath(),
                 "dependencies" to listOf(
-                    config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(), config.dtoPackagePath(),
+                    config.entityPackagePath(), config.commonPackagePath(), config.requestPackagePath(),
                     config.exceptionPackagePath(), config.mapperPackagePath()
                 ),
                 "config" to config),
@@ -123,7 +125,8 @@ open class BaseWebProjectGenerator(private val backendParser: BackendParser,
                     "entity" to entity,
                     "operations" to operations,
                     "packageName" to config.controllerPackagePath(),
-                    "dependencies" to listOf(config.entityPackagePath(), config.dtoPackagePath(), config.serviceImplPackagePath(),
+                    "dtoPackageName" to config.dtoPackagePath(),
+                    "dependencies" to listOf(config.entityPackagePath(), config.serviceImplPackagePath(),
                         config.commonPackagePath(), config.requestPackagePath())),
                     "${pathConfig.controllerDir(config)}/${entity.name.capitalize()}Controller.java")
             }

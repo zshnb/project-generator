@@ -2,6 +2,9 @@ package ${packageName};
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
+<#if entity.table.associate>
+    import ${dtoPackageName}.*;
+</#if>
 <#list dependencies as d>
 import ${d}.*;
 </#list>

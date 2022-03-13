@@ -10,7 +10,9 @@ import ${entityPackageName}.User;
 <#if entity.table.searchable>
     import ${requestPackageName}.*;
 </#if>
-import ${dtoPackageName}.*;
+<#if entity.table.associate>
+    import ${dtoPackageName}.*;
+</#if>
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;

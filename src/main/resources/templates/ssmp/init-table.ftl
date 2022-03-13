@@ -24,7 +24,7 @@ create table ${literalize(table.name)} (
             <#assign defaultValue>0</#assign>
             <#break>
     </#switch>
-    ${column.name} ${column.type.description}<#rt>
+    ${literalize(column.name)} ${column.type.description}<#rt>
     <#if column.length != "0">(${column.length})</#if><#t>
     <#if !column.nullable> DEFAULT ${defaultValue}</#if><#t>
     <#if column.primary> ${autoIncrementStatement} PRIMARY KEY</#if><#t>
