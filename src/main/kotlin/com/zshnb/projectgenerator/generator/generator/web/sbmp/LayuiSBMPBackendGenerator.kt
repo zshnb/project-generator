@@ -34,6 +34,7 @@ class LayuiSBMPBackendGenerator( private val configuration: Configuration,
 
         val pages = frontendParser.parsePages(webProject)
         val config = webProject.config
+        mkdirs(config)
         createOtherDirs(pages.map { it.entity!!.name }, webProject.config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")

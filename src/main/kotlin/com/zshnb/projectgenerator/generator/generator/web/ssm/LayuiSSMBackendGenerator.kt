@@ -34,6 +34,7 @@ class LayuiSSMBackendGenerator(private val configuration: Configuration,
         val emptyPageTemplate = configuration.getTemplate(FrontendFreeMarkerFileConstant.LAYUI_EMPTY_PAGE)
 
         val config = webProject.config
+        mkdirs(config)
         val resourceResolver = PathMatchingResourcePatternResolver()
         val resources = resourceResolver.getResources("/templates/layui/**")
 
@@ -49,7 +50,7 @@ class LayuiSSMBackendGenerator(private val configuration: Configuration,
         val unBindMenus = webProject.listUnbindMenus()
         unBindMenus.forEach {
             ioUtil.writeTemplate(emptyPageTemplate, mapOf("projectType" to "ssm"),
-                "${pathConfig.jspPageDir(config)}${it.href}.jsp")
+                "${pathConfig.jspPageDir(config)}/page/${it.href}.jsp")
         }
 
         ioUtil.writeTemplate(webXmlTemplate, emptyMap<Int, Int>(),
