@@ -104,7 +104,8 @@ public class ${className}Controller {
         <#assign methodName = "${camelize(operation.value?replace('-', '_'))}"/>
         @${operation.detail.httpMethod?lowerCase?capFirst}Mapping("/${operation.value}<#if operation.detail.pathVariable>/{id}</#if>")
         @ResponseBody
-        public Response<String> ${methodName}(<#if operation.detail.pathVariable>@PathVariable int id</#if>) {
+        public Response<String> ${methodName}(HttpSession session<#if operation.detail.pathVariable>, @PathVariable int id</#if>) {
+            User user = (User) session.getAttribute("user");
             ${service}.${methodName}(<#if operation.detail.pathVariable>id</#if>);
             return Response.ok();
         }

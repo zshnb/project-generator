@@ -15,3 +15,4 @@
 31. [bug]根package和对应类的生成不对，在修改包名时
 33. [feature]swing查看按钮生成窗体
 35. [feature]swing增加表关联当前登录用户数据(用户只能查看自己的数据
+36. [bug]sbmp/ssm的table页面，field当关联时，关联表下划线分割，没有正确驼峰（类似goods_typeName)
