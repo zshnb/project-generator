@@ -116,7 +116,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
                 "requestPackageName" to config.requestPackagePath(),
                 "configPackageName" to config.configPackagePath(),
                 "mapperPackageName" to config.mapperPackagePath()
-            ), "${pathConfig.frameDir(config)}/${it.entity.name}/${it.entity.name.capitalize()}Frame.java")
+            ), "${pathConfig.frameDir(config)}/${it.entity.table.name}/${it.entity.name.capitalize()}Frame.java")
             ioUtil.writeTemplate(detailFrameTemplate, mapOf(
                 "frame" to it,
                 "packageName" to "${config.framePackagePath()}.${it.entity.name}",
@@ -124,7 +124,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
                 "dtoPackageName" to config.dtoPackagePath(),
                 "configPackageName" to config.configPackagePath(),
                 "mapperPackageName" to config.mapperPackagePath()
-            ), "${pathConfig.frameDir(config)}/${it.entity.name}/${it.entity.name.capitalize()}DetailFrame.java")
+            ), "${pathConfig.frameDir(config)}/${it.entity.table.name}/${it.entity.name.capitalize()}DetailFrame.java")
         }
 
         ioUtil.writeTemplate(initTableTemplate, mapOf(

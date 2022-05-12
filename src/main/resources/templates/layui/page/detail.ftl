@@ -144,7 +144,7 @@
             elem: '#${formItem.field.name}',
             type: 'datetime',
             <#if projectType == "ssm">
-            value: ${r"${'" + page.entity.name + "." + formItem.field.name + "'}"},
+            value: ${r"'${" + page.entity.name + "." + formItem.field.name + "}'"},
             <#else>
             value: ${r"[[${#temporals.format(" + page.entity.name + "." + formItem.field.name + ", 'yyyy-MM-dd HH:mm:ss')}]]"},
             </#if>
