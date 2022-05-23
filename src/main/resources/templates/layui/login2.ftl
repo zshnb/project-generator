@@ -23,7 +23,7 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        body {background-image:url("../images/bg.jpg");height:100%;width:100%;}
+        body {background-image:url("../../static/images/bg.jpg");height:100%;width:100%;}
         #container{height:100%;width:100%;}
         input:-webkit-autofill {-webkit-box-shadow:inset 0 0 0 1000px #fff;background-color:transparent;}
         .admin-login-background {width:300px;height:300px;position:absolute;left:50%;top:40%;margin-left:-150px;margin-top:-100px;}

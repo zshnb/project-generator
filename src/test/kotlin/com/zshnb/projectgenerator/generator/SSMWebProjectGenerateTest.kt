@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.zshnb.projectgenerator.generator.entity.Project
 import com.zshnb.projectgenerator.generator.entity.web.WebProject
 import com.zshnb.projectgenerator.generator.generator.web.ssm.LayuiSSMBackendGenerator
+import com.zshnb.projectgenerator.generator.generator.web.ssm.SSMBackendGenerator
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +16,10 @@ import java.nio.charset.StandardCharsets
 @SpringBootTest
 class SSMWebProjectGenerateTest {
     @Autowired
-    private lateinit var layuiGenerator: LayuiSSMBackendGenerator
+    private lateinit var ssmBackendGenerator: SSMBackendGenerator
+
+    @Autowired
+    private lateinit var layuiSSMProjectGenerator: LayuiSSMBackendGenerator
 
     @Autowired
     private lateinit var moshi: Moshi
@@ -29,6 +33,8 @@ class SSMWebProjectGenerateTest {
         val resource = ClassPathResource("ssm/mysql-project.json")
         val json = FileUtils.readLines(resource.file, StandardCharsets.UTF_8).joinToString(separator = "")
         val adapter = moshi.adapter(WebProject::class.java)
-        layuiGenerator.generateProject(project = Project(webProject = adapter.fromJson(json)))
+        val project = adapter.fromJson(json)!!
+        ssmBackendGenerator.generateProject(Project(webProject = project))
+        layuiSSMProjectGenerator.generateProject(Project(webProject = project))
     }
 }
