@@ -110,7 +110,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
             ioUtil.writeTemplate(frameTemplate, mapOf(
                 "frame" to it,
                 "operations" to operations,
-                "packageName" to "${config.framePackagePath()}.${it.entity.name}",
+                "packageName" to "${config.framePackagePath()}.${it.entity.table.name}",
                 "entityPackageName" to config.entityPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "requestPackageName" to config.requestPackagePath(),
@@ -119,7 +119,7 @@ class SwingProjectGenerator(private val configuration: Configuration,
             ), "${pathConfig.frameDir(config)}/${it.entity.table.name}/${it.entity.name.capitalize()}Frame.java")
             ioUtil.writeTemplate(detailFrameTemplate, mapOf(
                 "frame" to it,
-                "packageName" to "${config.framePackagePath()}.${it.entity.name}",
+                "packageName" to "${config.framePackagePath()}.${it.entity.table.name}",
                 "entityPackageName" to config.entityPackagePath(),
                 "dtoPackageName" to config.dtoPackagePath(),
                 "configPackageName" to config.configPackagePath(),
