@@ -169,6 +169,8 @@ public class ${name}Frame {
                                 String ${item.field.name} = ${item.field.name}TextField.getText();
                             <#elseIf item.field.type == "Integer">
                                 Integer ${item.field.name} = Integer.valueOf(${item.field.name}TextField.getText());
+                            <#elseIf item.field.type == "Double">
+                                double ${item.field.name} = Double.parseDouble(${item.field.name}TextField.getText());
                             </#if>
                             <#break>
                         <#case "PasswordFrameItem">
@@ -229,6 +231,8 @@ public class ${name}Frame {
                                 String ${item.field.name} = ${item.field.name}TextField.getText();
                             <#elseIf item.field.type == "Integer">
                                 Integer ${item.field.name} = Integer.valueOf(${item.field.name}TextField.getText());
+                            <#elseIf item.field.type == "Double">
+                                double ${item.field.name} = Double.parseDouble(${item.field.name}TextField.getText());
                             </#if>
                             <#break>
                         <#case "PasswordFrameItem">
