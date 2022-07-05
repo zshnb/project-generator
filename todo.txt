@@ -16,3 +16,4 @@
 35. [feature]swing增加表关联角色与表
 36. [bug]sbmp/ssm的table页面，field当关联时，关联表下划线分割，没有正确驼峰（类似goods_typeName)
 37. [bug]ssmp前端无法删掉菜单
+38. [bug]swing关联列取消表单项时在initData里还是出现了关联列的数据

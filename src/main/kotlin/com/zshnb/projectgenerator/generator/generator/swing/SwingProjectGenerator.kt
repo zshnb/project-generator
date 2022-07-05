@@ -156,10 +156,9 @@ class SwingProjectGenerator(private val configuration: Configuration,
             "entityPackageName" to config.entityPackagePath(),
             "framePackageName" to config.framePackagePath(),
             "configPackageName" to config.configPackagePath(),
-            "dependencies" to entities.filter { it.table.enablePage }.map { "${config.framePackagePath()}.${it.name}" }
-            ),
-            "${pathConfig.frameDir(config)}/MainFrame.java")
-
+            "dependencies" to entities.filter { it.table.enablePage }
+                .map { "${config.framePackagePath()}.${it.table.name}" }
+        ), "${pathConfig.frameDir(config)}/MainFrame.java")
     }
 
     override fun mkdirs(config: Config) {
