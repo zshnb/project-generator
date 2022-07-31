@@ -6,7 +6,7 @@
 
     <groupId>${groupId}</groupId>
     <artifactId>${artifactId}</artifactId>
-    <version>${version}</version>>
+    <version>${version}</version>
     <packaging>war</packaging>
 
     <name>springmvc Maven Webapp</name>
