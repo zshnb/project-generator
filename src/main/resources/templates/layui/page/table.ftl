@@ -230,7 +230,7 @@
                             </#if>
                         <#elseif tableField.field.column.associate??>
                             <#list tableField.field.column.associate.associateResultColumns as column>
-                                <#assign aliasColumnName = "${tableField.field.column.associate.targetTableName + column.originColumnName?cap_first}">
+                                <#assign aliasColumnName = "${tableField.field.column.associate.targetTableName + camelize(column.originColumnName)?cap_first}">
                                 { field: '${aliasColumnName}', title: '${column.tableFieldTitle}', sort: true },
                             </#list>
                         </#if>
